@@ -2,54 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Apple-esque Futuristic Design System for Civilization³
-All colors MUST be HSL.
+/* Minimalist Science Chic Design System for Civilization³
+All colors MUST be HSL. Inspired by elegant scientific institutions.
 */
 
 @layer base {
   :root {
-    /* Apple-inspired neutral palette with futuristic accents */
-    --background: 0 0% 100%;
-    --foreground: 220 14% 11%;
+    /* Clean, minimal backgrounds */
+    --background: 0 0% 99%;
+    --foreground: 200 12% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 220 14% 11%;
+    --card-foreground: 200 12% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 14% 11%;
+    --popover-foreground: 200 12% 15%;
 
-    /* Sophisticated blue-purple for tech/future theme */
-    --primary: 231 48% 48%;
+    /* Sophisticated teal-blue primary */
+    --primary: 180 45% 25%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 231 65% 65%;
+    --primary-light: 180 35% 40%;
     
-    /* Clean Apple grays */
-    --secondary: 220 14% 96%;
-    --secondary-foreground: 220 9% 46%;
+    /* Minimal grays */
+    --secondary: 200 10% 96%;
+    --secondary-foreground: 200 8% 45%;
 
-    --muted: 220 14% 96%;
-    --muted-foreground: 220 9% 46%;
+    --muted: 200 10% 97%;
+    --muted-foreground: 200 8% 50%;
 
-    --accent: 231 48% 95%;
-    --accent-foreground: 231 48% 48%;
+    --accent: 180 30% 96%;
+    --accent-foreground: 180 45% 25%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 0 65% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 231 48% 48%;
+    --border: 200 10% 90%;
+    --input: 200 10% 94%;
+    --ring: 180 45% 25%;
 
-    --radius: 12px;
+    --radius: 8px;
 
-    /* Gradients for futuristic appeal */
-    --gradient-primary: linear-gradient(135deg, hsl(231 48% 48%), hsl(260 75% 55%));
-    --gradient-hero: linear-gradient(135deg, hsl(231 48% 48%) 0%, hsl(260 75% 55%) 50%, hsl(290 70% 60%) 100%);
-    --gradient-subtle: linear-gradient(180deg, hsl(220 14% 99%), hsl(220 14% 96%));
+    /* Subtle, elegant gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(180 45% 25%), hsl(170 40% 30%));
+    --gradient-hero: linear-gradient(135deg, hsl(200 12% 8%) 0%, hsl(180 20% 12%) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(0 0% 100%), hsl(200 10% 98%));
     
-    /* Shadows with tech feel */
-    --shadow-elegant: 0 20px 25px -5px hsl(231 48% 48% / 0.1), 0 10px 10px -5px hsl(231 48% 48% / 0.04);
-    --shadow-glow: 0 0 50px hsl(231 65% 65% / 0.3);
+    /* Minimal shadows */
+    --shadow-elegant: 0 4px 6px -1px hsl(200 10% 20% / 0.1), 0 2px 4px -1px hsl(200 10% 20% / 0.06);
+    --shadow-subtle: 0 1px 3px 0 hsl(200 10% 20% / 0.1);
     
     /* Animation variables */
     --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -73,44 +73,44 @@ All colors MUST be HSL.
   }
 
   .dark {
-    /* Dark mode with Apple-inspired colors */
-    --background: 220 14% 4%;
-    --foreground: 220 14% 98%;
+    /* Dark mode - sophisticated scientific aesthetic */
+    --background: 200 12% 8%;
+    --foreground: 200 10% 95%;
 
-    --card: 220 14% 4%;
-    --card-foreground: 220 14% 98%;
+    --card: 200 12% 10%;
+    --card-foreground: 200 10% 95%;
 
-    --popover: 220 14% 4%;
-    --popover-foreground: 220 14% 98%;
+    --popover: 200 12% 10%;
+    --popover-foreground: 200 10% 95%;
 
-    --primary: 231 65% 65%;
-    --primary-foreground: 220 14% 4%;
-    --primary-glow: 231 75% 75%;
+    --primary: 180 40% 60%;
+    --primary-foreground: 200 12% 8%;
+    --primary-light: 180 50% 70%;
 
-    --secondary: 220 9% 15%;
-    --secondary-foreground: 220 14% 82%;
+    --secondary: 200 8% 18%;
+    --secondary-foreground: 200 10% 75%;
 
-    --muted: 220 9% 15%;
-    --muted-foreground: 220 9% 65%;
+    --muted: 200 8% 16%;
+    --muted-foreground: 200 8% 60%;
 
-    --accent: 231 48% 15%;
-    --accent-foreground: 231 65% 65%;
+    --accent: 180 25% 18%;
+    --accent-foreground: 180 40% 60%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 220 14% 98%;
+    --destructive: 0 65% 60%;
+    --destructive-foreground: 200 10% 95%;
 
-    --border: 220 9% 15%;
-    --input: 220 9% 15%;
-    --ring: 231 65% 65%;
+    --border: 200 8% 20%;
+    --input: 200 8% 18%;
+    --ring: 180 40% 60%;
 
-    /* Dark mode gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(231 65% 65%), hsl(260 75% 70%));
-    --gradient-hero: linear-gradient(135deg, hsl(231 65% 65%) 0%, hsl(260 75% 70%) 50%, hsl(290 70% 75%) 100%);
-    --gradient-subtle: linear-gradient(180deg, hsl(220 14% 6%), hsl(220 14% 4%));
+    /* Dark gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(180 40% 60%), hsl(170 35% 55%));
+    --gradient-hero: linear-gradient(135deg, hsl(200 12% 8%) 0%, hsl(180 20% 12%) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(200 12% 10%), hsl(200 12% 8%));
     
     /* Dark shadows */
-    --shadow-elegant: 0 20px 25px -5px hsl(0 0% 0% / 0.4), 0 10px 10px -5px hsl(0 0% 0% / 0.1);
-    --shadow-glow: 0 0 50px hsl(231 75% 75% / 0.2);
+    --shadow-elegant: 0 8px 32px hsl(0 0% 0% / 0.32), 0 4px 16px hsl(0 0% 0% / 0.24);
+    --shadow-subtle: 0 2px 8px hsl(0 0% 0% / 0.24);
 
     --sidebar-background: 220 14% 4%;
     --sidebar-foreground: 220 14% 98%;
@@ -132,6 +132,17 @@ All colors MUST be HSL.
     @apply bg-background text-foreground antialiased;
     font-family: 'Inter', system-ui, sans-serif;
     scroll-behavior: smooth;
+  }
+
+  /* Typography hierarchy */
+  h1, h2, h3 {
+    font-family: 'Crimson Pro', serif;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+
+  h1 {
+    font-weight: 600;
   }
 
   /* Smooth scrollbar */

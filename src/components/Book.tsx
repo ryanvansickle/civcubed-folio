@@ -102,7 +102,7 @@ export const Book = () => {
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button variant="future" size="lg" className="group">
+                <Button size="lg" className="group">
                   Get Your Copy
                   <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
                 </Button>

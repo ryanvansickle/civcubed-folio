@@ -35,7 +35,7 @@ export const About = () => {
             <Badge variant="secondary" className="mb-4 text-sm font-medium">
               About the Author
             </Badge>
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+            <h2 className="text-4xl md:text-5xl font-serif font-medium text-foreground mb-6">
               Envisioning Tomorrow's World
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
@@ -89,12 +89,12 @@ export const About = () => {
           </div>
 
           {/* Philosophy Section */}
-          <Card className="p-8 md:p-12 bg-accent/30 border-accent-foreground/20 backdrop-blur-sm">
+          <Card className="p-8 md:p-12 bg-accent/20 border-accent-foreground/10 backdrop-blur-sm">
             <div className="text-center">
-              <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-6">
+              <h3 className="text-2xl md:text-3xl font-serif font-medium text-foreground mb-6">
                 Core Philosophy
               </h3>
-              <blockquote className="text-lg md:text-xl text-muted-foreground italic leading-relaxed max-w-4xl mx-auto">
+              <blockquote className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-4xl mx-auto font-light">
                 "We stand at the threshold of Civilization³ — a new era where technology, 
                 consciousness, and social evolution converge to create unprecedented opportunities 
                 for human flourishing. Our challenge is not just to adapt to this future, 

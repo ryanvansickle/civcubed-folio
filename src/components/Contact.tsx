@@ -39,7 +39,7 @@ export const Contact = () => {
                   </p>
                 </div>
               </div>
-              <Button variant="hero" className="w-full group">
+              <Button className="w-full group">
                 Get in Touch
                 <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
               </Button>
@@ -83,7 +83,7 @@ export const Contact = () => {
                 of civilization, technology, and human potential.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button variant="hero" size="lg">
+                <Button size="lg">
                   Book a Speaking Engagement
                 </Button>
                 <Button variant="ghost" size="lg">

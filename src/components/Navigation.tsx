@@ -66,7 +66,7 @@ export const Navigation = () => {
             >
               Contact
             </button>
-            <Button variant="hero" size="sm">
+            <Button size="sm">
               Get the Book
             </Button>
           </div>
@@ -110,9 +110,9 @@ export const Navigation = () => {
               >
                 Contact
               </button>
-              <Button variant="hero" size="sm" className="self-start">
-                Get the Book
-              </Button>
+            <Button onClick={() => scrollToSection('book')} className="self-start">
+              Get the Book
+            </Button>
             </div>
           </div>
         )}
