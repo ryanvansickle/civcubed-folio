@@ -20,35 +20,23 @@ export const Hero = () => {
       {/* Content */}
       <div className="relative z-10 container mx-auto px-6 text-center">
         <div className="max-w-4xl mx-auto animate-fade-in">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-card/80 backdrop-blur-sm border border-border/50 rounded-full px-4 py-2 mb-8 animate-scale-in shadow-subtle">
-            <BookOpen className="w-4 h-4 text-primary" />
-            <span className="text-foreground text-sm font-medium">Now Available</span>
-          </div>
-
           {/* Main Heading */}
-          <h1 className="text-6xl md:text-8xl font-serif font-semibold text-foreground mb-6 tracking-tight animate-slide-up">
-            Civilization³
+          <h1 className="text-5xl md:text-6xl font-serif font-semibold text-foreground mb-6 tracking-tight animate-slide-up">
+            Ryan Van Sickle
           </h1>
 
           {/* Subtitle */}
-          <p className="text-xl md:text-2xl text-foreground/80 mb-4 max-w-3xl mx-auto leading-relaxed animate-slide-up font-light" style={{ animationDelay: '0.2s' }}>
-            Exploring the Next Evolution of Human Society
-          </p>
-
-          {/* Author */}
-          <p className="text-lg text-muted-foreground mb-12 animate-slide-up" style={{ animationDelay: '0.4s' }}>
-            by Ryan Van Sickle
+          <p className="text-xl md:text-2xl text-foreground/80 mb-8 max-w-3xl mx-auto leading-relaxed animate-slide-up font-light" style={{ animationDelay: '0.2s' }}>
+            Researcher & Author exploring the future of human civilization
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up" style={{ animationDelay: '0.6s' }}>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up" style={{ animationDelay: '0.4s' }}>
             <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 font-medium shadow-elegant">
-              Get the Book
-              <ArrowRight className="ml-2 h-4 w-4" />
+              View Work
             </Button>
             <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground">
-              Learn More
+              Get in Touch
             </Button>
           </div>
         </div>

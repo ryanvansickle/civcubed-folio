@@ -14,11 +14,11 @@ export const Contact = () => {
               Let's Connect
             </Badge>
             <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-              Shape the Future Together
+              Connect
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Whether you're interested in collaboration, speaking engagements, or exploring 
-              the ideas in Civilization³, I'd love to hear from you.
+              Open to discussing research collaboration, speaking opportunities, 
+              and shared interests in technology and society.
             </p>
           </div>
 
@@ -32,10 +32,10 @@ export const Contact = () => {
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold text-card-foreground mb-2">
-                    Professional Inquiries
+                    Professional
                   </h3>
                   <p className="text-muted-foreground">
-                    Speaking engagements, consulting, media appearances, and strategic partnerships
+                    Speaking opportunities, collaboration, and professional networking
                   </p>
                 </div>
               </div>
@@ -53,10 +53,10 @@ export const Contact = () => {
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold text-card-foreground mb-2">
-                    Book & Research
+                    Research
                   </h3>
                   <p className="text-muted-foreground">
-                    Discussions about Civilization³, research collaboration, and future studies
+                    Research discussions, academic collaboration, and shared interests
                   </p>
                 </div>
               </div>
@@ -76,18 +76,18 @@ export const Contact = () => {
                 </div>
               </div>
               <h3 className="text-2xl font-bold text-foreground mb-4">
-                Speaking & Events
+                Speaking
               </h3>
               <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-                Available for keynotes, panels, workshops, and strategic sessions on the future 
-                of civilization, technology, and human potential.
+                Available for presentations on technology trends, future studies, 
+                and research insights.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button size="lg">
-                  Book a Speaking Engagement
+                  Speaking Inquiries
                 </Button>
                 <Button variant="ghost" size="lg">
-                  View Speaking Topics
+                  Topics & Expertise
                 </Button>
               </div>
             </div>

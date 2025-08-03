@@ -33,14 +33,14 @@ export const About = () => {
           {/* Section Header */}
           <div className="text-center mb-16">
             <Badge variant="secondary" className="mb-4 text-sm font-medium">
-              About the Author
+              About
             </Badge>
             <h2 className="text-4xl md:text-5xl font-serif font-medium text-foreground mb-6">
-              Envisioning Tomorrow's World
+              Background
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Ryan Van Sickle is a futurist and strategic thinker dedicated to understanding 
-              and shaping the next phase of human civilization through technology, innovation, and conscious design.
+              A researcher and emerging author focused on the intersection of technology, 
+              society, and human potential.
             </p>
           </div>
 
@@ -50,18 +50,16 @@ export const About = () => {
             <div className="space-y-6">
               <div className="prose prose-lg text-muted-foreground">
                 <p className="mb-6">
-                  With a deep fascination for the intersection of technology and human potential, 
-                  Ryan explores how emerging technologies, social structures, and consciousness evolution 
-                  will shape our collective future.
+                  Focused on understanding how emerging technologies reshape social structures 
+                  and human relationships, with particular interest in long-term societal implications.
                 </p>
                 <p className="mb-6">
-                  His work focuses on identifying the patterns and systems that will define 
-                  "Civilization³" — the next evolutionary leap in how we organize society, 
-                  leverage technology, and expand human capability.
+                  Currently researching the convergence of technological advancement and social evolution, 
+                  exploring how these forces might influence humanity's future development.
                 </p>
                 <p>
-                  Through research, writing, and strategic consulting, Ryan helps individuals 
-                  and organizations prepare for and actively participate in shaping this transformation.
+                  Engaged in writing and research projects that examine complex systems 
+                  and their potential impacts on civilization.
                 </p>
               </div>
             </div>
@@ -95,10 +93,9 @@ export const About = () => {
                 Core Philosophy
               </h3>
               <blockquote className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-4xl mx-auto font-light">
-                "We stand at the threshold of Civilization³ — a new era where technology, 
-                consciousness, and social evolution converge to create unprecedented opportunities 
-                for human flourishing. Our challenge is not just to adapt to this future, 
-                but to consciously design it."
+                "Understanding the trajectory of technological and social change requires 
+                both rigorous analysis and long-term thinking. The patterns we identify today 
+                will shape the possibilities of tomorrow."
               </blockquote>
               <cite className="block mt-6 text-foreground font-medium">— Ryan Van Sickle</cite>
             </div>

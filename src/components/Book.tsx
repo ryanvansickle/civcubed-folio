@@ -35,14 +35,14 @@ export const Book = () => {
           {/* Section Header */}
           <div className="text-center mb-16">
             <Badge variant="secondary" className="mb-4 text-sm font-medium">
-              The Book
+              Current Project
             </Badge>
             <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
               Civilization³
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              A comprehensive exploration of humanity's next evolutionary leap, combining 
-              deep research with visionary thinking to map our path forward.
+              Currently working on a book exploring humanity's technological and social evolution, 
+              examining the forces shaping our collective future.
             </p>
           </div>
 
@@ -61,7 +61,7 @@ export const Book = () => {
               
               {/* Floating badges */}
               <div className="absolute -top-4 -right-4 bg-accent px-4 py-2 rounded-full border border-accent-foreground/20 backdrop-blur-sm animate-float">
-                <span className="text-sm font-medium text-accent-foreground">New Release</span>
+                <span className="text-sm font-medium text-accent-foreground">In Progress</span>
               </div>
             </div>
 
@@ -69,16 +69,15 @@ export const Book = () => {
             <div className="space-y-8">
               <div>
                 <h3 className="text-3xl font-bold text-foreground mb-4">
-                  The Future is Being Written Now
+                  Research in Progress
                 </h3>
                 <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-                  Civilization³ examines the convergence of artificial intelligence, 
-                  consciousness research, social innovation, and technological advancement 
-                  that will define the next phase of human development.
+                  An ongoing research project examining how technological advancement 
+                  and social evolution intersect to shape humanity's future trajectory.
                 </p>
                 <p className="text-lg text-muted-foreground leading-relaxed">
-                  This isn't just speculation — it's a roadmap for understanding and 
-                  actively participating in the most significant transformation in human history.
+                  The work explores patterns of change across multiple domains to understand 
+                  how current trends might influence long-term civilizational development.
                 </p>
               </div>
 
@@ -103,11 +102,11 @@ export const Book = () => {
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button size="lg" className="group">
-                  Get Your Copy
+                  Learn More
                   <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
                 </Button>
                 <Button variant="outline" size="lg">
-                  Read Sample Chapter
+                  Research Updates
                 </Button>
               </div>
             </div>
