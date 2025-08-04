@@ -140,7 +140,7 @@ export const Hero = () => {
           {/* Main Heading - Astera style with massive spacing */}
           <h1 className="text-6xl md:text-8xl lg:text-9xl font-light text-foreground mb-12 tracking-[0.1em] leading-[1.1] animate-fade-in">
             Ryan Van Sickle{" "}
-            <span className="block mt-4 text-3xl md:text-4xl lg:text-5xl">Futurist | Strategist | Advisor</span>
+            <span className="block mt-4 text-3xl md:text-4xl lg:text-5xl tracking-[0.05em]">Futurist | Strategist | Advisor</span>
           </h1>
 
           {/* Subtitle */}
