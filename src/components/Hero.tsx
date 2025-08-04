@@ -33,7 +33,9 @@ class HeroAnimation {
   private onResize: () => void;
 
   constructor(containerId: string) {
+    console.log('HeroAnimation constructor called with:', containerId);
     this.container = document.getElementById(containerId);
+    console.log('Container found:', this.container);
     if (!this.container) {
       console.error("Animation container not found!");
       return;
@@ -51,12 +53,14 @@ class HeroAnimation {
     };
 
     // Setup
+    console.log('Setting up Three.js scene...');
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     this.camera.position.z = 1.5;
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    console.log('Appending canvas to container...');
     this.container.appendChild(this.renderer.domElement);
 
     // State Variables
@@ -74,10 +78,12 @@ class HeroAnimation {
 
     this.initParticles();
     this.initEventListeners();
+    console.log('Starting animation loop...');
     this.animate();
   }
 
   initParticles() {
+    console.log('Initializing particles...');
     // Uses InstancedMesh for extreme performance
     const particleGeometry = new THREE.SphereGeometry(0.002, 8, 8);
     const particleMaterial = new THREE.MeshBasicMaterial({ color: 0x333333 });
@@ -103,6 +109,7 @@ class HeroAnimation {
       });
     }
     this.scene.add(this.particles);
+    console.log('Particles initialized:', this.params.particleCount);
   }
 
   initEventListeners() {
@@ -217,13 +224,26 @@ class HeroAnimation {
 }
 
 const BiosphereParticles = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
   const animationRef = useRef<HeroAnimation | null>(null);
 
   useEffect(() => {
-    // Initialize the animation
-    animationRef.current = new HeroAnimation('hero-animation-container');
+    console.log('BiosphereParticles useEffect called');
+    
+    // Wait for next frame to ensure DOM is ready
+    const initAnimation = () => {
+      if (containerRef.current && !animationRef.current) {
+        console.log('Creating new HeroAnimation instance');
+        // Use the ref directly instead of getElementById
+        animationRef.current = new HeroAnimation('hero-animation-container');
+      }
+    };
+
+    // Small delay to ensure DOM is fully rendered
+    const timeoutId = setTimeout(initAnimation, 100);
 
     return () => {
+      clearTimeout(timeoutId);
       // Cleanup on unmount
       if (animationRef.current) {
         animationRef.current.destroy();
@@ -233,11 +253,12 @@ const BiosphereParticles = () => {
 
   return (
     <div 
+      ref={containerRef}
       id="hero-animation-container"
       className="absolute inset-0 w-full h-full"
       style={{ 
         pointerEvents: 'none',
-        zIndex: -1,
+        zIndex: 1,
         overflow: 'hidden'
       }}
     />
