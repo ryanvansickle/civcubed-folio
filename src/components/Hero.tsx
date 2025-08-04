@@ -145,7 +145,7 @@ export const Hero = () => {
 
           {/* Subtitle */}
           <p className="text-xl md:text-2xl text-foreground/70 mb-16 max-w-4xl mx-auto leading-relaxed font-normal tracking-wide animate-fade-in" style={{ animationDelay: '0.002s' }}>
-            Author of the forthcoming book, Civilization³
+            Author of the forthcoming book, <span className="font-bold">Civilization³</span>
           </p>
 
           {/* CTA Button - minimal like Astera */}
