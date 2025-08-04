@@ -11,23 +11,23 @@ export const Navigation = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <div className="flex items-center">
-            <h1 className="text-lg font-light text-foreground tracking-wide">
+            <h1 className="text-lg font-medium text-foreground tracking-wide">
               RyanV.xyz
             </h1>
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-12">
-            <a href="#about" className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-light tracking-wide">
+            <a href="#about" className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-medium tracking-wide">
               About
             </a>
-            <a href="#research" className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-light tracking-wide">
+            <a href="#research" className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-medium tracking-wide">
               Research
             </a>
-            <a href="#experience" className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-light tracking-wide">
+            <a href="#experience" className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-medium tracking-wide">
               Experience
             </a>
-            <a href="#contact" className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-light tracking-wide">
+            <a href="#contact" className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-medium tracking-wide">
               Contact
             </a>
           </div>
@@ -51,28 +51,28 @@ export const Navigation = () => {
             <div className="flex flex-col space-y-6">
               <a 
                 href="#about" 
-                className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-light tracking-wide"
+                className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-medium tracking-wide"
                 onClick={() => setIsOpen(false)}
               >
                 About
               </a>
               <a 
                 href="#research" 
-                className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-light tracking-wide"
+                className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-medium tracking-wide"
                 onClick={() => setIsOpen(false)}
               >
                 Research
               </a>
               <a 
                 href="#experience" 
-                className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-light tracking-wide"
+                className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-medium tracking-wide"
                 onClick={() => setIsOpen(false)}
               >
                 Experience
               </a>
               <a 
                 href="#contact" 
-                className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-light tracking-wide"
+                className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-medium tracking-wide"
                 onClick={() => setIsOpen(false)}
               >
                 Contact
