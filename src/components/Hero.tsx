@@ -328,8 +328,11 @@ class FinalHeroAnimation {
   }
 
   destroy() {
-    if (this.renderer && this.container) {
+    if (this.renderer && this.container && this.container.contains(this.renderer.domElement)) {
       this.container.removeChild(this.renderer.domElement);
+    }
+    if (this.renderer) {
+      this.renderer.dispose();
     }
   }
 }
