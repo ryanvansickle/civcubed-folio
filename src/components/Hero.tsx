@@ -3,94 +3,221 @@ import { ArrowRight } from "lucide-react";
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
-const DiagnosticTest = () => {
+const FinalAnimation = () => {
   useEffect(() => {
-    const script1 = document.createElement('script');
-    script1.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
-    script1.onload = () => {
-      const script2 = document.createElement('script');
-      script2.innerHTML = `
-  try {
-    console.log("--- Starting Diagnostic Test ---");
+    const script = document.createElement('script');
+    script.innerHTML = `
+// This script assumes THREE is already globally available from the platform.
+if (typeof THREE !== 'undefined') {
+  class FinalHeroAnimation {
+    constructor() {
+      // --- Core Parameters for Artistic Control ---
+      this.params = {
+        particleCount: 18000,
+        accentGold: 0xD4AF37,
+        accentTurquoise: 0x00A0A0,
+        baseColor: 0x444444,
+        hoverRadius: 0.3,
+        repulsionStrength: 0.25,
+        scrollGravity: 0.04,
+        oscillationFreq: 6.0,
+        oscillationAmp: 0.06
+      };
 
-    // 1. Check if three.js is loaded
-    if (typeof THREE === 'undefined') {
-      throw new Error("Three.js library failed to load.");
-    }
-    console.log("Three.js loaded successfully. Version:", THREE.REVISION);
+      // --- Setup ---
+      this.container = document.getElementById('hero-animation-container');
+      if (!this.container) return;
 
-    // 2. Setup basic scene
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    
-    const container = document.getElementById('test-container');
-    if (!container) {
-        throw new Error("Diagnostic container div not found in the DOM.");
-    }
-    container.appendChild(renderer.domElement);
-    console.log("Renderer and canvas appended to container.");
+      this.scene = new THREE.Scene();
+      this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
+      this.camera.position.set(0, 0, 2);
+      this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      this.renderer.setSize(window.innerWidth, window.innerHeight);
+      this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      this.container.appendChild(this.renderer.domElement);
 
-    // 3. Create a very simple, visible object
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshBasicMaterial({ color: 0xff0000 }); // A bright red color
-    const cube = new THREE.Mesh(geometry, material);
-    scene.add(cube);
-    console.log("Red cube created and added to scene.");
+      // --- State ---
+      this.mouse = new THREE.Vector2(-999, -999);
+      this.clock = new THREE.Clock();
+      this.hasInteracted = false;
 
-    camera.position.z = 5;
-
-    // 4. Create a simple animation loop
-    function animate() {
-      requestAnimationFrame(animate);
-      cube.rotation.x += 0.01;
-      cube.rotation.y += 0.01;
-      renderer.render(scene, camera);
+      this.initParticles();
+      this.addEventListeners();
+      this.animate();
     }
 
-    animate();
-    console.log("--- Diagnostic Test Initialized Successfully ---");
+    initParticles() {
+      const material = new THREE.PointsMaterial({
+        size: 0.015,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+        transparent: true,
+        vertexColors: true
+      });
 
-  } catch (error) {
-    console.error("--- DIAGNOSTIC TEST FAILED ---");
-    console.error(error);
-    // Also display the error on the page itself for easier debugging
-    const errorDiv = document.createElement('div');
-    errorDiv.style.position = 'fixed';
-    errorDiv.style.top = '10px';
-    errorDiv.style.left = '10px';
-    errorDiv.style.padding = '10px';
-    errorDiv.style.background = 'rgba(255, 0, 0, 0.8)';
-    errorDiv.style.color = 'white';
-    errorDiv.style.fontFamily = 'monospace';
-    errorDiv.style.zIndex = '9999';
-    errorDiv.innerText = "Animation Error: " + error.message;
-    document.body.appendChild(errorDiv);
+      const geometry = new THREE.BufferGeometry();
+      const positions = new Float32Array(this.params.particleCount * 3);
+      const colors = new Float32Array(this.params.particleCount * 3);
+      const color = new THREE.Color();
+      const accentPalette = [this.params.accentGold, this.params.accentTurquoise, this.params.baseColor, this.params.baseColor, this.params.baseColor, this.params.baseColor];
+      
+      this.particleData = [];
+
+      for (let i = 0; i < this.params.particleCount; i++) {
+        // Initialize far away to be invisible before wake-up
+        positions[i * 3] = positions[i * 3 + 1] = positions[i * 3 + 2] = -1000; 
+
+        color.set(accentPalette[Math.floor(Math.random() * accentPalette.length)]);
+        color.toArray(colors, i * 3);
+        
+        this.particleData.push({
+          velocity: new THREE.Vector3(),
+          basePosition: new THREE.Vector3((Math.random() - 0.5) * 6, (Math.random() - 0.5) * 4, (Math.random() - 0.5) * 4)
+        });
+      }
+
+      geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+      this.points = new THREE.Points(geometry, material);
+      this.scene.add(this.points);
+    }
+
+    addEventListeners() {
+      const wakeUp = () => {
+        if (this.hasInteracted) return;
+        this.hasInteracted = true;
+        this.container.classList.add('is-active');
+
+        // Animate particles into view on first interaction
+        const positions = this.points.geometry.attributes.position.array;
+        for (let i = 0; i < this.params.particleCount; i++) {
+            const targetPos = this.particleData[i].basePosition;
+            // A simple spring-like animation (can use a library like GSAP for more complex tweens)
+            const startPos = new THREE.Vector3().fromArray(positions, i * 3);
+            const duration = 1.5 + Math.random() * 1.5;
+            const delay = Math.random() * 0.5;
+            // Simple timeout-based tweening for compatibility
+            setTimeout(() => {
+                let t = 0;
+                const interval = setInterval(() => {
+                    t += 16 / (duration * 1000);
+                    if (t >= 1) {
+                        new THREE.Vector3().fromArray(targetPos.toArray()).toArray(positions, i * 3);
+                        clearInterval(interval);
+                    } else {
+                        const easeOut = 1 - Math.pow(1 - t, 4);
+                        new THREE.Vector3().copy(startPos).lerp(targetPos, easeOut).toArray(positions, i * 3);
+                    }
+                    this.points.geometry.attributes.position.needsUpdate = true;
+                }, 16);
+            }, delay * 1000);
+        }
+      };
+
+      window.addEventListener('mousemove', (e) => {
+        wakeUp();
+        this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+        this.mouse.y = -(e.clientY / window.innerHeight) * 2 - 1;
+      }, { once: true, passive: true });
+
+      window.addEventListener('scroll', wakeUp, { once: true, passive: true });
+
+      window.addEventListener('resize', () => {
+        this.camera.aspect = window.innerWidth / window.innerHeight;
+        this.camera.updateProjectionMatrix();
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+    }
+
+    animate() {
+      requestAnimationFrame(this.animate.bind(this));
+      if (!this.hasInteracted) return;
+
+      const elapsedTime = this.clock.getElapsedTime();
+      const positions = this.points.geometry.attributes.position.array;
+      const colors = this.points.geometry.attributes.color.array;
+      const mouseWorldPos = new THREE.Vector3(this.mouse.x, this.mouse.y, 0.5).unproject(this.camera);
+
+      let scrollForce = 0;
+      if (window.scrollY < window.innerHeight * 0.7) {
+          scrollForce = (t => t*t)(window.scrollY / (window.innerHeight * 0.7)) * this.params.scrollGravity;
+      }
+      
+      for (let i = 0; i < this.params.particleCount; i++) {
+        const i3 = i * 3;
+        const pos = new THREE.Vector3(positions[i3], positions[i3+1], positions[i3+2]);
+        const data = this.particleData[i];
+
+        // Organic Movement
+        const timeFactor = elapsedTime * 0.2;
+        data.velocity.x += Math.sin(i + timeFactor) * 0.00005;
+        data.velocity.y += Math.cos(i + timeFactor) * 0.00005;
+
+        // Mouse Interaction
+        const distanceToMouse = pos.distanceTo(mouseWorldPos);
+        if (distanceToMouse < this.params.hoverRadius) {
+          const repulsion = new THREE.Vector3().subVectors(pos, mouseWorldPos).normalize();
+          data.velocity.add(repulsion.multiplyScalar(this.params.repulsionStrength * 0.01));
+        }
+
+        // Scroll Interaction
+        if (scrollForce > 0) {
+            data.velocity.y -= scrollForce;
+            const oscillation = Math.sin(pos.y * this.params.oscillationFreq + elapsedTime * 5) * this.mouse.x * this.params.oscillationAmp;
+            pos.x += oscillation;
+        } else {
+            // Gently return toward base Z position
+            data.velocity.z += (data.basePosition.z - pos.z) * 0.01;
+        }
+
+        pos.add(data.velocity);
+        data.velocity.multiplyScalar(0.96); // Damping
+        pos.toArray(positions, i3);
+      }
+
+      this.points.geometry.attributes.position.needsUpdate = true;
+      this.renderer.render(this.scene, this.camera);
+    }
   }
-      `;
-      document.head.appendChild(script2);
-    };
-    document.head.appendChild(script1);
+
+  // Final check to ensure DOM is ready
+  if (document.readyState === 'loading') {
+    window.addEventListener('DOMContentLoaded', () => new FinalHeroAnimation());
+  } else {
+    new FinalHeroAnimation();
+  }
+} else {
+  console.error("Three.js is not available on the page. Animation cannot start.");
+}
+    `;
+    document.head.appendChild(script);
 
     return () => {
-      const scripts = document.querySelectorAll('script[src*="three.js"]');
-      scripts.forEach(script => script.remove());
+      script.remove();
     };
   }, []);
 
   return (
-    <div 
-      id="test-container" 
-      style={{ 
-        position: 'absolute', 
-        top: 0, 
-        left: 0, 
-        width: '100vw', 
-        height: '100vh', 
-        zIndex: -1 
-      }} 
-    />
+    <>
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          #hero-animation-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 2.5s ease-in-out;
+          }
+          #hero-animation-container.is-active {
+            opacity: 1;
+          }
+        `
+      }} />
+      <div id="hero-animation-container" />
+    </>
   );
 };
 
@@ -98,7 +225,7 @@ export const Hero = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
       {/* Advanced Three.js Generative Animation */}
-      <DiagnosticTest />
+      <FinalAnimation />
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-12 py-20 text-center">
