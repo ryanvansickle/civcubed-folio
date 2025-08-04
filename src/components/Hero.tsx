@@ -2,8 +2,23 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useEffect, useRef } from "react";
 
-const ParticleBackground = () => {
+const BiosphereParticles = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const animationRef = useRef<number>();
+  const particlesRef = useRef<Array<{
+    x: number;
+    y: number;
+    vx: number;
+    vy: number;
+    originalVx: number;
+    originalVy: number;
+    size: number;
+    opacity: number;
+    baseOpacity: number;
+    targetX?: number;
+    targetY?: number;
+    isAligning: boolean;
+  }>>([]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -12,7 +27,7 @@ const ParticleBackground = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Set canvas size
+    // Canvas setup
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
@@ -20,95 +35,166 @@ const ParticleBackground = () => {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Particles array
-    const particles: Array<{
-      x: number;
-      y: number;
-      vx: number;
-      vy: number;
-      size: number;
-      opacity: number;
-      hue: number;
-    }> = [];
-
-    // Create particles
-    for (let i = 0; i < 300; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
-        size: Math.random() * 1.5 + 0.5,
-        opacity: Math.random() * 0.8 + 0.2,
-        hue: Math.random() * 60 + 15, // Orange to amber range
-      });
-    }
-
+    // Mouse tracking
     let mouseX = 0;
     let mouseY = 0;
+    let scrollY = 0;
 
     const handleMouseMove = (e: MouseEvent) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
+      const rect = canvas.getBoundingClientRect();
+      mouseX = e.clientX - rect.left;
+      mouseY = e.clientY - rect.top;
+    };
+
+    const handleScroll = () => {
+      scrollY = window.scrollY;
     };
 
     window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('scroll', handleScroll);
+
+    // Initialize particles
+    const initParticles = () => {
+      particlesRef.current = [];
+      const particleCount = Math.min(160, Math.floor((canvas.width * canvas.height) / 8000));
+      
+      for (let i = 0; i < particleCount; i++) {
+        const vx = (Math.random() - 0.5) * 0.8;
+        const vy = (Math.random() - 0.5) * 0.8;
+        
+        particlesRef.current.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx,
+          vy,
+          originalVx: vx,
+          originalVy: vy,
+          size: Math.random() * 2 + 1,
+          opacity: Math.random() * 0.4 + 0.1,
+          baseOpacity: Math.random() * 0.4 + 0.1,
+          isAligning: false
+        });
+      }
+    };
+
+    initParticles();
 
     // Animation loop
     const animate = () => {
-      ctx.fillStyle = 'rgba(24, 24, 27, 0.1)';
+      // Clear canvas with slight trail effect
+      ctx.fillStyle = 'rgba(253, 251, 248, 0.05)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      particles.forEach((particle, index) => {
-        // Update position
+      const scrollProgress = Math.min(scrollY / 200, 1);
+      const isScrolling = scrollProgress > 0.1;
+
+      particlesRef.current.forEach((particle, index) => {
+        // Handle scroll alignment
+        if (isScrolling && !particle.isAligning) {
+          particle.isAligning = true;
+          // Create target position for flowing lines
+          const lineIndex = index % 8;
+          const lineSpacing = canvas.width / 9;
+          particle.targetX = lineSpacing * (lineIndex + 1);
+          particle.targetY = canvas.height + 100;
+        } else if (!isScrolling) {
+          particle.isAligning = false;
+          particle.targetX = undefined;
+          particle.targetY = undefined;
+        }
+
+        // Update position based on state
+        if (particle.isAligning && particle.targetX && particle.targetY) {
+          // Smooth transition to target position
+          const dx = particle.targetX - particle.x;
+          const dy = particle.targetY - particle.y;
+          particle.vx = dx * 0.02;
+          particle.vy = dy * 0.02 + 1;
+        } else {
+          // Organic drifting movement
+          particle.vx = particle.originalVx + Math.sin(Date.now() * 0.001 + index) * 0.2;
+          particle.vy = particle.originalVy + Math.cos(Date.now() * 0.001 + index) * 0.2;
+
+          // Mouse repulsion effect
+          const dx = mouseX - particle.x;
+          const dy = mouseY - particle.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          const repulseRadius = 120;
+
+          if (distance < repulseRadius && distance > 0) {
+            const force = (repulseRadius - distance) / repulseRadius;
+            const angle = Math.atan2(dy, dx);
+            particle.vx -= Math.cos(angle) * force * 0.8;
+            particle.vy -= Math.sin(angle) * force * 0.8;
+          }
+        }
+
+        // Apply movement
         particle.x += particle.vx;
         particle.y += particle.vy;
 
-        // Mouse interaction
-        const dx = mouseX - particle.x;
-        const dy = mouseY - particle.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
+        // Boundary wrapping
+        if (particle.x < -10) particle.x = canvas.width + 10;
+        if (particle.x > canvas.width + 10) particle.x = -10;
+        if (particle.y < -10) particle.y = canvas.height + 10;
+        if (particle.y > canvas.height + 10) particle.y = -10;
 
-        if (distance < 400) {
-          const force = (400 - distance) / 400;
-          particle.vx += (dx / distance) * force * 0.06;
-          particle.vy += (dy / distance) * force * 0.06;
+        // Velocity damping
+        if (!particle.isAligning) {
+          particle.vx *= 0.98;
+          particle.vy *= 0.98;
         }
 
-        // Wrap around edges
-        if (particle.x < 0) particle.x = canvas.width;
-        if (particle.x > canvas.width) particle.x = 0;
-        if (particle.y < 0) particle.y = canvas.height;
-        if (particle.y > canvas.height) particle.y = 0;
-
-        // Slow down particles
-        particle.vx *= 0.95;
-        particle.vy *= 0.95;
+        // Opacity animation
+        particle.opacity = particle.baseOpacity + Math.sin(Date.now() * 0.002 + index) * 0.1;
 
         // Draw particle
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-        ctx.fillStyle = `hsla(${particle.hue}, 100%, 60%, ${particle.opacity})`;
+        ctx.fillStyle = `rgba(85, 85, 85, ${particle.opacity})`;
         ctx.fill();
 
-        // Draw connections
-        particles.slice(index + 1).forEach(otherParticle => {
-          const dx = particle.x - otherParticle.x;
-          const dy = particle.y - otherParticle.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
+        // Draw connections (subtle lines)
+        if (scrollProgress > 0.2) {
+          // Enhanced connections during scroll
+          particlesRef.current.slice(index + 1).forEach(otherParticle => {
+            const dx = particle.x - otherParticle.x;
+            const dy = particle.y - otherParticle.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            const maxDistance = 180;
 
-          if (distance < 100) {
-            ctx.beginPath();
-            ctx.moveTo(particle.x, particle.y);
-            ctx.lineTo(otherParticle.x, otherParticle.y);
-            ctx.strokeStyle = `hsla(30, 100%, 60%, ${0.1 * (1 - distance / 100)})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-          }
-        });
+            if (distance < maxDistance) {
+              const lineOpacity = (1 - distance / maxDistance) * 0.3 * scrollProgress;
+              ctx.beginPath();
+              ctx.moveTo(particle.x, particle.y);
+              ctx.lineTo(otherParticle.x, otherParticle.y);
+              ctx.strokeStyle = `rgba(153, 153, 153, ${lineOpacity})`;
+              ctx.lineWidth = 0.5;
+              ctx.stroke();
+            }
+          });
+        } else {
+          // Subtle connections in default state
+          particlesRef.current.slice(index + 1).forEach(otherParticle => {
+            const dx = particle.x - otherParticle.x;
+            const dy = particle.y - otherParticle.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            const maxDistance = 120;
+
+            if (distance < maxDistance) {
+              const lineOpacity = (1 - distance / maxDistance) * 0.08;
+              ctx.beginPath();
+              ctx.moveTo(particle.x, particle.y);
+              ctx.lineTo(otherParticle.x, otherParticle.y);
+              ctx.strokeStyle = `rgba(170, 170, 170, ${lineOpacity})`;
+              ctx.lineWidth = 0.3;
+              ctx.stroke();
+            }
+          });
+        }
       });
 
-      requestAnimationFrame(animate);
+      animationRef.current = requestAnimationFrame(animate);
     };
 
     animate();
@@ -116,6 +202,10 @@ const ParticleBackground = () => {
     return () => {
       window.removeEventListener('resize', resizeCanvas);
       window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('scroll', handleScroll);
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
     };
   }, []);
 
@@ -131,6 +221,9 @@ const ParticleBackground = () => {
 export const Hero = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
+      {/* Biosphere Particle Animation */}
+      <BiosphereParticles />
+
       {/* Content */}
       <div className="relative z-10 container mx-auto px-12 py-20 text-center">
         <div className="max-w-6xl mx-auto">
