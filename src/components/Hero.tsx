@@ -35,11 +35,13 @@ class FinalHeroAnimation {
   };
 
   constructor(containerId: string) {
+    console.log("Initializing animation with container ID:", containerId);
     this.container = document.getElementById(containerId);
     if (!this.container) {
       console.error("Animation container not found!");
       return;
     }
+    console.log("Animation container found:", this.container);
 
     // Core Parameters
     this.params = {
@@ -219,6 +221,7 @@ class FinalHeroAnimation {
   addEventListeners() {
     const handleFirstInteraction = () => {
       if (this.hasInteracted) return;
+      console.log("First interaction detected! Starting animation...");
       this.hasInteracted = true;
       this.wakeUpTime = this.clock.getElapsedTime();
       if (this.container) {
@@ -230,7 +233,7 @@ class FinalHeroAnimation {
       handleFirstInteraction();
       this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
       this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-    }, { once: true, passive: true });
+    }, { passive: true });
     
     window.addEventListener('scroll', () => {
       handleFirstInteraction();
@@ -238,7 +241,7 @@ class FinalHeroAnimation {
       const scrollPercent = Math.min(scrollY / (window.innerHeight * 0.7), 1);
       const easeIn = (t: number) => t * t;
       this.scrollForce = easeIn(scrollPercent) * this.params.scrollGravity;
-    }, { once: true, passive: true });
+    }, { passive: true });
 
     window.addEventListener('resize', () => {
       this.camera.aspect = window.innerWidth / window.innerHeight;
