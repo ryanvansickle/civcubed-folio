@@ -70,7 +70,7 @@ class FinalHeroAnimation {
     this.mouse = new THREE.Vector2(-99, -99);
     this.scrollForce = 0;
     this.clock = new THREE.Clock();
-    this.hasInteracted = false; // This is our gatekeeper
+    this.hasInteracted = false;
     this.wakeUpTime = -1;
     this.points = null;
     this.particleData = [];
@@ -78,163 +78,9 @@ class FinalHeroAnimation {
     this.initSimplexNoise();
     this.initParticles();
     this.addEventListeners();
-    this.animate(); // Start the animation loop immediately
+    this.animate();
   }
-
-  initParticles() {
-    const particleTexture = this.createSporeTexture();
-    const material = new THREE.PointsMaterial({
-      size: 0.015,
-      map: particleTexture,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false,
-      transparent: true,
-      vertexColors: true
-    });
-
-    const geometry = new THREE.BufferGeometry();
-    const positions = new Float32Array(this.params.particleCount * 3);
-    const colors = new Float32Array(this.params.particleCount * 3);
-    const color = new THREE.Color();
-    const accentPalette = [this.params.accentGold, this.params.accentTurquoise, this.params.baseColor, this.params.baseColor, this.params.baseColor];
-
-    this.particleData = [];
-
-    for (let i = 0; i < this.params.particleCount; i++) {
-      // All particles start at the center but will be invisible until wake-up
-      positions[i * 3] = 0;
-      positions[i * 3 + 1] = 0;
-      positions[i * 3 + 2] = 0;
-
-      color.set(accentPalette[Math.floor(Math.random() * accentPalette.length)]);
-      colors[i * 3] = color.r;
-      colors[i * 3 + 1] = color.g;
-      colors[i * 3 + 2] = color.b;
-      
-      this.particleData.push({
-        velocity: new THREE.Vector3(),
-        basePosition: new THREE.Vector3(
-          (Math.random() - 0.5) * 6, 
-          (Math.random() - 0.5) * 4, 
-          (Math.random() - 0.5) * 4
-        )
-      });
-    }
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-    this.points = new THREE.Points(geometry, material);
-    this.points.visible = false; // Crucial: start with points invisible
-    this.scene.add(this.points);
-  }
-
-  addEventListeners() {
-    const handleFirstInteraction = () => {
-      if (!this.hasInteracted) {
-        this.hasInteracted = true;
-        this.wakeUpTime = this.clock.getElapsedTime();
-        if (this.points) {
-          this.points.visible = true; // Make points visible now
-        }
-        if (this.container) {
-          this.container.classList.add('is-active');
-        }
-      }
-    };
-    
-    window.addEventListener('mousemove', (e) => {
-      handleFirstInteraction();
-      this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-      this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-    }, { passive: true });
-    
-    window.addEventListener('scroll', () => {
-      handleFirstInteraction();
-      const scrollY = window.scrollY;
-      const scrollPercent = Math.min(scrollY / (window.innerHeight * 0.7), 1);
-      const easeIn = (t: number) => t * t;
-      this.scrollForce = easeIn(scrollPercent) * this.params.scrollGravity;
-    }, { passive: true });
-
-    window.addEventListener('resize', () => {
-      this.camera.aspect = window.innerWidth / window.innerHeight;
-      this.camera.updateProjectionMatrix();
-      this.renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-  }
-
-  animate = () => {
-    requestAnimationFrame(this.animate);
-    const elapsedTime = this.clock.getElapsedTime();
-    const deltaTime = this.clock.getDelta();
-    
-    // The loop runs, but nothing happens until hasInteracted is true
-    if (!this.hasInteracted || !this.points) return;
-
-    const positions = this.points.geometry.attributes.position.array as Float32Array;
-    const colors = this.points.geometry.attributes.color.array as Float32Array;
-    const mouseWorldPos = new THREE.Vector3(this.mouse.x * this.camera.aspect, this.mouse.y, 0).unproject(this.camera);
-    const goldColor = new THREE.Color(this.params.accentGold);
-    const turquoiseColor = new THREE.Color(this.params.accentTurquoise);
-
-    for (let i = 0; i < this.params.particleCount; i++) {
-      const i3 = i * 3;
-      const pos = new THREE.Vector3(positions[i3], positions[i3+1], positions[i3+2]);
-      const data = this.particleData[i];
-
-      // --- WAKE-UP ANIMATION PHASE ---
-      if (elapsedTime < this.wakeUpTime + this.params.wakeUpDuration) {
-        const wakeUpProgress = (elapsedTime - this.wakeUpTime) / this.params.wakeUpDuration;
-        const easeOut = 1 - Math.pow(1 - wakeUpProgress, 4);
-        pos.lerp(data.basePosition, easeOut);
-      } else {
-        // --- NORMAL INTERACTION LOGIC (runs after wake-up) ---
-        const noise = this.noise.noise3D(pos.x * 0.1, pos.y * 0.1, pos.z * 0.1 + elapsedTime * 0.05);
-        data.velocity.x += this.params.noiseStrength * Math.sin(noise * Math.PI * 2) * deltaTime;
-        data.velocity.y += this.params.noiseStrength * Math.cos(noise * Math.PI * 2) * deltaTime;
-        
-        const distanceToMouse = pos.distanceTo(mouseWorldPos);
-        if (distanceToMouse < this.params.hoverRadius) {
-          const repulsion = new THREE.Vector3().subVectors(pos, mouseWorldPos).normalize();
-          data.velocity.add(repulsion.multiplyScalar(this.params.repulsionStrength * deltaTime));
-        }
-
-        if (this.scrollForce > 0) {
-          data.velocity.y -= this.scrollForce;
-          const oscillation = Math.sin(pos.y * this.params.oscillationFreq + elapsedTime * 5) * this.mouse.x * this.params.oscillationAmp;
-          pos.x += oscillation;
-        } else {
-           data.velocity.z += (data.basePosition.z - pos.z) * 0.001;
-        }
-      }
-
-      // --- UPDATE PHYSICS & POSITION ---
-      pos.add(data.velocity);
-      data.velocity.multiplyScalar(0.94);
-      positions[i3] = pos.x;
-      positions[i3+1] = pos.y;
-      positions[i3+2] = pos.z;
-      
-      // --- DYNAMIC COLOR LOGIC ---
-      const speed = data.velocity.length();
-      const baseColor = new THREE.Color().fromArray(colors, i3);
-      const finalColor = new THREE.Color();
-      if (pos.distanceTo(mouseWorldPos) < this.params.hoverRadius) {
-        finalColor.lerpColors(baseColor, goldColor, 0.8);
-      } else if (speed > 0.001) {
-        const energy = Math.min(speed * 200, 1.0); 
-        finalColor.lerpColors(baseColor, turquoiseColor, energy);
-      } else {
-        finalColor.copy(baseColor);
-      }
-      finalColor.toArray(colors, i3);
-    }
-    
-    this.points.geometry.attributes.position.needsUpdate = true;
-    this.points.geometry.attributes.color.needsUpdate = true;
-    
-    this.renderer.render(this.scene, this.camera);
-  }
-
+  
   createSporeTexture() {
     const canvas = document.createElement('canvas');
     canvas.width = 64; 
@@ -248,7 +94,7 @@ class FinalHeroAnimation {
     context.fillRect(0, 0, 64, 64);
     return new THREE.CanvasTexture(canvas);
   }
-
+  
   initSimplexNoise() {
     const F2 = 0.5 * (Math.sqrt(3.0) - 1.0);
     const G2 = (3.0 - Math.sqrt(3.0)) / 6.0; 
@@ -325,6 +171,145 @@ class FinalHeroAnimation {
         return 32.0 * (n0 + n1 + n2 + n3);
       }
     };
+  }
+
+  initParticles() {
+    const particleTexture = this.createSporeTexture();
+    const material = new THREE.PointsMaterial({
+      size: 0.015,
+      map: particleTexture,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      transparent: true,
+      vertexColors: true
+    });
+
+    const geometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(this.params.particleCount * 3);
+    const colors = new Float32Array(this.params.particleCount * 3);
+    const color = new THREE.Color();
+    const accentPalette = [this.params.accentGold, this.params.accentTurquoise, this.params.baseColor, this.params.baseColor, this.params.baseColor];
+
+    this.particleData = [];
+
+    for (let i = 0; i < this.params.particleCount; i++) {
+      // Start particles far away to be completely invisible
+      positions[i * 3] = -100;
+      positions[i * 3 + 1] = -100;
+      positions[i * 3 + 2] = -100;
+
+      color.set(accentPalette[Math.floor(Math.random() * accentPalette.length)]);
+      color.toArray(colors, i * 3);
+      
+      this.particleData.push({
+        velocity: new THREE.Vector3(),
+        basePosition: new THREE.Vector3(
+          (Math.random() - 0.5) * 6, 
+          (Math.random() - 0.5) * 4, 
+          (Math.random() - 0.5) * 4
+        )
+      });
+    }
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    this.points = new THREE.Points(geometry, material);
+    this.scene.add(this.points);
+  }
+
+  addEventListeners() {
+    const handleFirstInteraction = () => {
+      if (this.hasInteracted) return;
+      this.hasInteracted = true;
+      this.wakeUpTime = this.clock.getElapsedTime();
+      if (this.container) {
+        this.container.classList.add('is-active');
+      }
+    };
+    
+    window.addEventListener('mousemove', (e) => {
+      handleFirstInteraction();
+      this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+      this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    }, { once: true, passive: true });
+    
+    window.addEventListener('scroll', () => {
+      handleFirstInteraction();
+      const scrollY = window.scrollY;
+      const scrollPercent = Math.min(scrollY / (window.innerHeight * 0.7), 1);
+      const easeIn = (t: number) => t * t;
+      this.scrollForce = easeIn(scrollPercent) * this.params.scrollGravity;
+    }, { once: true, passive: true });
+
+    window.addEventListener('resize', () => {
+      this.camera.aspect = window.innerWidth / window.innerHeight;
+      this.camera.updateProjectionMatrix();
+      this.renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  }
+
+  animate = () => {
+    requestAnimationFrame(this.animate);
+    const elapsedTime = this.clock.getElapsedTime();
+    const deltaTime = this.clock.getDelta();
+    
+    if (!this.hasInteracted || !this.points) return;
+
+    const positions = this.points.geometry.attributes.position.array as Float32Array;
+    const colors = this.points.geometry.attributes.color.array as Float32Array;
+    const mouseWorldPos = new THREE.Vector3(this.mouse.x * this.camera.aspect, this.mouse.y, 0).unproject(this.camera);
+    const goldColor = new THREE.Color(this.params.accentGold);
+    const turquoiseColor = new THREE.Color(this.params.accentTurquoise);
+
+    for (let i = 0; i < this.params.particleCount; i++) {
+      const i3 = i * 3;
+      const pos = new THREE.Vector3(positions[i3], positions[i3+1], positions[i3+2]);
+      const data = this.particleData[i];
+
+      if (elapsedTime < this.wakeUpTime + this.params.wakeUpDuration) {
+        const wakeUpProgress = (elapsedTime - this.wakeUpTime) / this.params.wakeUpDuration;
+        const easeOut = 1 - Math.pow(1 - wakeUpProgress, 4);
+        pos.lerp(data.basePosition, easeOut);
+      } else {
+        const noise = this.noise.noise3D(pos.x * 0.1, pos.y * 0.1, pos.z * 0.1 + elapsedTime * 0.05);
+        data.velocity.x += this.params.noiseStrength * Math.sin(noise * Math.PI * 2) * deltaTime;
+        data.velocity.y += this.params.noiseStrength * Math.cos(noise * Math.PI * 2) * deltaTime;
+        
+        const distanceToMouse = pos.distanceTo(mouseWorldPos);
+        if (distanceToMouse < this.params.hoverRadius) {
+          const repulsion = new THREE.Vector3().subVectors(pos, mouseWorldPos).normalize();
+          data.velocity.add(repulsion.multiplyScalar(this.params.repulsionStrength * deltaTime));
+        }
+
+        if (this.scrollForce > 0) {
+          data.velocity.y -= this.scrollForce;
+          const oscillation = Math.sin(pos.y * this.params.oscillationFreq + elapsedTime * 5) * this.mouse.x * this.params.oscillationAmp;
+          pos.x += oscillation;
+        } else {
+           data.velocity.z += (data.basePosition.z - pos.z) * 0.001;
+        }
+      }
+      
+      pos.add(data.velocity);
+      data.velocity.multiplyScalar(0.94);
+      pos.toArray(positions, i3);
+      
+      const speed = data.velocity.length();
+      const baseColor = new THREE.Color().fromArray(colors, i3);
+      const finalColor = new THREE.Color();
+      if (pos.distanceTo(mouseWorldPos) < this.params.hoverRadius) {
+        finalColor.lerpColors(baseColor, goldColor, 0.8);
+      } else if (speed > 0.001) {
+        finalColor.lerpColors(baseColor, turquoiseColor, Math.min(speed * 200, 1.0)); 
+      } else {
+        finalColor.copy(baseColor);
+      }
+      finalColor.toArray(colors, i3);
+    }
+    
+    this.points.geometry.attributes.position.needsUpdate = true;
+    this.points.geometry.attributes.color.needsUpdate = true;
+    
+    this.renderer.render(this.scene, this.camera);
   }
 
   destroy() {
