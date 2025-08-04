@@ -1,118 +1,82 @@
-import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
+import { useState } from "react";
 
 export const Navigation = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-    setIsMobileMenuOpen(false);
-  };
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-background/80 backdrop-blur-lg border-b border-border/50 shadow-elegant"
-          : "bg-transparent"
-      }`}
-    >
-      <div className="container mx-auto px-6 py-4">
-        <div className="flex items-center justify-between">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/70 backdrop-blur-xl">
+      <div className="container mx-auto px-8">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-hero rounded-lg flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-lg">R</span>
-            </div>
-            <span className="font-semibold text-lg text-foreground">Ryan Van Sickle</span>
+          <div className="flex items-center">
+            <h1 className="text-lg font-light text-foreground tracking-wide">
+              Ryan Van Sickle
+            </h1>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            <button
-              onClick={() => scrollToSection("about")}
-              className="text-muted-foreground hover:text-foreground transition-colors"
-            >
+          <div className="hidden md:flex items-center space-x-12">
+            <a href="#about" className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-light tracking-wide">
               About
-            </button>
-            <button
-              onClick={() => scrollToSection("book")}
-              className="text-muted-foreground hover:text-foreground transition-colors"
-            >
-              The Book
-            </button>
-            <button
-              onClick={() => scrollToSection("experience")}
-              className="text-muted-foreground hover:text-foreground transition-colors"
-            >
+            </a>
+            <a href="#research" className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-light tracking-wide">
+              Research
+            </a>
+            <a href="#experience" className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-light tracking-wide">
               Experience
-            </button>
-            <button
-              onClick={() => scrollToSection("contact")}
-              className="text-muted-foreground hover:text-foreground transition-colors"
-            >
+            </a>
+            <a href="#contact" className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-light tracking-wide">
               Contact
-            </button>
-            <Button size="sm">
-              Get the Book
-            </Button>
+            </a>
           </div>
 
-          {/* Mobile Menu Button */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="md:hidden"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-          </Button>
+          {/* Mobile menu button */}
+          <div className="md:hidden">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsOpen(!isOpen)}
+              className="text-foreground hover:bg-transparent"
+            >
+              {isOpen ? <X size={20} strokeWidth={1} /> : <Menu size={20} strokeWidth={1} />}
+            </Button>
+          </div>
         </div>
 
-        {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden mt-4 py-4 border-t border-border/50 animate-fade-in">
-            <div className="flex flex-col space-y-4">
-              <button
-                onClick={() => scrollToSection("about")}
-                className="text-left text-muted-foreground hover:text-foreground transition-colors"
+        {/* Mobile Navigation */}
+        {isOpen && (
+          <div className="md:hidden py-8 border-t border-border/20">
+            <div className="flex flex-col space-y-6">
+              <a 
+                href="#about" 
+                className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-light tracking-wide"
+                onClick={() => setIsOpen(false)}
               >
                 About
-              </button>
-              <button
-                onClick={() => scrollToSection("book")}
-                className="text-left text-muted-foreground hover:text-foreground transition-colors"
+              </a>
+              <a 
+                href="#research" 
+                className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-light tracking-wide"
+                onClick={() => setIsOpen(false)}
               >
-                The Book
-              </button>
-              <button
-                onClick={() => scrollToSection("experience")}
-                className="text-left text-muted-foreground hover:text-foreground transition-colors"
+                Research
+              </a>
+              <a 
+                href="#experience" 
+                className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-light tracking-wide"
+                onClick={() => setIsOpen(false)}
               >
                 Experience
-              </button>
-              <button
-                onClick={() => scrollToSection("contact")}
-                className="text-left text-muted-foreground hover:text-foreground transition-colors"
+              </a>
+              <a 
+                href="#contact" 
+                className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-light tracking-wide"
+                onClick={() => setIsOpen(false)}
               >
                 Contact
-              </button>
-            <Button onClick={() => scrollToSection('book')} className="self-start">
-              Get the Book
-            </Button>
+              </a>
             </div>
           </div>
         )}
