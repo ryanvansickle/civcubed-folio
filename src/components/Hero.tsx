@@ -69,10 +69,10 @@ const ParticleBackground = () => {
         const dy = mouseY - particle.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
 
-        if (distance < 150) {
-          const force = (150 - distance) / 150;
-          particle.vx += (dx / distance) * force * 0.01;
-          particle.vy += (dy / distance) * force * 0.01;
+        if (distance < 200) {
+          const force = (200 - distance) / 200;
+          particle.vx += (dx / distance) * force * 0.02;
+          particle.vy += (dy / distance) * force * 0.02;
         }
 
         // Wrap around edges
@@ -82,8 +82,8 @@ const ParticleBackground = () => {
         if (particle.y > canvas.height) particle.y = 0;
 
         // Slow down particles
-        particle.vx *= 0.99;
-        particle.vy *= 0.99;
+        particle.vx *= 0.98;
+        particle.vy *= 0.98;
 
         // Draw particle
         ctx.beginPath();
