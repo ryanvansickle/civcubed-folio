@@ -120,7 +120,7 @@ export default {
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'fade-in': 'fade-in 0.27s ease-out',
+				'fade-in': 'fade-in 0.054s ease-out',
 				'slide-up': 'slide-up 0.8s ease-out',
 				'float-particle': 'float-particle 8s ease-in-out infinite',
 				'drift': 'drift 12s ease-in-out infinite',

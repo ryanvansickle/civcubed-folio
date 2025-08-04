@@ -144,12 +144,12 @@ export const Hero = () => {
           </h1>
 
           {/* Subtitle */}
-          <p className="text-xl md:text-2xl text-foreground/70 mb-16 max-w-4xl mx-auto leading-relaxed font-normal tracking-wide animate-fade-in" style={{ animationDelay: '0.1s' }}>
+          <p className="text-xl md:text-2xl text-foreground/70 mb-16 max-w-4xl mx-auto leading-relaxed font-normal tracking-wide animate-fade-in" style={{ animationDelay: '0.02s' }}>
             Author of the forthcoming book, Civilization³
           </p>
 
           {/* CTA Button - minimal like Astera */}
-          <div className="animate-fade-in" style={{ animationDelay: '0.2s' }}>
+          <div className="animate-fade-in" style={{ animationDelay: '0.04s' }}>
             <Button 
               variant="outline" 
               size="lg" 
