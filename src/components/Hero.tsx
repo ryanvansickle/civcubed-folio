@@ -3,248 +3,190 @@ import { ArrowRight } from "lucide-react";
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
-class HeroAnimation {
+class GenerativeHeroAnimation {
   private container: HTMLElement | null;
-  private params: {
-    particleCount: number;
-    hoverRadius: number;
-    repulsionStrength: number;
-    spawnRate: number;
-    scrollGravity: number;
-    oscillationFrequency: number;
-    oscillationAmplitude: number;
-  };
   private scene: THREE.Scene;
   private camera: THREE.PerspectiveCamera;
   private renderer: THREE.WebGLRenderer;
-  private mouse: THREE.Vector2;
-  private targetMouse: THREE.Vector2;
-  private scrollDownForce: number;
-  private clock: THREE.Clock;
   private particles: THREE.InstancedMesh | null;
   private particleData: Array<{
     velocity: THREE.Vector3;
     basePosition: THREE.Vector3;
-    age: number;
-    lifespan: number;
   }>;
-  private onMouseMove: (event: MouseEvent) => void;
-  private onScroll: () => void;
-  private onResize: () => void;
+  private mouse: THREE.Vector2;
+  private scrollForce: number;
+  private clock: THREE.Clock;
+  private dummy: THREE.Object3D;
+  private params: {
+    particleCount: number;
+    hoverRadius: number;
+    repulsionStrength: number;
+    spawnChance: number;
+    scrollGravity: number;
+    oscillationFreq: number;
+    oscillationAmp: number;
+  };
 
   constructor(containerId: string) {
-    console.log('HeroAnimation constructor called with:', containerId);
     this.container = document.getElementById(containerId);
-    console.log('Container found:', this.container);
     if (!this.container) {
       console.error("Animation container not found!");
       return;
     }
 
-    // Core Parameters (Tweak these for artistic direction)
+    // Core Parameters
     this.params = {
       particleCount: 15000,
-      hoverRadius: 0.15,
-      repulsionStrength: 0.1,
-      spawnRate: 0.5,
-      scrollGravity: 0.00005,
-      oscillationFrequency: 0.1,
-      oscillationAmplitude: 0.01
+      hoverRadius: 0.2,
+      repulsionStrength: 0.15,
+      spawnChance: 0.05, // 5% chance per frame on hover
+      scrollGravity: 0.03,
+      oscillationFreq: 8.0,
+      oscillationAmp: 0.05
     };
 
     // Setup
-    console.log('Setting up Three.js scene...');
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    this.camera.position.z = 1.5;
-    this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
+    this.camera.position.set(0, 0, 2);
+    this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    console.log('Appending canvas to container...');
     this.container.appendChild(this.renderer.domElement);
 
-    // State Variables
-    this.mouse = new THREE.Vector2(9999, 9999);
-    this.targetMouse = new THREE.Vector2(9999, 9999);
-    this.scrollDownForce = 0;
+    // State
+    this.mouse = new THREE.Vector2(999, 999);
+    this.scrollForce = 0;
     this.clock = new THREE.Clock();
+    this.dummy = new THREE.Object3D();
     this.particles = null;
     this.particleData = [];
 
-    // Bind methods
-    this.onMouseMove = this.handleMouseMove.bind(this);
-    this.onScroll = this.handleScroll.bind(this);
-    this.onResize = this.handleResize.bind(this);
-
     this.initParticles();
-    this.initEventListeners();
-    console.log('Starting animation loop...');
+    this.addEventListeners();
     this.animate();
   }
 
   initParticles() {
-    console.log('Initializing particles...');
-    // Uses InstancedMesh for extreme performance
-    const particleGeometry = new THREE.SphereGeometry(0.002, 8, 8);
-    const particleMaterial = new THREE.MeshBasicMaterial({ color: 0x333333 });
-    this.particles = new THREE.InstancedMesh(particleGeometry, particleMaterial, this.params.particleCount);
-
-    this.particleData = [];
-    const transform = new THREE.Object3D();
-
+    const geometry = new THREE.IcosahedronGeometry(0.003, 1);
+    const material = new THREE.MeshBasicMaterial({ color: 0x333333 });
+    this.particles = new THREE.InstancedMesh(geometry, material, this.params.particleCount);
+    
     for (let i = 0; i < this.params.particleCount; i++) {
-      transform.position.set(
-        (Math.random() - 0.5) * 4,
-        (Math.random() - 0.5) * 2,
-        (Math.random() - 0.5) * 2
+      const position = new THREE.Vector3(
+        (Math.random() - 0.5) * 5,
+        (Math.random() - 0.5) * 3,
+        (Math.random() - 0.5) * 3
       );
-      transform.updateMatrix();
-      this.particles.setMatrixAt(i, transform.matrix);
+      this.dummy.position.copy(position);
+      this.dummy.updateMatrix();
+      this.particles.setMatrixAt(i, this.dummy.matrix);
 
       this.particleData.push({
         velocity: new THREE.Vector3(),
-        basePosition: transform.position.clone(),
-        age: Math.random() * 100,
-        lifespan: 100 + Math.random() * 50
+        basePosition: position.clone()
       });
     }
     this.scene.add(this.particles);
-    console.log('Particles initialized:', this.params.particleCount);
   }
 
-  initEventListeners() {
-    window.addEventListener('mousemove', this.onMouseMove);
-    window.addEventListener('scroll', this.onScroll);
-    window.addEventListener('resize', this.onResize);
+  addEventListeners() {
+    window.addEventListener('mousemove', (e) => {
+      this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+      this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    });
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      const scrollPercent = Math.min(scrollY / (window.innerHeight * 0.5), 1);
+      this.scrollForce = scrollPercent * this.params.scrollGravity;
+    });
+    window.addEventListener('resize', () => {
+      this.camera.aspect = window.innerWidth / window.innerHeight;
+      this.camera.updateProjectionMatrix();
+      this.renderer.setSize(window.innerWidth, window.innerHeight);
+    });
   }
 
-  handleMouseMove(event: MouseEvent) {
-    // Convert mouse position to normalized device coordinates (-1 to +1)
-    this.targetMouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    this.targetMouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-  }
-
-  handleScroll() {
-    // Calculate scroll force based on scroll position
-    const scrollY = window.scrollY;
-    const scrollPercent = Math.min(scrollY / 500, 1);
-    
-    // Use easing function for smooth acceleration
-    const easeInQuad = (t: number) => t * t;
-    this.scrollDownForce = easeInQuad(scrollPercent) * this.params.scrollGravity;
-  }
-
-  handleResize() {
-    this.camera.aspect = window.innerWidth / window.innerHeight;
-    this.camera.updateProjectionMatrix();
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  }
-
-  animate() {
-    requestAnimationFrame(() => this.animate());
+  animate = () => {
     const deltaTime = this.clock.getDelta();
     const elapsedTime = this.clock.getElapsedTime();
 
     if (!this.particles) return;
 
-    // Smoothly interpolate mouse position
-    this.mouse.lerp(this.targetMouse, 0.05);
-    
-    // Convert normalized mouse coords to world space
-    const mouseWorld = new THREE.Vector3(this.mouse.x * this.camera.aspect, this.mouse.y, 0).unproject(this.camera);
-
-    const dummy = new THREE.Object3D();
+    const mouseWorldPos = new THREE.Vector3(this.mouse.x * this.camera.aspect, this.mouse.y, 0).unproject(this.camera);
 
     for (let i = 0; i < this.params.particleCount; i++) {
-      this.particles.getMatrixAt(i, dummy.matrix);
-      const pos = new THREE.Vector3().setFromMatrixPosition(dummy.matrix);
+      this.particles.getMatrixAt(i, this.dummy.matrix);
+      const currentPos = new THREE.Vector3().setFromMatrixPosition(this.dummy.matrix);
       const data = this.particleData[i];
 
-      // Reset dead particles for continuous loop
-      data.age += deltaTime;
-      if (data.age > data.lifespan) {
-        pos.copy(data.basePosition);
-        data.velocity.set(0, 0, 0);
-        data.age = 0;
-      }
-      
-      // Hover interaction: acceleration & multiplication
-      const distanceToMouse = pos.distanceTo(mouseWorld);
+      // Hover: Acceleration & Multiplication
+      const distanceToMouse = currentPos.distanceTo(mouseWorldPos);
       if (distanceToMouse < this.params.hoverRadius) {
-        const repulsion = new THREE.Vector3().subVectors(pos, mouseWorld).normalize();
-        data.velocity.add(repulsion.multiplyScalar(this.params.repulsionStrength * deltaTime));
+        const repulsionForce = new THREE.Vector3().subVectors(currentPos, mouseWorldPos).normalize();
+        data.velocity.add(repulsionForce.multiplyScalar(this.params.repulsionStrength * deltaTime));
         
-        // Particle multiplication
-        if (Math.random() > this.params.spawnRate) {
-          const spawnIndex = Math.floor(Math.random() * this.params.particleCount);
-          if (this.particleData[spawnIndex].age > this.particleData[spawnIndex].lifespan) {
-            const spawnPos = new THREE.Vector3(
-              mouseWorld.x + (Math.random() - 0.5) * 0.1,
-              mouseWorld.y + (Math.random() - 0.5) * 0.1,
-              mouseWorld.z + (Math.random() - 0.5) * 0.1
-            );
-            dummy.position.copy(spawnPos);
-            this.particleData[spawnIndex].velocity.copy(data.velocity).multiplyScalar(0.5);
-            this.particleData[spawnIndex].age = 0;
-            this.particleData[spawnIndex].lifespan = 1 + Math.random();
-          }
+        if (Math.random() < this.params.spawnChance) {
+          // "Multiplication": re-use a distant particle to simulate spawning
+          const randomIndex = Math.floor(Math.random() * this.params.particleCount);
+          this.dummy.position.copy(currentPos);
+          this.dummy.updateMatrix();
+          this.particles.setMatrixAt(randomIndex, this.dummy.matrix);
+          this.particleData[randomIndex].velocity.copy(data.velocity).multiplyScalar(0.5);
         }
       }
-
-      // Scroll interaction: acceleration & oscillation
-      if (this.scrollDownForce > 0) {
-        data.velocity.y -= this.scrollDownForce;
-        
-        // Lateral oscillation based on mouse X position
-        const oscillation = Math.sin(pos.y * this.params.oscillationFrequency + elapsedTime) * this.mouse.x * this.params.oscillationAmplitude;
-        pos.x += oscillation;
+      
+      // Scroll: Downward acceleration with smooth ease-in
+      if (this.scrollForce > 0) {
+        data.velocity.y -= this.scrollForce * deltaTime;
+      } else {
+         // Return to base position when not scrolling
+         const returnForce = new THREE.Vector3().subVectors(data.basePosition, currentPos).multiplyScalar(0.001);
+         data.velocity.add(returnForce);
       }
 
-      // Update physics
-      pos.add(data.velocity);
-      data.velocity.multiplyScalar(0.97); // Damping
+      // Oscillation during scroll
+      if (this.scrollForce > 0.001) {
+          const oscillation = Math.sin(currentPos.y * this.params.oscillationFreq + elapsedTime) * this.mouse.x * this.params.oscillationAmp;
+          currentPos.x += oscillation;
+      }
 
-      dummy.position.copy(pos);
-      dummy.updateMatrix();
-      this.particles.setMatrixAt(i, dummy.matrix);
+      // Update Physics
+      currentPos.add(data.velocity);
+      data.velocity.multiplyScalar(0.96); // Damping
+
+      this.dummy.position.copy(currentPos);
+      this.dummy.updateMatrix();
+      this.particles.setMatrixAt(i, this.dummy.matrix);
     }
+
     this.particles.instanceMatrix.needsUpdate = true;
     this.renderer.render(this.scene, this.camera);
+    requestAnimationFrame(this.animate);
   }
 
   destroy() {
     if (this.renderer && this.container) {
       this.container.removeChild(this.renderer.domElement);
     }
-    window.removeEventListener('mousemove', this.onMouseMove);
-    window.removeEventListener('scroll', this.onScroll);
-    window.removeEventListener('resize', this.onResize);
   }
 }
 
-const BiosphereParticles = () => {
+const GenerativeParticles = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const animationRef = useRef<HeroAnimation | null>(null);
+  const animationRef = useRef<GenerativeHeroAnimation | null>(null);
 
   useEffect(() => {
-    console.log('BiosphereParticles useEffect called');
-    
-    // Wait for next frame to ensure DOM is ready
     const initAnimation = () => {
       if (containerRef.current && !animationRef.current) {
-        console.log('Creating new HeroAnimation instance');
-        // Use the ref directly instead of getElementById
-        animationRef.current = new HeroAnimation('hero-animation-container');
+        animationRef.current = new GenerativeHeroAnimation('hero-animation-container');
       }
     };
 
-    // Small delay to ensure DOM is fully rendered
     const timeoutId = setTimeout(initAnimation, 100);
 
     return () => {
       clearTimeout(timeoutId);
-      // Cleanup on unmount
       if (animationRef.current) {
         animationRef.current.destroy();
       }
@@ -268,8 +210,8 @@ const BiosphereParticles = () => {
 export const Hero = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
-      {/* Advanced Three.js Biosphere Animation */}
-      <BiosphereParticles />
+      {/* Advanced Three.js Generative Animation */}
+      <GenerativeParticles />
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-12 py-20 text-center">
