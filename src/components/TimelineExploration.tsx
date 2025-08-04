@@ -60,7 +60,7 @@ export const TimelineExploration = () => {
 
         {/* Featured Current Work */}
         <div className="mb-16">
-          <Card className="bg-card border-border/20 shadow-soft hover:shadow-elegant transition-all duration-300 p-8">
+          <Card className="interactive-card bg-card border-border/20 shadow-soft p-8">
             <CardHeader className="pb-6">
               <CardTitle className="text-3xl font-normal text-foreground mb-2">
                 {currentWork.title}
@@ -85,7 +85,7 @@ export const TimelineExploration = () => {
           
           <div className="grid md:grid-cols-2 gap-6">
             {pastVentures.map((venture, index) => (
-              <Card key={index} className="bg-card border-border/20 shadow-soft hover:shadow-elegant transition-all duration-300 p-6">
+              <Card key={index} className="interactive-card bg-card border-border/20 shadow-soft p-6">
                 <CardHeader className="pb-4">
                   <CardTitle className="text-xl font-normal text-foreground">
                     {venture.title}

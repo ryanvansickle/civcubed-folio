@@ -46,7 +46,9 @@ export default {
 				},
 				accent: {
 					DEFAULT: 'hsl(var(--accent))',
-					foreground: 'hsl(var(--accent-foreground))'
+					foreground: 'hsl(var(--accent-foreground))',
+					gold: 'hsl(var(--accent-gold))',
+					turquoise: 'hsl(var(--accent-turquoise))'
 				},
 				popover: {
 					DEFAULT: 'hsl(var(--popover))',
@@ -71,10 +73,13 @@ export default {
 				'gradient-primary': 'var(--gradient-primary)',
 				'gradient-hero': 'var(--gradient-hero)',
 				'gradient-subtle': 'var(--gradient-subtle)',
+				'gradient-gold': 'var(--gradient-gold)',
+				'gradient-turquoise': 'var(--gradient-turquoise)',
 			},
 			boxShadow: {
 				'elegant': 'var(--shadow-elegant)',
 				'subtle': 'var(--shadow-subtle)',
+				'lift': 'var(--shadow-lift)',
 			},
 			transitionTimingFunction: {
 				'smooth': 'cubic-bezier(0.4, 0, 0.2, 1)',

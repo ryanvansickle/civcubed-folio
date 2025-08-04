@@ -2,11 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Astera-inspired Dark Design System */
+/* Sophisticated Light Design System with Volumetric Interactions */
 
 @layer base {
   :root {
-    /* Light theme with warm, sophisticated colors */
+    /* Core Light Theme */
     --background: 42 20% 98%; /* Warm off-white #FDFBF8 */
     --foreground: 0 0% 20%; /* Dark warm gray #333333 */
 
@@ -28,6 +28,10 @@
     --accent: 42 10% 92%;
     --accent-foreground: 0 0% 20%;
 
+    /* New Accent Colors */
+    --accent-gold: 45 100% 42%; /* Elegant metallic gold #D4AF37 */
+    --accent-turquoise: 180 100% 31%; /* Rich turquoise #00A0A0 */
+
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
@@ -37,15 +41,18 @@
 
     --radius: 0.5rem;
 
-    /* Gradient definitions - subtle warm tones */
+    /* Enhanced Gradient System */
     --gradient-hero: linear-gradient(135deg, hsl(42, 20%, 96%), hsl(42, 15%, 94%));
     --gradient-primary: linear-gradient(135deg, hsl(42, 10%, 90%), hsl(42, 8%, 88%));
     --gradient-subtle: linear-gradient(180deg, hsl(42, 20%, 98%) 0%, hsl(42, 15%, 96%) 100%);
+    --gradient-gold: linear-gradient(to top, hsl(45, 100%, 42%), hsl(45, 100%, 65%));
+    --gradient-turquoise: linear-gradient(to top, hsl(180, 100%, 31%), hsl(180, 100%, 40%));
 
-    /* Shadow definitions - soft and subtle */
-    --shadow-elegant: 0 10px 30px -10px hsl(0 0% 0% / 0.1);
+    /* Volumetric Shadow System */
+    --shadow-elegant: 0px 2px 5px rgba(0, 0, 0, 0.02), 0px 5px 12px rgba(0, 0, 0, 0.03), 0px 10px 24px rgba(0, 0, 0, 0.05);
     --shadow-glow: 0 0 40px hsl(0 0% 0% / 0.05);
     --shadow-soft: 0 4px 20px -2px hsl(0 0% 0% / 0.08);
+    --shadow-lift: 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 8px 16px rgba(0, 0, 0, 0.06), 0px 16px 32px rgba(0, 0, 0, 0.08);
   }
 
   .dark {
@@ -117,6 +124,48 @@
     scrollbar-width: none;
   }
   
+  /* Volumetric Interactive Effects */
+  .interactive-card {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.35s ease-out, box-shadow 0.35s ease-out;
+  }
+
+  .interactive-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-elegant);
+  }
+
+  .interactive-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%);
+    transform: skewX(-25deg);
+    transition: left 0.6s ease-in-out;
+  }
+
+  .interactive-card:hover::after {
+    left: 150%;
+  }
+
+  /* Accent Link Styles */
+  .accent-link {
+    color: hsl(var(--accent-turquoise));
+    transition: color 0.4s ease, background-image 0.4s ease;
+    text-decoration: none;
+    background-clip: text;
+    -webkit-background-clip: text;
+  }
+
+  .accent-link:hover {
+    background-image: var(--gradient-gold);
+    color: transparent;
+  }
+
   /* Particle animation for background */
   @keyframes float-particle {
     0%, 100% { 

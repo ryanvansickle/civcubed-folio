@@ -56,11 +56,11 @@ const BiosphereParticles = () => {
     // Initialize particles
     const initParticles = () => {
       particlesRef.current = [];
-      const particleCount = Math.min(160, Math.floor((canvas.width * canvas.height) / 8000));
+      const particleCount = Math.min(100, Math.floor((canvas.width * canvas.height) / 8000));
       
       for (let i = 0; i < particleCount; i++) {
-        const vx = (Math.random() - 0.5) * 0.8;
-        const vy = (Math.random() - 0.5) * 0.8;
+        const vx = (Math.random() - 0.5) * 1.2;
+        const vy = (Math.random() - 0.5) * 1.2;
         
         particlesRef.current.push({
           x: Math.random() * canvas.width,
@@ -69,9 +69,9 @@ const BiosphereParticles = () => {
           vy,
           originalVx: vx,
           originalVy: vy,
-          size: Math.random() * 2 + 1,
-          opacity: Math.random() * 0.4 + 0.1,
-          baseOpacity: Math.random() * 0.4 + 0.1,
+          size: Math.random() * 2 + 1.5,
+          opacity: Math.random() * 0.3 + 0.2,
+          baseOpacity: Math.random() * 0.3 + 0.2,
           isAligning: false
         });
       }
@@ -148,28 +148,43 @@ const BiosphereParticles = () => {
         // Opacity animation
         particle.opacity = particle.baseOpacity + Math.sin(Date.now() * 0.002 + index) * 0.1;
 
-        // Draw particle
+        // Mouse repulsion detection for color enhancement
+        const dx = mouseX - particle.x;
+        const dy = mouseY - particle.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        const isNearMouse = distance < 120;
+
+        // Draw particle with dynamic color
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(85, 85, 85, ${particle.opacity})`;
+        
+        if (isNearMouse) {
+          // Gold accent when near mouse
+          const intensity = 1 - (distance / 120);
+          ctx.fillStyle = `rgba(212, 175, 55, ${particle.opacity * (0.5 + intensity * 0.5)})`;
+        } else {
+          // Default dark gray
+          ctx.fillStyle = `rgba(85, 85, 85, ${particle.opacity})`;
+        }
         ctx.fill();
 
-        // Draw connections (subtle lines)
+        // Draw connections with enhanced interactions
         if (scrollProgress > 0.2) {
-          // Enhanced connections during scroll
+          // Enhanced connections during scroll - turquoise accent
           particlesRef.current.slice(index + 1).forEach(otherParticle => {
             const dx = particle.x - otherParticle.x;
             const dy = particle.y - otherParticle.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
-            const maxDistance = 180;
+            const maxDistance = 160;
 
             if (distance < maxDistance) {
-              const lineOpacity = (1 - distance / maxDistance) * 0.3 * scrollProgress;
+              const lineOpacity = (1 - distance / maxDistance) * 0.4 * scrollProgress;
               ctx.beginPath();
               ctx.moveTo(particle.x, particle.y);
               ctx.lineTo(otherParticle.x, otherParticle.y);
-              ctx.strokeStyle = `rgba(153, 153, 153, ${lineOpacity})`;
-              ctx.lineWidth = 0.5;
+              // Turquoise accent for organized flow
+              ctx.strokeStyle = `rgba(0, 160, 160, ${lineOpacity})`;
+              ctx.lineWidth = 0.8;
               ctx.stroke();
             }
           });
@@ -182,12 +197,12 @@ const BiosphereParticles = () => {
             const maxDistance = 120;
 
             if (distance < maxDistance) {
-              const lineOpacity = (1 - distance / maxDistance) * 0.08;
+              const lineOpacity = (1 - distance / maxDistance) * 0.2;
               ctx.beginPath();
               ctx.moveTo(particle.x, particle.y);
               ctx.lineTo(otherParticle.x, otherParticle.y);
-              ctx.strokeStyle = `rgba(170, 170, 170, ${lineOpacity})`;
-              ctx.lineWidth = 0.3;
+              ctx.strokeStyle = `rgba(136, 136, 136, ${lineOpacity})`;
+              ctx.lineWidth = 0.5;
               ctx.stroke();
             }
           });
