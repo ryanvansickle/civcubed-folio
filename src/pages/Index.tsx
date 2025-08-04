@@ -5,10 +5,12 @@ import { TimelineExploration } from "@/components/TimelineExploration";
 import { IntellectualFoundations } from "@/components/IntellectualFoundations";
 import { Contact } from "@/components/Contact";
 import { Footer } from "@/components/Footer";
+import { ConstellationField } from "@/components/ConstellationField";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
+      <ConstellationField />
       <Navigation />
       <Hero />
       <NewSubstrate />

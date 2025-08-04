@@ -8,17 +8,23 @@ const BiosphereParticles = () => {
   const particlesRef = useRef<Array<{
     x: number;
     y: number;
+    z: number;
     vx: number;
     vy: number;
+    vz: number;
     originalVx: number;
     originalVy: number;
+    originalVz: number;
     size: number;
     opacity: number;
     baseOpacity: number;
     targetX?: number;
     targetY?: number;
     isAligning: boolean;
+    trailParticles?: Array<{x: number; y: number; opacity: number; life: number}>;
   }>>([]);
+  const mouseVelocityRef = useRef({ x: 0, y: 0 });
+  const lastMouseRef = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -35,15 +41,25 @@ const BiosphereParticles = () => {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Mouse tracking
+    // Advanced mouse tracking with velocity
     let mouseX = 0;
     let mouseY = 0;
     let scrollY = 0;
 
     const handleMouseMove = (e: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
-      mouseX = e.clientX - rect.left;
-      mouseY = e.clientY - rect.top;
+      const newMouseX = e.clientX - rect.left;
+      const newMouseY = e.clientY - rect.top;
+      
+      // Calculate mouse velocity for generative effects
+      mouseVelocityRef.current = {
+        x: newMouseX - lastMouseRef.current.x,
+        y: newMouseY - lastMouseRef.current.y
+      };
+      
+      lastMouseRef.current = { x: newMouseX, y: newMouseY };
+      mouseX = newMouseX;
+      mouseY = newMouseY;
     };
 
     const handleScroll = () => {
@@ -61,18 +77,23 @@ const BiosphereParticles = () => {
       for (let i = 0; i < particleCount; i++) {
         const vx = (Math.random() - 0.5) * 1.2;
         const vy = (Math.random() - 0.5) * 1.2;
+        const vz = (Math.random() - 0.5) * 0.5;
         
         particlesRef.current.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
+          z: Math.random() * 100 + 50, // Depth for 3D effect
           vx,
           vy,
+          vz,
           originalVx: vx,
           originalVy: vy,
+          originalVz: vz,
           size: Math.random() * 2 + 1.5,
           opacity: Math.random() * 0.3 + 0.2,
           baseOpacity: Math.random() * 0.3 + 0.2,
-          isAligning: false
+          isAligning: false,
+          trailParticles: []
         });
       }
     };
@@ -89,33 +110,41 @@ const BiosphereParticles = () => {
       const isScrolling = scrollProgress > 0.1;
 
       particlesRef.current.forEach((particle, index) => {
-        // Handle scroll alignment
+        // Advanced scroll alignment with helix formation
         if (isScrolling && !particle.isAligning) {
           particle.isAligning = true;
-          // Create target position for flowing lines
-          const lineIndex = index % 8;
-          const lineSpacing = canvas.width / 9;
-          particle.targetX = lineSpacing * (lineIndex + 1);
+          // Create DNA helix-like structures
+          const helixIndex = index % 6;
+          const helixRadius = 80;
+          const helixCenterX = canvas.width / 2 + (helixIndex - 3) * 120;
+          const angle = (index * 0.3) + (Date.now() * 0.001);
+          particle.targetX = helixCenterX + Math.cos(angle) * helixRadius;
           particle.targetY = canvas.height + 100;
+          
+          // Add lateral oscillation on mouse movement
+          const mouseOffsetX = mouseX - canvas.width / 2;
+          const oscillation = Math.sin(angle + mouseOffsetX * 0.01) * (Math.abs(mouseOffsetX) * 0.1);
+          particle.targetX += oscillation;
         } else if (!isScrolling) {
           particle.isAligning = false;
           particle.targetX = undefined;
           particle.targetY = undefined;
         }
 
-        // Update position based on state
+        // Update position based on state with enhanced physics
         if (particle.isAligning && particle.targetX && particle.targetY) {
-          // Smooth transition to target position
+          // Smooth gravitational acceleration to target
           const dx = particle.targetX - particle.x;
           const dy = particle.targetY - particle.y;
           particle.vx = dx * 0.02;
-          particle.vy = dy * 0.02 + 1;
+          particle.vy = dy * 0.02 + 1 + (scrollProgress * 2); // Acceleration increases with scroll
         } else {
-          // Organic drifting movement
+          // Enhanced organic drifting with 3D movement
           particle.vx = particle.originalVx + Math.sin(Date.now() * 0.001 + index) * 0.2;
           particle.vy = particle.originalVy + Math.cos(Date.now() * 0.001 + index) * 0.2;
+          particle.vz = particle.originalVz + Math.sin(Date.now() * 0.0015 + index) * 0.1;
 
-          // Mouse repulsion effect
+          // Generative acceleration on mouse movement
           const dx = mouseX - particle.x;
           const dy = mouseY - particle.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
@@ -124,14 +153,29 @@ const BiosphereParticles = () => {
           if (distance < repulseRadius && distance > 0) {
             const force = (repulseRadius - distance) / repulseRadius;
             const angle = Math.atan2(dy, dx);
-            particle.vx -= Math.cos(angle) * force * 0.8;
-            particle.vy -= Math.sin(angle) * force * 0.8;
+            const acceleration = force * 1.2;
+            
+            particle.vx -= Math.cos(angle) * acceleration;
+            particle.vy -= Math.sin(angle) * acceleration;
+            
+            // Generate trail particles in wake
+            const velocity = Math.sqrt(mouseVelocityRef.current.x ** 2 + mouseVelocityRef.current.y ** 2);
+            if (velocity > 2 && Math.random() < 0.3) {
+              if (!particle.trailParticles) particle.trailParticles = [];
+              particle.trailParticles.push({
+                x: particle.x,
+                y: particle.y,
+                opacity: 0.6,
+                life: 30
+              });
+            }
           }
         }
 
-        // Apply movement
+        // Apply movement with 3D depth
         particle.x += particle.vx;
         particle.y += particle.vy;
+        particle.z += particle.vz;
 
         // Boundary wrapping
         if (particle.x < -10) particle.x = canvas.width + 10;
@@ -145,26 +189,47 @@ const BiosphereParticles = () => {
           particle.vy *= 0.98;
         }
 
-        // Opacity animation
-        particle.opacity = particle.baseOpacity + Math.sin(Date.now() * 0.002 + index) * 0.1;
+        // Enhanced opacity with depth
+        const depthFactor = (particle.z + 50) / 150; // Normalize depth
+        particle.opacity = (particle.baseOpacity + Math.sin(Date.now() * 0.002 + index) * 0.1) * depthFactor;
 
-        // Mouse repulsion detection for color enhancement
+        // Update and draw trail particles
+        if (particle.trailParticles) {
+          particle.trailParticles.forEach((trail, trailIndex) => {
+            trail.life--;
+            trail.opacity *= 0.95;
+            
+            if (trail.life > 0) {
+              ctx.beginPath();
+              ctx.arc(trail.x, trail.y, 1, 0, Math.PI * 2);
+              ctx.fillStyle = `rgba(212, 175, 55, ${trail.opacity * 0.4})`;
+              ctx.fill();
+            }
+          });
+          particle.trailParticles = particle.trailParticles.filter(trail => trail.life > 0);
+        }
+
+        // Mouse proximity detection for color enhancement
         const dx = mouseX - particle.x;
         const dy = mouseY - particle.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
         const isNearMouse = distance < 120;
 
-        // Draw particle with dynamic color
+        // Draw main particle with 3D-influenced size and dynamic color
+        const scaledSize = particle.size * depthFactor;
         ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+        ctx.arc(particle.x, particle.y, scaledSize, 0, Math.PI * 2);
         
         if (isNearMouse) {
-          // Gold accent when near mouse
+          // Enhanced gold accent with glow when near mouse
           const intensity = 1 - (distance / 120);
           ctx.fillStyle = `rgba(212, 175, 55, ${particle.opacity * (0.5 + intensity * 0.5)})`;
+          ctx.shadowBlur = intensity * 8;
+          ctx.shadowColor = 'rgba(212, 175, 55, 0.3)';
         } else {
-          // Default dark gray
+          // Default dark gray with depth
           ctx.fillStyle = `rgba(85, 85, 85, ${particle.opacity})`;
+          ctx.shadowBlur = 0;
         }
         ctx.fill();
 
