@@ -35,15 +35,7 @@ class FinalHeroAnimation {
   };
 
   constructor(containerId: string) {
-    console.log("Initializing animation with container ID:", containerId);
-    this.container = document.getElementById(containerId);
-    if (!this.container) {
-      console.error("Animation container not found!");
-      return;
-    }
-    console.log("Animation container found:", this.container);
-
-    // Core Parameters
+    // Core Parameters for Artistic Control
     this.params = {
       particleCount: 20000,
       baseColor: 0x444444,
@@ -59,7 +51,13 @@ class FinalHeroAnimation {
       wakeUpDuration: 2.5
     };
 
-    // Setup
+    // State & Setup
+    this.container = document.getElementById(containerId);
+    if (!this.container) {
+      console.error("Hero animation container not found.");
+      return;
+    }
+
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
     this.camera.position.set(0, 0, 2);
@@ -68,11 +66,10 @@ class FinalHeroAnimation {
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     this.container.appendChild(this.renderer.domElement);
 
-    // State
     this.mouse = new THREE.Vector2(-99, -99);
     this.scrollForce = 0;
     this.clock = new THREE.Clock();
-    this.hasInteracted = false;
+    this.hasInteracted = false; // Gatekeeper for the "wake-up" sequence
     this.wakeUpTime = -1;
     this.points = null;
     this.particleData = [];
@@ -81,6 +78,78 @@ class FinalHeroAnimation {
     this.initParticles();
     this.addEventListeners();
     this.animate();
+  }
+
+  initParticles() {
+    const particleTexture = this.createSporeTexture();
+    const material = new THREE.PointsMaterial({
+      size: 0.015,
+      map: particleTexture,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      transparent: true,
+      vertexColors: true // Crucial for using accent colors
+    });
+
+    const geometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(this.params.particleCount * 3);
+    const colors = new Float32Array(this.params.particleCount * 3);
+    const color = new THREE.Color();
+    const accentPalette = [this.params.accentGold, this.params.accentTurquoise, this.params.baseColor, this.params.baseColor, this.params.baseColor];
+    
+    this.particleData = [];
+
+    for (let i = 0; i < this.params.particleCount; i++) {
+      // Initialize particles far away to be invisible before wake-up
+      positions[i * 3] = 0;
+      positions[i * 3 + 1] = 0;
+      positions[i * 3 + 2] = -100; 
+
+      color.set(accentPalette[Math.floor(Math.random() * accentPalette.length)]);
+      color.toArray(colors, i * 3);
+      
+      this.particleData.push({
+        velocity: new THREE.Vector3(),
+        basePosition: new THREE.Vector3(
+          (Math.random() - 0.5) * 6, (Math.random() - 0.5) * 4, (Math.random() - 0.5) * 4
+        )
+      });
+    }
+
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    this.points = new THREE.Points(geometry, material);
+    this.scene.add(this.points);
+  }
+
+  addEventListeners() {
+    const handleFirstInteraction = () => {
+      if (this.hasInteracted) return;
+      this.hasInteracted = true;
+      this.wakeUpTime = this.clock.getElapsedTime();
+      if (this.container) {
+        this.container.classList.add('is-active');
+      }
+    };
+
+    window.addEventListener('mousemove', (e) => {
+      handleFirstInteraction();
+      this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+      this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    }, { once: true, passive: true }); // Using {once: true} is the most robust way
+
+    window.addEventListener('scroll', () => {
+        handleFirstInteraction();
+        const scrollY = window.scrollY;
+        const scrollPercent = Math.min(scrollY / (window.innerHeight * 0.7), 1);
+        this.scrollForce = ((t: number) => t*t)(scrollPercent) * this.params.scrollGravity; // Eased force
+    }, { passive: true });
+
+    window.addEventListener('resize', () => {
+      this.camera.aspect = window.innerWidth / window.innerHeight;
+      this.camera.updateProjectionMatrix();
+      this.renderer.setSize(window.innerWidth, window.innerHeight);
+    });
   }
   
   createSporeTexture() {
@@ -96,10 +165,11 @@ class FinalHeroAnimation {
     context.fillRect(0, 0, 64, 64);
     return new THREE.CanvasTexture(canvas);
   }
-  
+
+  // Self-contained Simplex Noise function, now a class method
   initSimplexNoise() {
     const F2 = 0.5 * (Math.sqrt(3.0) - 1.0);
-    const G2 = (3.0 - Math.sqrt(3.0)) / 6.0; 
+    const G2 = (3.0 - Math.sqrt(3.0)) / 6.0;
     const F3 = 1.0 / 3.0;
     const G3 = 1.0 / 6.0;
     const p = new Uint8Array(256); 
@@ -112,9 +182,7 @@ class FinalHeroAnimation {
       p[j] = k; 
     }
     const perm = new Uint8Array(512); 
-    for(i=0; i<512; i++) { 
-      perm[i] = p[i & 255]; 
-    }
+    for(i=0; i<512; i++) perm[i] = p[i & 255];
     this.noise = { 
       noise3D: (x: number, y: number, z: number) => {
         let n0, n1, n2, n3; 
@@ -175,91 +243,16 @@ class FinalHeroAnimation {
     };
   }
 
-  initParticles() {
-    const particleTexture = this.createSporeTexture();
-    const material = new THREE.PointsMaterial({
-      size: 0.015,
-      map: particleTexture,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false,
-      transparent: true,
-      vertexColors: true
-    });
-
-    const geometry = new THREE.BufferGeometry();
-    const positions = new Float32Array(this.params.particleCount * 3);
-    const colors = new Float32Array(this.params.particleCount * 3);
-    const color = new THREE.Color();
-    const accentPalette = [this.params.accentGold, this.params.accentTurquoise, this.params.baseColor, this.params.baseColor, this.params.baseColor];
-
-    this.particleData = [];
-
-    for (let i = 0; i < this.params.particleCount; i++) {
-      // Start particles far away to be completely invisible
-      positions[i * 3] = -100;
-      positions[i * 3 + 1] = -100;
-      positions[i * 3 + 2] = -100;
-
-      color.set(accentPalette[Math.floor(Math.random() * accentPalette.length)]);
-      color.toArray(colors, i * 3);
-      
-      this.particleData.push({
-        velocity: new THREE.Vector3(),
-        basePosition: new THREE.Vector3(
-          (Math.random() - 0.5) * 6, 
-          (Math.random() - 0.5) * 4, 
-          (Math.random() - 0.5) * 4
-        )
-      });
-    }
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-    this.points = new THREE.Points(geometry, material);
-    this.scene.add(this.points);
-  }
-
-  addEventListeners() {
-    const handleFirstInteraction = () => {
-      if (this.hasInteracted) return;
-      console.log("First interaction detected! Starting animation...");
-      this.hasInteracted = true;
-      this.wakeUpTime = this.clock.getElapsedTime();
-      if (this.container) {
-        this.container.classList.add('is-active');
-      }
-    };
-    
-    window.addEventListener('mousemove', (e) => {
-      handleFirstInteraction();
-      this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-      this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-    }, { passive: true });
-    
-    window.addEventListener('scroll', () => {
-      handleFirstInteraction();
-      const scrollY = window.scrollY;
-      const scrollPercent = Math.min(scrollY / (window.innerHeight * 0.7), 1);
-      const easeIn = (t: number) => t * t;
-      this.scrollForce = easeIn(scrollPercent) * this.params.scrollGravity;
-    }, { passive: true });
-
-    window.addEventListener('resize', () => {
-      this.camera.aspect = window.innerWidth / window.innerHeight;
-      this.camera.updateProjectionMatrix();
-      this.renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-  }
-
   animate = () => {
     requestAnimationFrame(this.animate);
+    
+    if (!this.hasInteracted || !this.points) return; // The gatekeeper: do nothing until first interaction.
+
     const elapsedTime = this.clock.getElapsedTime();
     const deltaTime = this.clock.getDelta();
-    
-    if (!this.hasInteracted || !this.points) return;
-
     const positions = this.points.geometry.attributes.position.array as Float32Array;
     const colors = this.points.geometry.attributes.color.array as Float32Array;
-    const mouseWorldPos = new THREE.Vector3(this.mouse.x * this.camera.aspect, this.mouse.y, 0).unproject(this.camera);
+    const mouseWorldPos = new THREE.Vector3(this.mouse.x * (window.innerWidth / window.innerHeight), this.mouse.y, 0).unproject(this.camera);
     const goldColor = new THREE.Color(this.params.accentGold);
     const turquoiseColor = new THREE.Color(this.params.accentTurquoise);
 
@@ -268,11 +261,13 @@ class FinalHeroAnimation {
       const pos = new THREE.Vector3(positions[i3], positions[i3+1], positions[i3+2]);
       const data = this.particleData[i];
 
+      // WAKE-UP ANIMATION: move particles from their start point to their base position
       if (elapsedTime < this.wakeUpTime + this.params.wakeUpDuration) {
-        const wakeUpProgress = (elapsedTime - this.wakeUpTime) / this.params.wakeUpDuration;
-        const easeOut = 1 - Math.pow(1 - wakeUpProgress, 4);
+        const progress = Math.min((elapsedTime - this.wakeUpTime) / this.params.wakeUpDuration, 1);
+        const easeOut = 1 - Math.pow(1 - progress, 4);
         pos.lerp(data.basePosition, easeOut);
       } else {
+        // NORMAL LOGIC: runs after wake-up is complete
         const noise = this.noise.noise3D(pos.x * 0.1, pos.y * 0.1, pos.z * 0.1 + elapsedTime * 0.05);
         data.velocity.x += this.params.noiseStrength * Math.sin(noise * Math.PI * 2) * deltaTime;
         data.velocity.y += this.params.noiseStrength * Math.cos(noise * Math.PI * 2) * deltaTime;
@@ -288,12 +283,12 @@ class FinalHeroAnimation {
           const oscillation = Math.sin(pos.y * this.params.oscillationFreq + elapsedTime * 5) * this.mouse.x * this.params.oscillationAmp;
           pos.x += oscillation;
         } else {
-           data.velocity.z += (data.basePosition.z - pos.z) * 0.001;
+           data.velocity.z += (data.basePosition.z - pos.z) * 0.001; // Gently return to Z depth
         }
       }
       
       pos.add(data.velocity);
-      data.velocity.multiplyScalar(0.94);
+      data.velocity.multiplyScalar(0.94); // Damping
       pos.toArray(positions, i3);
       
       const speed = data.velocity.length();
