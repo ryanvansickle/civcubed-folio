@@ -6,88 +6,69 @@
 
 @layer base {
   :root {
-    /* Astera color palette - dark with orange/amber accents */
-    --background: 220 25% 8%;
-    --foreground: 0 0% 98%;
-    
-    --card: 220 20% 12%;
-    --card-foreground: 0 0% 98%;
-    
-    --popover: 220 20% 12%;
-    --popover-foreground: 0 0% 98%;
-    
-    --primary: 30 100% 60%;
-    --primary-foreground: 220 25% 8%;
-    --primary-light: 35 100% 65%;
-    
-    --secondary: 220 15% 18%;
-    --secondary-foreground: 0 0% 98%;
-    
-    --muted: 220 15% 18%;
-    --muted-foreground: 0 0% 70%;
-    
-    --accent: 220 15% 20%;
-    --accent-foreground: 0 0% 98%;
-    
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 98%;
-    
-    --border: 220 15% 20%;
-    --input: 220 15% 20%;
-    --ring: 30 100% 60%;
-    
-    --radius: 8px;
-    
-    /* Astera-style gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(30, 100%, 60%), hsl(35, 100%, 65%));
-    --gradient-hero: radial-gradient(circle at center, hsl(220, 25%, 10%), hsl(220, 25%, 6%));
-    --gradient-subtle: linear-gradient(180deg, hsl(220, 20%, 12%), hsl(220, 25%, 8%));
-    
-    /* Minimal shadows */
-    --shadow-elegant: 0 8px 32px -8px hsl(220, 25%, 4% / 0.6);
-    --shadow-subtle: 0 4px 16px -4px hsl(220, 25%, 4% / 0.4);
-    
-    /* Sidebar colors */
-    --sidebar-background: 220 20% 12%;
-    --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 30 100% 60%;
-    --sidebar-primary-foreground: 220 25% 8%;
-    --sidebar-accent: 220 15% 20%;
-    --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 220 15% 20%;
-    --sidebar-ring: 30 100% 60%;
+    /* Light theme with warm, sophisticated colors */
+    --background: 42 20% 98%; /* Warm off-white #FDFBF8 */
+    --foreground: 0 0% 20%; /* Dark warm gray #333333 */
+
+    --card: 42 20% 98%; /* Same as background */
+    --card-foreground: 0 0% 20%; /* Dark warm gray */
+
+    --popover: 42 20% 98%;
+    --popover-foreground: 0 0% 20%;
+
+    --primary: 0 0% 20%; /* Dark warm gray */
+    --primary-foreground: 42 20% 98%; /* Warm off-white */
+
+    --secondary: 42 10% 92%; /* Slightly darker warm tone */
+    --secondary-foreground: 0 0% 20%;
+
+    --muted: 42 10% 92%; /* Subtle warm tone */
+    --muted-foreground: 0 0% 45%; /* Medium gray */
+
+    --accent: 42 10% 92%;
+    --accent-foreground: 0 0% 20%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 42 5% 88%; /* Warm border */
+    --input: 42 5% 88%;
+    --ring: 0 0% 20%;
+
+    --radius: 0.5rem;
+
+    /* Gradient definitions - subtle warm tones */
+    --gradient-hero: linear-gradient(135deg, hsl(42, 20%, 96%), hsl(42, 15%, 94%));
+    --gradient-primary: linear-gradient(135deg, hsl(42, 10%, 90%), hsl(42, 8%, 88%));
+    --gradient-subtle: linear-gradient(180deg, hsl(42, 20%, 98%) 0%, hsl(42, 15%, 96%) 100%);
+
+    /* Shadow definitions - soft and subtle */
+    --shadow-elegant: 0 10px 30px -10px hsl(0 0% 0% / 0.1);
+    --shadow-glow: 0 0 40px hsl(0 0% 0% / 0.05);
+    --shadow-soft: 0 4px 20px -2px hsl(0 0% 0% / 0.08);
   }
 
-  .light {
-    /* Light mode (keeping as fallback) */
-    --background: 0 0% 98%;
-    --foreground: 220 25% 8%;
-    
-    --card: 0 0% 100%;
-    --card-foreground: 220 25% 8%;
-    
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 25% 8%;
-    
-    --primary: 30 100% 50%;
-    --primary-foreground: 0 0% 98%;
-    --primary-light: 35 100% 55%;
-    
-    --secondary: 220 13% 91%;
-    --secondary-foreground: 220 25% 8%;
-    
-    --muted: 220 13% 91%;
-    --muted-foreground: 220 10% 46%;
-    
-    --accent: 220 13% 95%;
-    --accent-foreground: 220 25% 8%;
-    
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 98%;
-    
-    --border: 220 13% 87%;
-    --input: 220 13% 87%;
-    --ring: 30 100% 50%;
+  .dark {
+    --background: 24 24 27;
+    --foreground: 250 250 250;
+    --card: 24 24 27;
+    --card-foreground: 250 250 250;
+    --popover: 24 24 27;
+    --popover-foreground: 250 250 250;
+    --primary: 39 39 42;
+    --primary-foreground: 250 250 250;
+    --secondary: 39 39 42;
+    --secondary-foreground: 250 250 250;
+    --muted: 39 39 42;
+    --muted-foreground: 161 161 170;
+    --accent: 39 39 42;
+    --accent-foreground: 250 250 250;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 39 39 42;
+    --input: 39 39 42;
+    --ring: 212 12% 87%;
+    --radius: 0.5rem;
   }
 }
 
@@ -97,18 +78,33 @@
   }
   
   body {
-    @apply bg-background text-foreground antialiased;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif;
-    scroll-behavior: smooth;
-    font-weight: 300;
-    letter-spacing: 0.02em;
+    @apply bg-background text-foreground;
+    font-family: 'Inter', 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    overflow-x: hidden;
+    line-height: 1.7;
+    
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    
+    /* Hide scrollbar for IE, Edge and Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
   }
-  
-  /* Astera-style ultra-light typography */
+
+  /* Typography - elegant serif headings, clean sans-serif body */
   h1, h2, h3, h4, h5, h6 {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif;
-    font-weight: 300;
-    letter-spacing: 0.02em;
+    font-family: 'Cormorant Garamond', 'Garamond', Georgia, serif;
+    @apply font-normal tracking-tight;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+
+  p, span, div {
+    font-family: 'Inter', 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    line-height: 1.7;
   }
   
   /* Hide scrollbar completely for that ultra-clean look */

@@ -1,8 +1,8 @@
 import { Navigation } from "@/components/Navigation";
 import { Hero } from "@/components/Hero";
-import { About } from "@/components/About";
-import { Book } from "@/components/Book";
-import { Experience } from "@/components/Experience";
+import { NewSubstrate } from "@/components/NewSubstrate";
+import { TimelineExploration } from "@/components/TimelineExploration";
+import { IntellectualFoundations } from "@/components/IntellectualFoundations";
 import { Contact } from "@/components/Contact";
 import { Footer } from "@/components/Footer";
 
@@ -11,9 +11,9 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
       <Hero />
-      <About />
-      <Book />
-      <Experience />
+      <NewSubstrate />
+      <TimelineExploration />
+      <IntellectualFoundations />
       <Contact />
       <Footer />
     </div>
