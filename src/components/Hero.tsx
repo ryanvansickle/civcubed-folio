@@ -139,13 +139,13 @@ export const Hero = () => {
         <div className="max-w-6xl mx-auto">
           {/* Main Heading - Astera style with massive spacing */}
           <h1 className="text-6xl md:text-8xl lg:text-9xl font-light text-foreground mb-12 tracking-[0.1em] leading-[1.1] animate-fade-in">
-            The future,{" "}
-            <span className="block mt-4">faster.</span>
+            Ryan Van Sickle{" "}
+            <span className="block mt-4">Futurist | Strategist | Advisor</span>
           </h1>
 
           {/* Subtitle */}
-          <p className="text-lg md:text-xl text-foreground/60 mb-16 max-w-4xl mx-auto leading-relaxed font-light tracking-wide animate-fade-in" style={{ animationDelay: '0.3s' }}>
-            Researcher & Author exploring the future of human civilization
+          <p className="text-xl md:text-2xl text-foreground/70 mb-16 max-w-4xl mx-auto leading-relaxed font-normal tracking-wide animate-fade-in" style={{ animationDelay: '0.3s' }}>
+            Author of the forthcoming book, Civilization³
           </p>
 
           {/* CTA Button - minimal like Astera */}
@@ -153,10 +153,10 @@ export const Hero = () => {
             <Button 
               variant="outline" 
               size="lg" 
-              className="border-foreground/20 text-foreground hover:bg-foreground/5 hover:border-foreground/40 font-light tracking-wide transition-all duration-300"
+              className="border-foreground/20 text-foreground hover:bg-foreground/5 hover:border-foreground/40 font-normal tracking-wide transition-all duration-300"
             >
-              Explore Work
-              <ArrowRight size={16} strokeWidth={1} className="ml-2" />
+              Explore More
+              <ArrowRight size={16} strokeWidth={1.5} className="ml-2" />
             </Button>
           </div>
         </div>

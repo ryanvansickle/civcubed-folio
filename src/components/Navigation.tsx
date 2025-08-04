@@ -12,7 +12,7 @@ export const Navigation = () => {
           {/* Logo */}
           <div className="flex items-center">
             <h1 className="text-lg font-light text-foreground tracking-wide">
-              Ryan Van Sickle
+              RyanV.xyz
             </h1>
           </div>
 
