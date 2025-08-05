@@ -62,7 +62,7 @@ export const TimelineExploration = () => {
         <div className="mb-16">
           <Card className="interactive-card group bg-white border-border/20 shadow-soft p-8">
             <CardHeader className="pb-6">
-              <div className="flex items-center gap-3 mb-4">
+              <div className="flex items-center gap-1 mb-4">
                 {/* Civilization 3 Animated Video Logo */}
                 <div className="video-logo-container">
                   <video
