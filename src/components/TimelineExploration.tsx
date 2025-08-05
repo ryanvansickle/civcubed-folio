@@ -62,27 +62,25 @@ export const TimelineExploration = () => {
         <div className="mb-16">
           <Card className="interactive-card group bg-white border-border/20 shadow-soft p-8">
             <CardHeader className="pb-6">
-              <div className="flex items-center gap-6 mb-4">
-                {/* Civilization 3 Animated Video Logo */}
-                <div className="video-logo-container">
-                  <video
-                    src="/civ3-video.mp4"
-                    poster="/civ3-poster.jpg"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    aria-label="Civilization 3 Animated Logo"
-                  />
-                </div>
-                <div>
-                  <CardTitle className="text-3xl font-normal text-foreground mb-2">
-                    {currentWork.title}
-                  </CardTitle>
-                  <CardDescription className="text-lg text-foreground/70 italic">
-                    {currentWork.tagline}
-                  </CardDescription>
-                </div>
+              {/* Civilization 3 Animated Video Logo */}
+              <div className="video-logo-container mb-6 flex justify-center">
+                <video
+                  src="/civ3-video.mp4"
+                  poster="/civ3-poster.jpg"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  aria-label="Civilization 3 Animated Logo"
+                />
+              </div>
+              <div className="text-center">
+                <CardTitle className="text-3xl font-normal text-foreground mb-2">
+                  {currentWork.title}
+                </CardTitle>
+                <CardDescription className="text-lg text-foreground/70 italic">
+                  {currentWork.tagline}
+                </CardDescription>
               </div>
             </CardHeader>
             <CardContent>
