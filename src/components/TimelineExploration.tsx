@@ -10,21 +10,7 @@ export const TimelineExploration = () => {
 
   const pastVentures = [
     {
-      title: "Noma",
-      role: "Co-Founder, CMO",
-      link: "https://www.nomalife.com"
-    },
-    {
       title: "Aethos",
-      role: "Advisor"
-    },
-    {
-      title: "Synchro",
-      role: "Co-Founder, CMO",
-      link: "https://www.besynchro.com"
-    },
-    {
-      title: "Wilder World",
       role: "Advisor"
     },
     {
@@ -33,9 +19,23 @@ export const TimelineExploration = () => {
       tagline: "The Nexus for Builders of the Decentralized Future."
     },
     {
+      title: "Wilder World",
+      role: "Advisor"
+    },
+    {
       title: "F4CTORY",
       role: "Founding Member & Strategist",
       tagline: "The Olympic Training Ground for Innovation."
+    },
+    {
+      title: "Synchro",
+      role: "Co-Founder, CMO",
+      link: "https://www.besynchro.com"
+    },
+    {
+      title: "Noma",
+      role: "Co-Founder, CMO",
+      link: "https://www.nomalife.com"
     },
     {
       title: "Executive Office",
