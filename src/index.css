@@ -366,14 +366,9 @@
     Add a slight delay to each block so they change color
     out of sync, creating the psychedelic effect.
   */
-  .group:hover #civ3-logo .logo-blocks polygon:nth-child(2) { animation-delay: -0.5s; }
-  .group:hover #civ3-logo .logo-blocks polygon:nth-child(3) { animation-delay: -1.0s; }
-  .group:hover #civ3-logo .logo-blocks polygon:nth-child(4) { animation-delay: -1.5s; }
-  .group:hover #civ3-logo .logo-blocks polygon:nth-child(5) { animation-delay: -2.0s; }
-  .group:hover #civ3-logo .logo-blocks polygon:nth-child(6) { animation-delay: -2.5s; }
-  .group:hover #civ3-logo .logo-blocks polygon:nth-child(7) { animation-delay: -3.0s; }
-  .group:hover #civ3-logo .logo-blocks polygon:nth-child(8) { animation-delay: -3.5s; }
-  .group:hover #civ3-logo .logo-blocks polygon:nth-child(9) { animation-delay: -4.0s; }
-  .group:hover #civ3-logo .logo-blocks polygon:nth-child(10) { animation-delay: -4.5s; }
-  .group:hover #civ3-logo .logo-blocks polygon:nth-child(11) { animation-delay: -5.0s; }
+  .group:hover #civ3-logo .logo-blocks polygon:nth-child(2) { animation-delay: -1s; }
+  .group:hover #civ3-logo .logo-blocks polygon:nth-child(3) { animation-delay: -2s; }
+  .group:hover #civ3-logo .logo-blocks polygon:nth-child(4) { animation-delay: -3s; }
+  .group:hover #civ3-logo .logo-blocks polygon:nth-child(5) { animation-delay: -4s; }
+  .group:hover #civ3-logo .logo-blocks polygon:nth-child(6) { animation-delay: -5s; }
 }
