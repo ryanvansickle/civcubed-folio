@@ -66,7 +66,7 @@ export const TimelineExploration = () => {
                 {/* Civilization 3 Animated Video Logo */}
                 <div className="video-logo-container">
                   <video
-                    src="/background-video.mp4"
+                    src="/civ3-video.mp4"
                     poster="/civ3-poster.jpg"
                     autoPlay
                     loop
