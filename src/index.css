@@ -368,16 +368,19 @@
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 
-    /* DURATION & EASING: The card's own drift is slow and smooth. */
-    transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1), 
-                box-shadow 1.5s cubic-bezier(0.16, 1, 0.3, 1);
-  }
+  /* DURATION & EASING: The card's own drift is slow and smooth. */
+  transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 1.5s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
 
-  .genesis-card:hover {
-    /* THE SLOW DRIFT: A very subtle lift and scale-up over a long duration. */
-    transform: translateY(-6px) scale(1.02);
-    /* THE GLOW: The shadow expands into more of an aura. */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+.genesis-card:hover {
+  /* THE SLOW DRIFT: A very subtle lift and scale-up over a long duration. */
+  transform: translateY(-6px) scale(1.02);
+  /* THE GLOW: The shadow expands into more of an aura. */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  /* PURE WHITE BACKGROUND ON HOVER */
+  background-color: #ffffff;
   }
 
   .card-content {
