@@ -342,23 +342,23 @@
   /* For the soft, pulsing glow emanating from the text */
   @keyframes internal-glow {
     0% {
-      /* Starts with a subtle, tight glow */
-      text-shadow: 0 0 8px rgba(218, 165, 32, 0.4); /* GoldenRod at 40% opacity */
+      /* Starts with a bright, wide glow */
+      text-shadow: 0 0 20px rgba(218, 165, 32, 0.8), 0 0 40px rgba(255, 238, 160, 0.6); 
     }
     50% {
-      /* Blooms to a brighter, wider aura in the middle of the cycle */
-      text-shadow: 0 0 24px rgba(255, 238, 160, 0.8); /* Lighter Gold at 80% opacity */
+      /* Blooms to an intense, massive aura */
+      text-shadow: 0 0 60px rgba(255, 238, 160, 1), 0 0 100px rgba(218, 165, 32, 0.8), 0 0 140px rgba(255, 215, 0, 0.6);
     }
     100% {
-      /* Returns to the subtle glow */
-      text-shadow: 0 0 8px rgba(218, 165, 32, 0.4);
+      /* Returns to bright glow */
+      text-shadow: 0 0 20px rgba(218, 165, 32, 0.8), 0 0 40px rgba(255, 238, 160, 0.6);
     }
   }
 
-  /* For the slow, permeating "breathing" of the text's opacity */
+  /* For the dramatic "breathing" of the text's opacity */
   @keyframes breathing-pulse {
     0% { opacity: 1; }
-    50% { opacity: 0.8; }
+    50% { opacity: 0.4; }
     100% { opacity: 1; }
   }
 
