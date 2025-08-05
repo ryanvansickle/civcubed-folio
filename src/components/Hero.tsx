@@ -8,7 +8,7 @@ class GenerativeHeroAnimation {
   private scene: THREE.Scene;
   private camera: THREE.PerspectiveCamera;
   private renderer: THREE.WebGLRenderer;
-  private points: THREE.Points | null;
+  private particles: THREE.InstancedMesh | null;
   private particleData: Array<{
     velocity: THREE.Vector3;
     basePosition: THREE.Vector3;
@@ -16,8 +16,7 @@ class GenerativeHeroAnimation {
   private mouse: THREE.Vector2;
   private scrollForce: number;
   private clock: THREE.Clock;
-  private hasInteracted: boolean;
-  private noise: any;
+  private dummy: THREE.Object3D;
   private params: {
     particleCount: number;
     hoverRadius: number;
@@ -26,9 +25,6 @@ class GenerativeHeroAnimation {
     scrollGravity: number;
     oscillationFreq: number;
     oscillationAmp: number;
-    noiseStrength: number;
-    accentGold: number;
-    accentTurquoise: number;
   };
 
   constructor(containerId: string) {
@@ -43,13 +39,10 @@ class GenerativeHeroAnimation {
       particleCount: 15000,
       hoverRadius: 0.2,
       repulsionStrength: 0.15,
-      spawnChance: 0.05,
+      spawnChance: 0.05, // 5% chance per frame on hover
       scrollGravity: 0.03,
       oscillationFreq: 8.0,
-      oscillationAmp: 0.05,
-      noiseStrength: 0.01,
-      accentGold: 0xFFD700,
-      accentTurquoise: 0x40E0D0
+      oscillationAmp: 0.05
     };
 
     // Setup
@@ -65,16 +58,9 @@ class GenerativeHeroAnimation {
     this.mouse = new THREE.Vector2(999, 999);
     this.scrollForce = 0;
     this.clock = new THREE.Clock();
-    this.hasInteracted = true;
-    this.points = null;
+    this.dummy = new THREE.Object3D();
+    this.particles = null;
     this.particleData = [];
-    
-    // Simple noise function
-    this.noise = {
-      noise3D: (x: number, y: number, z: number) => {
-        return Math.sin(x * 12.9898 + y * 78.233 + z * 37.719) * 43758.5453;
-      }
-    };
 
     this.initParticles();
     this.addEventListeners();
@@ -82,9 +68,9 @@ class GenerativeHeroAnimation {
   }
 
   initParticles() {
-    const geometry = new THREE.BufferGeometry();
-    const positions = [];
-    const colors = [];
+    const geometry = new THREE.IcosahedronGeometry(0.003, 1);
+    const material = new THREE.MeshBasicMaterial({ color: 0x333333 });
+    this.particles = new THREE.InstancedMesh(geometry, material, this.params.particleCount);
     
     for (let i = 0; i < this.params.particleCount; i++) {
       const position = new THREE.Vector3(
@@ -92,42 +78,16 @@ class GenerativeHeroAnimation {
         (Math.random() - 0.5) * 3,
         (Math.random() - 0.5) * 3
       );
-      
-      positions.push(position.x, position.y, position.z);
-      colors.push(0.2, 0.2, 0.2); // Base gray color
-      
+      this.dummy.position.copy(position);
+      this.dummy.updateMatrix();
+      this.particles.setMatrixAt(i, this.dummy.matrix);
+
       this.particleData.push({
         velocity: new THREE.Vector3(),
         basePosition: position.clone()
       });
     }
-    
-    geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-    geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-    
-    // Create particle texture
-    const canvas = document.createElement('canvas');
-    canvas.width = 32;
-    canvas.height = 32;
-    const context = canvas.getContext('2d')!;
-    const gradient = context.createRadialGradient(16, 16, 0, 16, 16, 16);
-    gradient.addColorStop(0, 'rgba(255,255,255,1)');
-    gradient.addColorStop(1, 'rgba(255,255,255,0)');
-    context.fillStyle = gradient;
-    context.fillRect(0, 0, 32, 32);
-    const particleTexture = new THREE.CanvasTexture(canvas);
-    
-    const material = new THREE.PointsMaterial({
-      size: 0.015,
-      map: particleTexture,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false,
-      transparent: true,
-      vertexColors: true // ADD THIS LINE as requested
-    });
-    
-    this.points = new THREE.Points(geometry, material);
-    this.scene.add(this.points);
+    this.scene.add(this.particles);
   }
 
   addEventListeners() {
@@ -148,89 +108,59 @@ class GenerativeHeroAnimation {
   }
 
   animate = () => {
-    if (!this.hasInteracted) {
-      requestAnimationFrame(this.animate);
-      return;
-    }
-
-    const elapsedTime = this.clock.getElapsedTime();
     const deltaTime = this.clock.getDelta();
-    
-    if (!this.points) return;
-    
-    // Get attribute arrays from geometry
-    const positions = this.points.geometry.attributes.position.array;
-    const colors = this.points.geometry.attributes.color.array;
+    const elapsedTime = this.clock.getElapsedTime();
+
+    if (!this.particles) return;
 
     const mouseWorldPos = new THREE.Vector3(this.mouse.x * this.camera.aspect, this.mouse.y, 0).unproject(this.camera);
 
-    const goldColor = new THREE.Color(this.params.accentGold);
-    const turquoiseColor = new THREE.Color(this.params.accentTurquoise);
-
     for (let i = 0; i < this.params.particleCount; i++) {
-      const i3 = i * 3;
-      const pos = new THREE.Vector3(positions[i3], positions[i3+1], positions[i3+2]);
+      this.particles.getMatrixAt(i, this.dummy.matrix);
+      const currentPos = new THREE.Vector3().setFromMatrixPosition(this.dummy.matrix);
       const data = this.particleData[i];
 
-      // --- Organic "Fungal" Movement using Noise ---
-      const noise = this.noise.noise3D(pos.x * 0.1, pos.y * 0.1, pos.z * 0.1 + elapsedTime * 0.05);
-      data.velocity.x += this.params.noiseStrength * Math.sin(noise * Math.PI * 2) * deltaTime;
-      data.velocity.y += this.params.noiseStrength * Math.cos(noise * Math.PI * 2) * deltaTime;
-      
-      // --- Mouse Interaction ---
-      let isHovered = false;
-      const distanceToMouse = pos.distanceTo(mouseWorldPos);
+      // Hover: Acceleration & Multiplication
+      const distanceToMouse = currentPos.distanceTo(mouseWorldPos);
       if (distanceToMouse < this.params.hoverRadius) {
-        isHovered = true;
-        const repulsion = new THREE.Vector3().subVectors(pos, mouseWorldPos).normalize();
-        data.velocity.add(repulsion.multiplyScalar(this.params.repulsionStrength * deltaTime));
-      }
-
-      // --- Scroll Interaction ---
-      if (this.scrollForce > 0) {
-        data.velocity.y -= this.scrollForce;
-        const oscillation = Math.sin(pos.y * this.params.oscillationFreq + elapsedTime * 5) * this.mouse.x * this.params.oscillationAmp;
-        pos.x += oscillation;
-      } else {
-         data.velocity.z += (data.basePosition.z - pos.z) * 0.001;
-      }
-
-      // --- UPDATE PHYSICS & POSITION ---
-      pos.add(data.velocity);
-      data.velocity.multiplyScalar(0.94); // Damping
-      positions[i3] = pos.x;
-      positions[i3+1] = pos.y;
-      positions[i3+2] = pos.z;
-
-      // =========================================================
-      // --- NEW: DYNAMIC COLOR LOGIC FOR ELEGANT VIBRANCY ---
-      // =========================================================
-      const speed = data.velocity.length();
-      const baseColor = new THREE.Color(colors[i3], colors[i3+1], colors[i3+2]);
-      const finalColor = new THREE.Color();
-
-      if (isHovered) {
-        // If hovered, glow with a vibrant gold color
-        finalColor.lerpColors(baseColor, goldColor, 0.8);
-      } else if (speed > 0.001) {
-        // If moving fast, glow with turquoise based on speed
-        // Clamp the lerp factor for a subtle effect
-        const energy = Math.min(speed * 200, 1.0); 
-        finalColor.lerpColors(baseColor, turquoiseColor, energy);
-      } else {
-        // Otherwise, remain its base color
-        finalColor.copy(baseColor);
+        const repulsionForce = new THREE.Vector3().subVectors(currentPos, mouseWorldPos).normalize();
+        data.velocity.add(repulsionForce.multiplyScalar(this.params.repulsionStrength * deltaTime));
+        
+        if (Math.random() < this.params.spawnChance) {
+          // "Multiplication": re-use a distant particle to simulate spawning
+          const randomIndex = Math.floor(Math.random() * this.params.particleCount);
+          this.dummy.position.copy(currentPos);
+          this.dummy.updateMatrix();
+          this.particles.setMatrixAt(randomIndex, this.dummy.matrix);
+          this.particleData[randomIndex].velocity.copy(data.velocity).multiplyScalar(0.5);
+        }
       }
       
-      colors[i3] = finalColor.r;
-      colors[i3+1] = finalColor.g;
-      colors[i3+2] = finalColor.b;
+      // Scroll: Downward acceleration with smooth ease-in
+      if (this.scrollForce > 0) {
+        data.velocity.y -= this.scrollForce * deltaTime;
+      } else {
+         // Return to base position when not scrolling
+         const returnForce = new THREE.Vector3().subVectors(data.basePosition, currentPos).multiplyScalar(0.001);
+         data.velocity.add(returnForce);
+      }
+
+      // Oscillation during scroll
+      if (this.scrollForce > 0.001) {
+          const oscillation = Math.sin(currentPos.y * this.params.oscillationFreq + elapsedTime) * this.mouse.x * this.params.oscillationAmp;
+          currentPos.x += oscillation;
+      }
+
+      // Update Physics
+      currentPos.add(data.velocity);
+      data.velocity.multiplyScalar(0.96); // Damping
+
+      this.dummy.position.copy(currentPos);
+      this.dummy.updateMatrix();
+      this.particles.setMatrixAt(i, this.dummy.matrix);
     }
-    
-    // Tell three.js these attributes have been updated
-    this.points.geometry.attributes.position.needsUpdate = true;
-    this.points.geometry.attributes.color.needsUpdate = true;
-    
+
+    this.particles.instanceMatrix.needsUpdate = true;
     this.renderer.render(this.scene, this.camera);
     requestAnimationFrame(this.animate);
   }
