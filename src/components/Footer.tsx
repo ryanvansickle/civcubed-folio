@@ -10,7 +10,7 @@ export const Footer = () => {
             {/* Brand */}
             <div className="md:col-span-2">
               <div className="flex items-center space-x-3 mb-4">
-                <a href="/" className="flex items-center space-x-3 group">
+                <a href="/" className="logo-shimmer flex items-center space-x-3 group">
                   <svg 
                     width="24" 
                     height="24" 

@@ -11,7 +11,7 @@ export const Navigation = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <div className="flex items-center">
-            <a href="/" className="flex items-center space-x-3 group">
+            <a href="/" className="logo-shimmer flex items-center space-x-3 group">
               <svg 
                 width="24" 
                 height="24" 
