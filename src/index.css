@@ -335,64 +335,41 @@
     border-color: transparent;
   }
 
-  /* --- FINAL (SIMPLIFIED): Permeating Shimmer Animation --- */
+  /* --- WORKING: Simple Hero Name Animation --- */
 
-  /* 1. Define the animations */
-  @keyframes shimmer-glint {
+  @keyframes hero-shimmer {
     0% {
-      /* Animate the first background's position */
-      background-position: -150% center, 0% center;
+      background-position: -200% center;
     }
     100% {
-      /* Animate the first background's position */
-      background-position: 150% center, 0% center;
+      background-position: 200% center;
     }
   }
 
-  @keyframes breathing-pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.7; }
-    100% { opacity: 1; }
+  @keyframes hero-pulse {
+    0%, 100% { 
+      opacity: 1; 
+    }
+    50% { 
+      opacity: 0.75; 
+    }
   }
 
-
-  /* 2. Apply all styles to the single hero name element */
   .hero-name-shimmer {
-    /* --- The Multi-Background Technique --- */
-    /* We stack two gradients: the shimmer, then the base color. */
-    background-image:
-      /* Layer 1: The turquoise shimmer (on top) */
-      linear-gradient(
-        90deg,
-        transparent 0%,
-        #40E0D0 50%, /* Turquoise */
-        transparent 100%
-      ),
-      /* Layer 2: The static base text color (underneath) */
-      linear-gradient(90deg, #b0b0b0, #d8d8d8);
-
-    /* Define the size for each background respectively */
-    background-size: 40% 100%, 100% 100%;
-
-    /* Define the starting position for each background */
-    background-position: -150% center, 0% center;
-    
-    /* Make sure the backgrounds don't tile */
-    background-repeat: no-repeat;
-    
-    /* The Magic: Clip ALL backgrounds to the text shape */
+    background: linear-gradient(
+      90deg,
+      hsl(var(--muted-foreground)) 25%,
+      hsl(var(--accent-turquoise)) 50%,
+      hsl(var(--muted-foreground)) 75%
+    );
+    background-size: 200% 100%;
     background-clip: text;
     -webkit-background-clip: text;
-
-    /* Make the text color transparent so the backgrounds show through */
+    -webkit-text-fill-color: transparent;
     color: transparent;
-    -webkit-text-fill-color: transparent; /* Safari/Chrome support */
-    
-    /* --- Apply Both Animations --- */
-    /* The shimmer moves the background, the pulse fades the opacity */
     animation: 
-      shimmer-glint 5s ease-in-out infinite,
-      breathing-pulse 8s ease-in-out infinite;
+      hero-shimmer 3s ease-in-out infinite,
+      hero-pulse 6s ease-in-out infinite;
   }
 
   /*
