@@ -336,39 +336,27 @@
   }
 
   /*
-    Psychedelic color-shifting animation for the Civ3 Logo.
-    Triggers when the parent card (.group) is hovered.
+    Styles for the animated video logo container.
   */
-  #civ3-logo {
+  .video-logo-container {
+    width: 100px;
+    height: 116px;
+    margin: 0 auto;
+    border-radius: 8px;
+    overflow: hidden;
     transition: transform 0.5s ease-in-out;
   }
 
-  .group:hover #civ3-logo {
-    transform: scale(1.05); /* Slightly grow the logo on hover */
-  }
-
-  @keyframes psychedelic-colors {
-    0% { fill: hsl(0, 80%, 60%); }
-    16% { fill: hsl(60, 80%, 60%); }
-    33% { fill: hsl(120, 80%, 60%); }
-    50% { fill: hsl(180, 80%, 60%); }
-    66% { fill: hsl(240, 80%, 60%); }
-    83% { fill: hsl(300, 80%, 60%); }
-    100% { fill: hsl(360, 80%, 60%); }
-  }
-
-  /* When the card is hovered, apply the animation to the logo's blocks */
-  .group:hover #civ3-logo .logo-blocks polygon {
-    animation: psychedelic-colors 6s linear infinite;
+  .video-logo-container video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   /*
-    Add a slight delay to each block so they change color
-    out of sync, creating the psychedelic effect.
+    Trigger the zoom effect when the parent card (.group) is hovered.
   */
-  .group:hover #civ3-logo .logo-blocks polygon:nth-child(2) { animation-delay: -1s; }
-  .group:hover #civ3-logo .logo-blocks polygon:nth-child(3) { animation-delay: -2s; }
-  .group:hover #civ3-logo .logo-blocks polygon:nth-child(4) { animation-delay: -3s; }
-  .group:hover #civ3-logo .logo-blocks polygon:nth-child(5) { animation-delay: -4s; }
-  .group:hover #civ3-logo .logo-blocks polygon:nth-child(6) { animation-delay: -5s; }
+  .group:hover .video-logo-container {
+    transform: scale(1.05);
+  }
 }

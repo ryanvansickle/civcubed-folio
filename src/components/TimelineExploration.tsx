@@ -63,20 +63,18 @@ export const TimelineExploration = () => {
           <Card className="interactive-card group bg-card border-border/20 shadow-soft p-8">
             <CardHeader className="pb-6">
               <div className="flex items-center gap-6 mb-4">
-                {/* Civilization 3 Logo (Corrected Version) */}
-                <svg id="civ3-logo" width="100" height="116" viewBox="0 0 100 115.5" fill="black" xmlns="http://www.w3.org/2000/svg">
-                  <g className="logo-blocks">
-                    {/* Outer Frame */}
-                    <polygon points="25,14.4 50,0 75,14.4 75,43.8 87.5,36.3 87.5,21.3 100,28.8 100,86.3 87.5,93.8 87.5,101.3 75,108.8 75,101.3 50,115.5 25,101.3 25,108.8 12.5,101.3 12.5,93.8 0,86.3 0,28.8 12.5,21.3 12.5,36.3 25,43.8"/>
-                    {/* Inner Cross */}
-                    <polygon points="37.5,43.8 25,51.3 37.5,58.8 50,51.3"/>
-                    <polygon points="50,51.3 62.5,58.8 75,51.3 62.5,43.8"/>
-                    <polygon points="37.5,58.8 25,66.3 37.5,73.8 50,66.3"/>
-                    <polygon points="50,66.3 62.5,73.8 75,66.3 62.5,58.8"/>
-                    {/* Center Diamond */}
-                    <polygon points="50,58.8 37.5,66.3 50,73.8 62.5,66.3"/>
-                  </g>
-                </svg>
+                {/* Civilization 3 Animated Video Logo */}
+                <div className="video-logo-container">
+                  <video
+                    src="/background-video.mp4"
+                    poster="/civ3-poster.jpg"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    aria-label="Civilization 3 Animated Logo"
+                  />
+                </div>
                 <div>
                   <CardTitle className="text-3xl font-normal text-foreground mb-2">
                     {currentWork.title}
