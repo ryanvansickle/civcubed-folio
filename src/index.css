@@ -77,7 +77,53 @@
     --input: 39 39 42;
     --ring: 212 12% 87%;
     --radius: 0.5rem;
+}
+
+/* --- Particle Field Animation --- */
+.particle-field {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  z-index: -1;
+  background: transparent;
+}
+
+.particle-field::before,
+.particle-field::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  border-radius: 50%;
+  animation: move-particles linear infinite;
+  animation-delay: 1s; /* The wake-up delay */
+}
+
+/* Farthest Stars */
+.particle-field::before {
+  box-shadow: 1819px 129px rgba(200, 200, 200, 0.43), 1184px 1783px rgba(200, 200, 200, 0.22), 173px 1475px rgba(200, 200, 200, 0.4), 1630px 1819px rgba(200, 200, 200, 0.41), 1099px 1950px rgba(200, 200, 200, 0.25), 1803px 174px rgba(200, 200, 200, 0.5), 1338px 1435px rgba(200, 200, 200, 0.42), 1588px 125px rgba(200, 200, 200, 0.38), 654px 1400px rgba(200, 200, 200, 0.53), 116px 1319px rgba(200, 200, 200, 0.69);
+  animation-duration: 150s;
+}
+
+/* Closer Stars */
+.particle-field::after {
+  box-shadow: 1982px 1937px rgba(200, 200, 200, 0.61), 1827px 114px rgba(200, 200, 200, 0.57), 1642px 303px rgba(200, 200, 200, 0.21), 1085px 148px rgba(200, 200, 200, 0.67), 43px 1904px rgba(200, 200, 200, 0.44), 1129px 1198px rgba(200, 200, 200, 0.29), 896px 878px rgba(200, 200, 200, 0.25), 193px 809px rgba(200, 200, 200, 0.61), 1045px 1541px rgba(200, 200, 200, 0.66), 468px 1656px rgba(200, 200, 200, 0.58);
+  animation-duration: 100s;
+}
+
+@keyframes move-particles {
+  from {
+    transform: translateY(-100%);
   }
+  to {
+    transform: translateY(100%);
+  }
+}
 }
 
 @layer base {
@@ -220,13 +266,30 @@
     animation-duration: 10s;
   }
 
-  /* Hero Animation Container */
-  #hero-animation-container {
-    position: absolute;
+  /* Constellation Background Effect */
+  .constellation-field {
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vh;
+    height: 100%;
+    pointer-events: none;
     z-index: -1;
+    opacity: 0.3;
+  }
+
+  .constellation-star {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    background: hsl(var(--accent-gold));
+    border-radius: 50%;
+    opacity: 0.1;
+    transition: opacity 0.5s ease, box-shadow 0.5s ease;
+  }
+
+  .constellation-star.active {
+    opacity: 0.6;
+    box-shadow: 0 0 3px rgba(212, 175, 55, 0.4);
   }
 }
