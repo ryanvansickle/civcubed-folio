@@ -20,6 +20,14 @@ export const TimelineExploration = () => {
       link: "https://www.nomalife.com"
     },
     {
+      title: "Aethos",
+      role: "Advisor"
+    },
+    {
+      title: "Wilder World",
+      role: "Advisor"
+    },
+    {
       title: "Telos",
       role: "Co-Founder",
       tagline: "The Nexus for Builders of the Decentralized Future."
