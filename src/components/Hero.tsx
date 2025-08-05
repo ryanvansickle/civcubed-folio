@@ -263,6 +263,15 @@ export const Hero = () => {
               variant="outline" 
               size="lg" 
               className="border-foreground/30 text-foreground hover:bg-foreground/5 hover:border-foreground/50 font-normal tracking-wide transition-all duration-300 px-8 py-4"
+              onClick={() => {
+                const nextSection = document.getElementById('new-substrate');
+                if (nextSection) {
+                  nextSection.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                  });
+                }
+              }}
             >
               Explore More
               <ArrowRight size={16} strokeWidth={1.5} className="ml-2" />
