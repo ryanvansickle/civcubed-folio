@@ -27,7 +27,7 @@ export const IntellectualFoundations = () => {
 
         <div className="grid md:grid-cols-2 gap-8">
           {foundations.map((foundation, index) => (
-            <Card key={index} className="bg-card border-border/20 shadow-soft p-8">
+            <Card key={index} className="interactive-card bg-card border-border/20 shadow-soft p-8">
               <CardHeader className="pb-6">
                 <CardTitle className="text-2xl font-normal text-foreground">
                   {foundation.title}
