@@ -41,25 +41,26 @@ class GenerativeHeroAnimation {
       return;
     }
 
-    // Color Palette: Subtle turquoise and gold
+    // Color Palette: Only turquoise and gold variations
     this.colorPalette = [
       new THREE.Color('#40E0D0'), // Turquoise
-      new THREE.Color('#FFD700'), // Gold
-      new THREE.Color('#F0E68C'), // Khaki Gold
       new THREE.Color('#48D1CC'), // Medium Turquoise
-      new THREE.Color('#DAA520')  // Golden Rod
+      new THREE.Color('#20B2AA'), // Light Sea Green
+      new THREE.Color('#FFD700'), // Gold
+      new THREE.Color('#FFA500'), // Orange Gold
+      new THREE.Color('#DAA520')  // Dark Goldenrod
     ];
 
-    // Core Parameters
+    // Optimized Parameters for Performance
     this.params = {
-      particleCount: 8000, // Reduced for better performance with connections
-      hoverRadius: 0.2,
-      repulsionStrength: 0.15,
-      spawnChance: 0.05,
-      scrollGravity: 0.03,
-      oscillationFreq: 8.0,
-      oscillationAmp: 0.05,
-      connectionDistance: 0.3 // Distance threshold for particle connections
+      particleCount: 2000, // Significantly reduced for performance
+      hoverRadius: 0.15,
+      repulsionStrength: 0.1,
+      spawnChance: 0.02,
+      scrollGravity: 0.02,
+      oscillationFreq: 6.0,
+      oscillationAmp: 0.03,
+      connectionDistance: 0.25 // Reduced for fewer calculations
     };
 
     // Setup
@@ -85,25 +86,13 @@ class GenerativeHeroAnimation {
   }
 
   initParticles() {
-    // Create organic, non-uniform geometry by adding random noise to icosahedron
-    const baseGeometry = new THREE.IcosahedronGeometry(0.003, 2);
-    const vertices = baseGeometry.attributes.position.array;
-    
-    // Add noise to vertices for biological appearance
-    for (let i = 0; i < vertices.length; i += 3) {
-      const noise = (Math.random() - 0.5) * 0.001;
-      vertices[i] += noise;     // x
-      vertices[i + 1] += noise; // y
-      vertices[i + 2] += noise; // z
-    }
-    
-    baseGeometry.attributes.position.needsUpdate = true;
-    baseGeometry.computeVertexNormals();
+    // Simplified geometry for better performance
+    const baseGeometry = new THREE.SphereGeometry(0.004, 8, 6);
 
     // Create material with glow effect
     const material = new THREE.MeshBasicMaterial({ 
       transparent: true,
-      opacity: 0.8
+      opacity: 0.9
     });
     
     this.particles = new THREE.InstancedMesh(baseGeometry, material, this.params.particleCount);
@@ -154,32 +143,33 @@ class GenerativeHeroAnimation {
     const positions: number[] = [];
     const colors: number[] = [];
     
-    // Check connections between particles
-    for (let i = 0; i < this.params.particleCount; i++) {
+    // Optimized connection checking - sample subset for performance
+    const sampleSize = Math.min(500, this.params.particleCount);
+    const step = Math.floor(this.params.particleCount / sampleSize);
+    
+    for (let i = 0; i < this.params.particleCount; i += step) {
       this.particles!.getMatrixAt(i, this.dummy.matrix);
       const pos1 = new THREE.Vector3().setFromMatrixPosition(this.dummy.matrix);
       
-      for (let j = i + 1; j < this.params.particleCount; j++) {
+      // Only check nearby particles for performance
+      for (let j = i + step; j < Math.min(i + step * 10, this.params.particleCount); j += step) {
         this.particles!.getMatrixAt(j, this.dummy.matrix);
         const pos2 = new THREE.Vector3().setFromMatrixPosition(this.dummy.matrix);
         
         const distance = pos1.distanceTo(pos2);
         
         if (distance < this.params.connectionDistance) {
-          // Add line
           positions.push(pos1.x, pos1.y, pos1.z);
           positions.push(pos2.x, pos2.y, pos2.z);
           
-          // Fade opacity based on distance
           const opacity = 1 - (distance / this.params.connectionDistance);
           const color1 = this.particleData[i].color;
-          const color2 = this.particleData[j].color;
+          const color2 = this.particleData[j] ? this.particleData[j].color : color1;
           
-          // Use average color with opacity
           const avgColor = new THREE.Color().addColors(color1, color2).multiplyScalar(0.5);
           
-          colors.push(avgColor.r, avgColor.g, avgColor.b, opacity);
-          colors.push(avgColor.r, avgColor.g, avgColor.b, opacity);
+          colors.push(avgColor.r, avgColor.g, avgColor.b, opacity * 0.4);
+          colors.push(avgColor.r, avgColor.g, avgColor.b, opacity * 0.4);
         }
       }
     }
@@ -192,8 +182,7 @@ class GenerativeHeroAnimation {
       const material = new THREE.LineBasicMaterial({ 
         vertexColors: true,
         transparent: true,
-        opacity: 0.3,
-        linewidth: 1
+        opacity: 0.2
       });
       
       this.connections = new THREE.LineSegments(geometry, material);
