@@ -60,14 +60,34 @@ export const TimelineExploration = () => {
 
         {/* Featured Current Work */}
         <div className="mb-16">
-          <Card className="interactive-card bg-card border-border/20 shadow-soft p-8">
+          <Card className="interactive-card group bg-card border-border/20 shadow-soft p-8">
             <CardHeader className="pb-6">
-              <CardTitle className="text-3xl font-normal text-foreground mb-2">
-                {currentWork.title}
-              </CardTitle>
-              <CardDescription className="text-lg text-foreground/70 italic">
-                {currentWork.tagline}
-              </CardDescription>
+              <div className="flex items-center gap-6 mb-4">
+                {/* Civilization 3 Logo */}
+                <svg id="civ3-logo" width="100" height="115" viewBox="0 0 100 115" fill="black" xmlns="http://www.w3.org/2000/svg">
+                  <g className="logo-blocks">
+                    <polygon points="50,28.8 37.5,36.3 37.5,51.3 50,58.8 62.5,51.3 62.5,36.3"/>
+                    <polygon points="25,21.3 12.5,28.8 12.5,43.8 25,51.3 37.5,43.8 37.5,28.8"/>
+                    <polygon points="50,0 25,14.4 25,21.3 50,7.2 75,21.3 75,14.4"/>
+                    <polygon points="75,21.3 50,7.2 50,28.8 62.5,36.3 75,28.8 87.5,36.3 87.5,21.3"/>
+                    <polygon points="100,28.8 87.5,21.3 87.5,36.3 75,43.8 75,58.8 87.5,66.3 100,58.8"/>
+                    <polygon points="100,86.3 87.5,93.8 87.5,66.3 100,58.8"/>
+                    <polygon points="75,101.3 50,115.5 50,93.8 62.5,86.3 75,93.8"/>
+                    <polygon points="50,115.5 25,101.3 25,93.8 37.5,86.3 50,93.8"/>
+                    <polygon points="25,93.8 12.5,86.3 0,93.8 0,101.3 12.5,108.8 25,101.3"/>
+                    <polygon points="0,58.8 12.5,66.3 12.5,86.3 0,93.8"/>
+                    <polygon points="25,51.3 12.5,43.8 0,51.3 0,58.8 12.5,66.3 25,58.8"/>
+                  </g>
+                </svg>
+                <div>
+                  <CardTitle className="text-3xl font-normal text-foreground mb-2">
+                    {currentWork.title}
+                  </CardTitle>
+                  <CardDescription className="text-lg text-foreground/70 italic">
+                    {currentWork.tagline}
+                  </CardDescription>
+                </div>
+              </div>
             </CardHeader>
             <CardContent>
               <p className="text-lg leading-relaxed text-foreground/80">
