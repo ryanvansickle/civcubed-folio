@@ -6,9 +6,9 @@
 
 @layer base {
   :root {
-    /* Core Light Theme */
+    /* Core Light Theme - Advanced Design System */
     --background: 42 20% 98%; /* Warm off-white #FDFBF8 */
-    --foreground: 0 0% 20%; /* Dark warm gray #333333 */
+    --foreground: 0 0% 20%; /* Warm dark gray #333333 */
 
     --card: 42 20% 98%; /* Same as background */
     --card-foreground: 0 0% 20%; /* Dark warm gray */
@@ -28,9 +28,10 @@
     --accent: 42 10% 92%;
     --accent-foreground: 0 0% 20%;
 
-    /* New Accent Colors */
-    --accent-gold: 45 100% 42%; /* Elegant metallic gold #D4AF37 */
-    --accent-turquoise: 180 100% 31%; /* Rich turquoise #00A0A0 */
+    /* Advanced Accent System */
+    --accent-gold: 45 100% 42%; /* Metallic gold #D4AF37 */
+    --accent-turquoise: 180 100% 31%; /* Intelligent turquoise #00A0A0 */
+    --accent-turquoise-bright: 180 100% 38%; /* Brighter turquoise for hover */
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
@@ -48,11 +49,13 @@
     --gradient-gold: linear-gradient(to top, hsl(45, 100%, 42%), hsl(45, 100%, 65%));
     --gradient-turquoise: linear-gradient(to top, hsl(180, 100%, 31%), hsl(180, 100%, 40%));
 
-    /* Volumetric Shadow System */
+    /* Advanced Volumetric Shadow System */
     --shadow-elegant: 0px 2px 5px rgba(0, 0, 0, 0.02), 0px 5px 12px rgba(0, 0, 0, 0.03), 0px 10px 24px rgba(0, 0, 0, 0.05);
     --shadow-glow: 0 0 40px hsl(0 0% 0% / 0.05);
     --shadow-soft: 0 4px 20px -2px hsl(0 0% 0% / 0.08);
     --shadow-lift: 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 8px 16px rgba(0, 0, 0, 0.06), 0px 16px 32px rgba(0, 0, 0, 0.08);
+    --shadow-golden-glow: 0px 4px 8px rgba(0, 0, 0, 0.02), 0px 8px 16px rgba(0, 0, 0, 0.04), 0px 0px 20px 4px rgba(212, 175, 55, 0.15);
+    --turquoise-glow: 0 0 12px rgba(0, 160, 160, 0.5);
   }
 
   .dark {
@@ -124,16 +127,16 @@
     scrollbar-width: none;
   }
   
-  /* Volumetric Interactive Effects */
+  /* Advanced Volumetric Interactive Effects */
   .interactive-card {
     position: relative;
     overflow: hidden;
-    transition: transform 0.35s ease-out, box-shadow 0.35s ease-out;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   }
 
   .interactive-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-elegant);
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-golden-glow);
   }
 
   .interactive-card::after {
@@ -152,10 +155,22 @@
     left: 150%;
   }
 
-  /* Accent Link Styles */
+  /* Advanced Link & Menu System with Turquoise Glow */
+  a, .menu-item {
+    color: hsl(var(--accent-turquoise));
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  a:hover, .menu-item:hover {
+    color: hsl(var(--accent-turquoise-bright));
+    text-shadow: var(--turquoise-glow);
+  }
+
+  /* Accent Link Styles for Special Cases */
   .accent-link {
     color: hsl(var(--accent-turquoise));
-    transition: color 0.4s ease, background-image 0.4s ease;
+    transition: color 0.4s ease, background-image 0.4s ease, text-shadow 0.3s ease;
     text-decoration: none;
     background-clip: text;
     -webkit-background-clip: text;
@@ -164,6 +179,7 @@
   .accent-link:hover {
     background-image: var(--gradient-gold);
     color: transparent;
+    text-shadow: var(--turquoise-glow);
   }
 
   /* Particle animation for background */
