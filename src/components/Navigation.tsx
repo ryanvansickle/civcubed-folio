@@ -34,7 +34,7 @@ export const Navigation = () => {
             <a href="#about" className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-medium tracking-wide">
               About
             </a>
-            <a href="#research" className="section-link-hover text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-medium tracking-wide">
+            <a href="#research" className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-medium tracking-wide">
               Research
             </a>
             <a href="#experience" className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-medium tracking-wide">
@@ -71,7 +71,7 @@ export const Navigation = () => {
               </a>
               <a 
                 href="#research" 
-                className="section-link-hover text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-medium tracking-wide"
+                className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-medium tracking-wide"
                 onClick={() => setIsOpen(false)}
               >
                 Research

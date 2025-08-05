@@ -272,51 +272,42 @@
   }
 
   /*
-    Hypnotic radiating hover effect for section links.
-    Apply the 'section-link-hover' class to the <a> tags.
+    Hypnotic glowing border animation for section cards.
+    This targets the containers for "A New Substrate", etc.
   */
-  .section-link-hover {
+  .mt-16 .group {
     position: relative;
-    display: inline-block;
-    padding: 10px; /* Adds space for the glow effect */
-    text-decoration: none;
-    color: inherit;
-    border-radius: 50%; /* Helps contain the circular glow */
+    overflow: hidden; /* Keeps the glow contained within the rounded corners */
+    z-index: 1;
   }
 
-  /* Keyframe animation for the radiating glow */
-  @keyframes radiate-glow {
-    0% {
-      transform: translate(-50%, -50%) scale(0.8);
-      opacity: 1;
-      box-shadow: 0 0 8px 4px rgba(64, 224, 208, 0.4); /* Turquoise glow */
-    }
-    70% {
-      opacity: 0.5;
-      box-shadow: 0 0 12px 8px rgba(64, 224, 208, 0.2);
-    }
-    100% {
-      transform: translate(-50%, -50%) scale(1.6);
-      opacity: 0;
-      box-shadow: 0 0 15px 12px rgba(64, 224, 208, 0);
-    }
-  }
-
-  /* The pseudo-element that creates the glow */
-  .section-link-hover::after {
+  /* This pseudo-element creates the animated gradient border */
+  .mt-16 .group::before {
     content: '';
     position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
+    z-index: -1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: conic-gradient(from 180deg at 50% 50%, rgba(64, 224, 208, 0) 0deg, #40E0D0 35%, rgba(64, 224, 208, 0) 70%);
     opacity: 0;
+    transition: opacity 0.5s ease-in-out;
   }
 
-  /* On hover, apply the infinite glow animation */
-  .section-link-hover:hover::after {
-    animation: radiate-glow 2s ease-out infinite;
+  /* The keyframe animation that spins the gradient */
+  @keyframes spin-border {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* On hover, make the border visible and start the animation */
+  .mt-16 .group:hover::before {
+    opacity: 1;
+    animation: spin-border 4s linear infinite;
   }
 }
