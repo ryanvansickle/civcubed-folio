@@ -230,7 +230,7 @@
   .logo-shimmer {
     position: relative;
     overflow: hidden;
-    display: inline-flex; /* Use flexbox for easy alignment */
+    display: inline-flex;
     align-items: center;
     vertical-align: middle;
     text-decoration: none;
@@ -238,24 +238,85 @@
     -webkit-mask-image: -webkit-radial-gradient(white, black); /* Fix for Safari clipping */
   }
 
+  /* Keyframe animation for the shimmer */
+  @keyframes shimmer-effect {
+    0% {
+      left: -200%;
+    }
+    100% {
+      left: 200%;
+    }
+  }
+
+  /* The pseudo-element that creates the shimmer */
   .logo-shimmer::after {
     content: '';
     position: absolute;
     top: -10%;
-    left: -200%; /* Start further off-screen */
     width: 100%;
     height: 120%;
     transform: skewX(-25deg);
     background: linear-gradient(
       to right,
       rgba(255, 255, 255, 0) 0%,
-      rgba(255, 255, 255, 0.3) 50%, /* Slightly more subtle gradient */
+      rgba(255, 255, 255, 0.3) 50%,
       rgba(255, 255, 255, 0) 100%
     );
-    transition: left 1.1s ease-in-out; /* Slowed down the transition */
+    /* Set left to a starting position, the animation will handle the rest */
+    left: -200%;
   }
 
+  /* On hover, apply the infinite animation */
   .logo-shimmer:hover::after {
-    left: 200%; /* Move further across the element */
+    animation: shimmer-effect 2.5s ease-in-out infinite;
+  }
+
+  /*
+    Hypnotic radiating hover effect for section links.
+    Apply the 'section-link-hover' class to the <a> tags.
+  */
+  .section-link-hover {
+    position: relative;
+    display: inline-block;
+    padding: 10px; /* Adds space for the glow effect */
+    text-decoration: none;
+    color: inherit;
+    border-radius: 50%; /* Helps contain the circular glow */
+  }
+
+  /* Keyframe animation for the radiating glow */
+  @keyframes radiate-glow {
+    0% {
+      transform: translate(-50%, -50%) scale(0.8);
+      opacity: 1;
+      box-shadow: 0 0 8px 4px rgba(64, 224, 208, 0.4); /* Turquoise glow */
+    }
+    70% {
+      opacity: 0.5;
+      box-shadow: 0 0 12px 8px rgba(64, 224, 208, 0.2);
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(1.6);
+      opacity: 0;
+      box-shadow: 0 0 15px 12px rgba(64, 224, 208, 0);
+    }
+  }
+
+  /* The pseudo-element that creates the glow */
+  .section-link-hover::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+  }
+
+  /* On hover, apply the infinite glow animation */
+  .section-link-hover:hover::after {
+    animation: radiate-glow 2s ease-out infinite;
   }
 }
