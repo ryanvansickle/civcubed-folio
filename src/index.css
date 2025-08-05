@@ -324,6 +324,17 @@
     }
   }
 
+  /* On hover, fade in the gradient and start the animation */
+  .section-tag:hover::before {
+    opacity: 1;
+    animation: spin-border 4s linear infinite;
+  }
+
+  /* On hover, make the default border transparent so only the gradient shows */
+  .section-tag:hover {
+    border-color: transparent;
+  }
+
   /*
     Psychedelic color-shifting animation for the Civ3 Logo.
     Triggers when the parent card (.group) is hovered.
@@ -365,16 +376,4 @@
   .group:hover #civ3-logo .logo-blocks polygon:nth-child(9) { animation-delay: -4.0s; }
   .group:hover #civ3-logo .logo-blocks polygon:nth-child(10) { animation-delay: -4.5s; }
   .group:hover #civ3-logo .logo-blocks polygon:nth-child(11) { animation-delay: -5.0s; }
-}
-
-  /* On hover, fade in the gradient and start the animation */
-  .section-tag:hover::before {
-    opacity: 1;
-    animation: spin-border 4s linear infinite;
-  }
-
-  /* On hover, make the default border transparent so only the gradient shows */
-  .section-tag:hover {
-    border-color: transparent;
-  }
 }
