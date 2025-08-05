@@ -366,10 +366,10 @@
   /* 2. Apply the new styles to the hero name element */
   #hero-name-shimmer {
     /* Set a solid, elegant base color for the text itself */
-    color: #DAA520; /* A rich GoldenRod color */
+    color: #DAA520 !important; /* A rich GoldenRod color */
     
     /* Remove all the complex background properties from previous attempts */
-    background: none;
+    background: none !important;
     
     /* Apply the two asynchronous animations */
     /* The !important tag is retained as a safeguard against theme overrides */
