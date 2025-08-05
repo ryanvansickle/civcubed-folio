@@ -10,17 +10,12 @@ export const TimelineExploration = () => {
 
   const pastVentures = [
     {
-      title: "Strategic Advisor",
-      period: "2019 – Present",
-      description: "Advising a select group of founders and investors on navigating disruptive change and architecting strategy for novel technology ventures."
-    },
-    {
       title: "Telos",
       role: "Co-Founder",
       tagline: "The Nexus for Builders of the Decentralized Future."
     },
     {
-      title: "FACTORY",
+      title: "F4CTORY",
       role: "Founding Member & Strategist",
       tagline: "The Olympic Training Ground for Innovation."
     },
@@ -108,11 +103,6 @@ export const TimelineExploration = () => {
                         ({venture.role})
                       </span>
                     )}
-                    {venture.period && (
-                      <span className="text-base text-foreground/60 font-light ml-2">
-                        {venture.period}
-                      </span>
-                    )}
                   </CardTitle>
                   {venture.tagline && (
                     <CardDescription className="text-foreground/70 italic">
@@ -120,13 +110,6 @@ export const TimelineExploration = () => {
                     </CardDescription>
                   )}
                 </CardHeader>
-                {venture.description && (
-                  <CardContent>
-                    <p className="text-foreground/80 leading-relaxed">
-                      {venture.description}
-                    </p>
-                  </CardContent>
-                )}
               </Card>
             ))}
           </div>
