@@ -335,6 +335,48 @@
     border-color: transparent;
   }
 
+  /* --- Apple-esque Turquoise Shimmer Animation --- */
+
+  /* 1. Define the shimmer animation */
+  @keyframes shimmer-pulse {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  /* 2. Apply the animation and styles to the hero name */
+  .hero-name-shimmer {
+    /* The Gradient: A mix of transparent, bright turquoise, and cyan */
+    background-image: linear-gradient(
+      90deg, /* Gradient flows from left to right */
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0) 25%, /* Start with transparency */
+      #40E0D0 50%, /* Bright turquoise highlight in the middle */
+      rgba(255, 255, 255, 0) 75%, /* Fade back to transparent */
+      rgba(255, 255, 255, 0) 100%
+    );
+
+    /* Make the gradient much wider than the text to allow for movement */
+    background-size: 200% auto;
+
+    /* The Magic: Clip the background to the text shape */
+    background-clip: text;
+    -webkit-background-clip: text; /* Safari/Chrome support */
+
+    /* Make the text color transparent so the gradient shows through */
+    color: transparent;
+    -webkit-text-fill-color: transparent; /* Safari/Chrome support */
+    
+    /* Apply the animation */
+    animation-name: shimmer-pulse;
+    animation-duration: 6s; /* Slow and elegant duration */
+    animation-timing-function: ease-in-out; /* Smooth start and end */
+    animation-iteration-count: infinite; /* Run constantly */
+  }
+
   /*
     Styles for the animated video logo container.
   */
