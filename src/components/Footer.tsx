@@ -3,10 +3,10 @@ import { Separator } from "@/components/ui/separator";
 export const Footer = () => {
   return (
     <footer className="bg-muted/30 border-t border-border/50">
-      <div className="container mx-auto px-6 py-12">
+      <div className="container mx-auto px-12 py-12">
         <div className="max-w-6xl mx-auto">
           {/* Main Footer Content */}
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
+          <div className="grid md:grid-cols-3 gap-8 mb-8">
             {/* Brand */}
             <div className="md:col-span-2">
               <div className="flex items-center space-x-3 mb-4">
@@ -53,33 +53,6 @@ export const Footer = () => {
                 <li>
                   <a href="#contact" className="text-muted-foreground hover:text-foreground transition-colors">
                     Contact
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* Resources */}
-            <div>
-              <h4 className="font-semibold text-foreground mb-4">Resources</h4>
-              <ul className="space-y-2">
-                <li>
-                  <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-                    Research Papers
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-                    Speaking Topics
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-                    Media Kit
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-                    Newsletter
                   </a>
                 </li>
               </ul>
