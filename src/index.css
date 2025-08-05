@@ -272,41 +272,42 @@
   }
 
   /*
-    Hypnotic glowing border animation for section cards.
-    This targets the containers for "A New Substrate", etc.
+    Hypnotic glowing border animation for section tags.
+    This targets the "About", "Experience", and "Foundations" tags.
   */
-  .mt-16 .group {
+  .section-tag {
     position: relative;
     overflow: hidden; /* Keeps the glow contained within the rounded corners */
     z-index: 1;
   }
 
   /* This pseudo-element creates the animated gradient border */
-  .mt-16 .group::before {
+  .section-tag::before {
     content: '';
     position: absolute;
     z-index: -1;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    top: 50%;
+    left: 50%;
+    width: 200%; /* Make it larger to ensure coverage when spinning */
+    height: 200%;
     background: conic-gradient(from 180deg at 50% 50%, rgba(64, 224, 208, 0) 0deg, #40E0D0 35%, rgba(64, 224, 208, 0) 70%);
     opacity: 0;
+    transform: translate(-50%, -50%);
     transition: opacity 0.5s ease-in-out;
   }
 
   /* The keyframe animation that spins the gradient */
   @keyframes spin-border {
     from {
-      transform: rotate(0deg);
+      transform: translate(-50%, -50%) rotate(0deg);
     }
     to {
-      transform: rotate(360deg);
+      transform: translate(-50%, -50%) rotate(360deg);
     }
   }
 
   /* On hover, make the border visible and start the animation */
-  .mt-16 .group:hover::before {
+  .section-tag:hover::before {
     opacity: 1;
     animation: spin-border 4s linear infinite;
   }

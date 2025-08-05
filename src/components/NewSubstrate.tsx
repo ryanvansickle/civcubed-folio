@@ -5,8 +5,8 @@ export const NewSubstrate = () => {
     <section id="about" className="py-24 px-6 bg-background">
       <div className="container mx-auto max-w-4xl">
         <div className="text-center mb-16">
-          <Badge variant="outline" className="mb-6 px-4 py-2 text-sm font-medium border-foreground/20">
-            A New Substrate
+          <Badge variant="outline" className="section-tag mb-6 px-4 py-2 text-sm font-medium border-foreground/20">
+            About
           </Badge>
           <h2 className="text-5xl md:text-6xl font-normal text-foreground mb-12 leading-tight">
             A New Substrate

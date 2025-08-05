@@ -34,11 +34,11 @@ export const Navigation = () => {
             <a href="#about" className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-medium tracking-wide">
               About
             </a>
-            <a href="#research" className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-medium tracking-wide">
-              Research
-            </a>
-            <a href="#experience" className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-medium tracking-wide">
+            <a href="#work" className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-medium tracking-wide">
               Experience
+            </a>
+            <a href="#foundations" className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-medium tracking-wide">
+              Foundations
             </a>
             <a href="#contact" className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-medium tracking-wide">
               Contact
@@ -70,18 +70,18 @@ export const Navigation = () => {
                 About
               </a>
               <a 
-                href="#research" 
-                className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-medium tracking-wide"
-                onClick={() => setIsOpen(false)}
-              >
-                Research
-              </a>
-              <a 
-                href="#experience" 
+                href="#work" 
                 className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-medium tracking-wide"
                 onClick={() => setIsOpen(false)}
               >
                 Experience
+              </a>
+              <a 
+                href="#foundations" 
+                className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-medium tracking-wide"
+                onClick={() => setIsOpen(false)}
+              >
+                Foundations
               </a>
               <a 
                 href="#contact" 
