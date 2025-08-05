@@ -99,7 +99,7 @@ export const TimelineExploration = () => {
         {/* Past Ventures */}
         <div className="space-y-8">
           <h3 className="text-2xl font-normal text-foreground mb-8 text-center">
-            Experience
+            Genesis
           </h3>
           
           <div className="grid md:grid-cols-2 gap-6">
