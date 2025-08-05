@@ -42,12 +42,6 @@ export const Genesis = () => {
       narrative: "An innovation platform connecting entrepreneurs with Fortune 500s. This vantage point provided a clear signal of the profound friction between legacy systems (Civ²) and the emerging paradigms of a new technological era, highlighting the inertia that Civ³ must overcome."
     },
     {
-      title: "Executive Office",
-      role: "Strategist",
-      location: "Dubai, UAE",
-      narrative: "Counseled sovereign entities on national strategy and long-term capital allocation. This was an early immersion into mapping the geopolitical implications of AI, long before it was mainstream—a glimpse into how the nation-state of Civ² would grapple with the core driver of Civ³."
-    },
-    {
       title: "Ursa Minor",
       role: "Chief Operating Officer",
       location: "Boulder, CO",
