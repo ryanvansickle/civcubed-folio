@@ -173,8 +173,13 @@ class GenerativeHeroAnimation {
   }
 
   destroy() {
-    if (this.renderer && this.container) {
-      this.container.removeChild(this.renderer.domElement);
+    if (this.renderer && this.container && this.renderer.domElement) {
+      // Check if the element is actually a child before removing
+      if (this.container.contains(this.renderer.domElement)) {
+        this.container.removeChild(this.renderer.domElement);
+      }
+      // Dispose of Three.js resources
+      this.renderer.dispose();
     }
   }
 }
