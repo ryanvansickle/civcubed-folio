@@ -266,10 +266,30 @@ export const Hero = () => {
               onClick={() => {
                 const nextSection = document.getElementById('new-substrate');
                 if (nextSection) {
-                  nextSection.scrollIntoView({ 
-                    behavior: 'smooth',
-                    block: 'start'
-                  });
+                  const targetPosition = nextSection.offsetTop;
+                  const startPosition = window.pageYOffset;
+                  const distance = targetPosition - startPosition;
+                  const duration = 2500; // 2.5 seconds for very slow, elegant scroll
+                  let start: number | null = null;
+
+                  const easeInOutCubic = (t: number) => {
+                    return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+                  };
+
+                  const animation = (currentTime: number) => {
+                    if (start === null) start = currentTime;
+                    const timeElapsed = currentTime - start;
+                    const progress = Math.min(timeElapsed / duration, 1);
+                    const ease = easeInOutCubic(progress);
+                    
+                    window.scrollTo(0, startPosition + distance * ease);
+                    
+                    if (timeElapsed < duration) {
+                      requestAnimationFrame(animation);
+                    }
+                  };
+
+                  requestAnimationFrame(animation);
                 }
               }}
             >
