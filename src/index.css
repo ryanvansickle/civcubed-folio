@@ -349,14 +349,17 @@
 
   /* 2. Apply the animation and styles to the hero name */
   .hero-name-shimmer {
+    /* Fallback color in case gradient doesn't work */
+    color: hsl(var(--foreground));
+    
     /* The Gradient: A mix of transparent, bright turquoise, and cyan */
     background-image: linear-gradient(
       90deg, /* Gradient flows from left to right */
-      rgba(255, 255, 255, 0) 0%,
-      rgba(255, 255, 255, 0) 25%, /* Start with transparency */
+      hsl(var(--foreground)) 0%,
+      hsl(var(--foreground)) 25%, /* Start with normal text color */
       #40E0D0 50%, /* Bright turquoise highlight in the middle */
-      rgba(255, 255, 255, 0) 75%, /* Fade back to transparent */
-      rgba(255, 255, 255, 0) 100%
+      hsl(var(--foreground)) 75%, /* Back to normal text color */
+      hsl(var(--foreground)) 100%
     );
 
     /* Make the gradient much wider than the text to allow for movement */
@@ -366,9 +369,8 @@
     background-clip: text;
     -webkit-background-clip: text; /* Safari/Chrome support */
 
-    /* Make the text color transparent so the gradient shows through */
-    color: transparent;
-    -webkit-text-fill-color: transparent; /* Safari/Chrome support */
+    /* Make the text color transparent so the gradient shows through - with fallback */
+    -webkit-text-fill-color: transparent;
     
     /* Apply the animation */
     animation-name: shimmer-pulse;
