@@ -122,7 +122,7 @@ export const TimelineExploration = () => {
               
               return (
                 <CardWrapper key={index} {...cardProps}>
-                  <Card className="interactive-card bg-white border-border/20 shadow-soft p-6 h-full hover:shadow-lg hover:shadow-amber-400/25 transition-all duration-300">
+                  <Card className="interactive-card bg-white border-border/20 shadow-soft p-6 h-full hover:shadow-lg hover:shadow-amber-400/12 transition-all duration-300">
                     <CardHeader className="pb-4">
                       <CardTitle className="text-xl font-normal text-foreground">
                         {venture.title}
