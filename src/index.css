@@ -345,7 +345,7 @@
     }
     50% { 
       transform: scale(1.02);
-      color: hsl(var(--accent-turquoise));
+      color: hsl(var(--accent-gold));
     }
     100% { 
       transform: scale(1);
