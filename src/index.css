@@ -367,7 +367,7 @@
       linear-gradient(90deg, transparent 0%, #40E0D0 50%, transparent 100%),
       
       /* Layer 2: Soft Aurora Pulse (middle layer) */
-      linear-gradient(90deg, transparent 0%, #C070D0 50%, transparent 100%),
+      linear-gradient(90deg, transparent 0%, #00A0A0 50%, transparent 100%),
 
       /* Layer 3: Static Base Text Color (bottom layer) */
       linear-gradient(90deg, #b0b0b0, #d8d8d8);
