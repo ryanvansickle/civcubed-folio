@@ -335,47 +335,29 @@
     border-color: transparent;
   }
 
-  /* --- FINAL RECOMMENDED: Internal Glow Animation --- */
+  /* --- ELEGANT BREATHING ANIMATION --- */
 
-  /* 1. Define the animations */
-
-  /* For the soft, pulsing glow emanating from the text */
-  @keyframes internal-glow {
-    0% {
-      /* Starts with a bright, wide glow */
-      text-shadow: 0 0 20px rgba(218, 165, 32, 0.8), 0 0 40px rgba(255, 238, 160, 0.6); 
+  /* Gentle scale breathing with subtle color shift */
+  @keyframes elegant-breathe {
+    0% { 
+      transform: scale(1);
+      color: hsl(var(--foreground));
     }
-    50% {
-      /* Blooms to an intense, massive aura */
-      text-shadow: 0 0 60px rgba(255, 238, 160, 1), 0 0 100px rgba(218, 165, 32, 0.8), 0 0 140px rgba(255, 215, 0, 0.6);
+    50% { 
+      transform: scale(1.02);
+      color: hsl(var(--accent-turquoise));
     }
-    100% {
-      /* Returns to bright glow */
-      text-shadow: 0 0 20px rgba(218, 165, 32, 0.8), 0 0 40px rgba(255, 238, 160, 0.6);
+    100% { 
+      transform: scale(1);
+      color: hsl(var(--foreground));
     }
   }
 
-  /* For the dramatic "breathing" of the text's opacity */
-  @keyframes breathing-pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.4; }
-    100% { opacity: 1; }
-  }
-
-
-  /* 2. Apply the new styles to the hero name element */
+  /* Apply elegant breathing to the hero name */
   #hero-name-shimmer {
-    /* Set a solid, elegant base color for the text itself */
-    color: #DAA520 !important; /* A rich GoldenRod color */
-    
-    /* Remove all the complex background properties from previous attempts */
-    background: none !important;
-    
-    /* Apply the two asynchronous animations */
-    /* The !important tag is retained as a safeguard against theme overrides */
-    animation:
-      internal-glow  7s ease-in-out infinite,
-      breathing-pulse 11s ease-in-out infinite !important;
+    transform-origin: center;
+    animation: elegant-breathe 4s ease-in-out infinite !important;
+    transition: transform 0.3s ease !important;
   }
 
   /*
