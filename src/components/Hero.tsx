@@ -244,7 +244,11 @@ export const Hero = () => {
         <div className="max-w-6xl mx-auto">
           {/* Main Heading */}
           <h1 id="hero-name-shimmer" className="text-6xl md:text-8xl lg:text-9xl font-normal mb-8 tracking-tight leading-[1.1] animate-fade-in">
-            Ryan Van Sickle
+            {"Ryan Van Sickle".split("").map((char, index) => (
+              <span key={index} className="wave-letter">
+                {char === " " ? "\u00A0" : char}
+              </span>
+            ))}
           </h1>
 
           {/* Subtitle */}

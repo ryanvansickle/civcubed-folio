@@ -335,30 +335,48 @@
     border-color: transparent;
   }
 
-  /* --- ELEGANT BREATHING ANIMATION --- */
+  /* --- WAVE ANIMATION --- */
 
-  /* Gentle scale breathing with subtle color shift */
-  @keyframes elegant-breathe {
-    0% { 
-      transform: scale(1);
+  /* Individual letter wave animation */
+  @keyframes letter-wave {
+    0%, 60%, 100% { 
+      transform: translateY(0) scale(1);
       color: hsl(var(--foreground));
     }
-    50% { 
-      transform: scale(1.02);
+    30% { 
+      transform: translateY(-8px) scale(1.05);
       color: hsl(var(--accent-gold));
     }
-    100% { 
-      transform: scale(1);
-      color: hsl(var(--foreground));
-    }
   }
 
-  /* Apply elegant breathing to the hero name */
+  /* Apply wave to the hero name */
   #hero-name-shimmer {
-    transform-origin: center;
-    animation: elegant-breathe 4s ease-in-out infinite !important;
-    transition: transform 0.3s ease !important;
+    display: inline-block;
   }
+
+  /* Style each character span for the wave */
+  #hero-name-shimmer .wave-letter {
+    display: inline-block;
+    animation: letter-wave 3s ease-in-out infinite;
+  }
+
+  /* Stagger the animation delay for each letter */
+  #hero-name-shimmer .wave-letter:nth-child(1) { animation-delay: 0s; }
+  #hero-name-shimmer .wave-letter:nth-child(2) { animation-delay: 0.1s; }
+  #hero-name-shimmer .wave-letter:nth-child(3) { animation-delay: 0.2s; }
+  #hero-name-shimmer .wave-letter:nth-child(4) { animation-delay: 0.3s; }
+  #hero-name-shimmer .wave-letter:nth-child(5) { animation-delay: 0.4s; }
+  #hero-name-shimmer .wave-letter:nth-child(6) { animation-delay: 0.5s; }
+  #hero-name-shimmer .wave-letter:nth-child(7) { animation-delay: 0.6s; }
+  #hero-name-shimmer .wave-letter:nth-child(8) { animation-delay: 0.7s; }
+  #hero-name-shimmer .wave-letter:nth-child(9) { animation-delay: 0.8s; }
+  #hero-name-shimmer .wave-letter:nth-child(10) { animation-delay: 0.9s; }
+  #hero-name-shimmer .wave-letter:nth-child(11) { animation-delay: 1.0s; }
+  #hero-name-shimmer .wave-letter:nth-child(12) { animation-delay: 1.1s; }
+  #hero-name-shimmer .wave-letter:nth-child(13) { animation-delay: 1.2s; }
+  #hero-name-shimmer .wave-letter:nth-child(14) { animation-delay: 1.3s; }
+  #hero-name-shimmer .wave-letter:nth-child(15) { animation-delay: 1.4s; }
+  #hero-name-shimmer .wave-letter:nth-child(16) { animation-delay: 1.5s; }
 
   /*
     Styles for the animated video logo container.
