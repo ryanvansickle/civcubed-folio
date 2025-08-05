@@ -1,221 +1,234 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useEffect, useRef } from "react";
-import { BackgroundMusic } from "@/components/BackgroundMusic";
-import * as THREE from "three";
 
-class GenerativeHeroAnimation {
-  private container: HTMLElement | null;
-  private scene: THREE.Scene;
-  private camera: THREE.PerspectiveCamera;
-  private renderer: THREE.WebGLRenderer;
-  private particles: THREE.InstancedMesh | null;
-  private particleData: Array<{
-    velocity: THREE.Vector3;
-    basePosition: THREE.Vector3;
-  }>;
-  private mouse: THREE.Vector2;
-  private scrollForce: number;
-  private clock: THREE.Clock;
-  private dummy: THREE.Object3D;
-  private params: {
-    particleCount: number;
-    hoverRadius: number;
-    repulsionStrength: number;
-    spawnChance: number;
-    scrollGravity: number;
-    oscillationFreq: number;
-    oscillationAmp: number;
-  };
-
-  constructor(containerId: string) {
-    this.container = document.getElementById(containerId);
-    if (!this.container) {
-      console.error("Animation container not found!");
-      return;
-    }
-
-    // Aggressively optimized parameters for smooth performance
-    this.params = {
-      particleCount: 7500, // 50% reduction from original 15,000
-      hoverRadius: 0.25, // Slightly larger for easier interaction
-      repulsionStrength: 0.1, // Reduced for simpler calculations
-      spawnChance: 0.02, // Further reduced spawn rate
-      scrollGravity: 0.025,
-      oscillationFreq: 6.0, // Reduced frequency
-      oscillationAmp: 0.03 // Reduced amplitude
-    };
-
-    // Setup
-    this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
-    this.camera.position.set(0, 0, 2);
-    this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    this.container.appendChild(this.renderer.domElement);
-
-    // State
-    this.mouse = new THREE.Vector2(999, 999);
-    this.scrollForce = 0;
-    this.clock = new THREE.Clock();
-    this.dummy = new THREE.Object3D();
-    this.particles = null;
-    this.particleData = [];
-
-    this.initParticles();
-    this.addEventListeners();
-    this.animate();
-  }
-
-  initParticles() {
-    // Ultra-simplified geometry - use basic sphere with minimal detail (50% polygon reduction)
-    const geometry = new THREE.SphereGeometry(0.002, 6, 4); // Much simpler than icosahedron
-    // Most basic material possible - no lighting, fog, or transparency
-    const material = new THREE.MeshBasicMaterial({ 
-      color: 0x444444,
-      transparent: false,
-      fog: false,
-      depthTest: false // Skip depth testing for better performance
-    });
-    this.particles = new THREE.InstancedMesh(geometry, material, this.params.particleCount);
-    
-    for (let i = 0; i < this.params.particleCount; i++) {
-      const position = new THREE.Vector3(
-        (Math.random() - 0.5) * 5,
-        (Math.random() - 0.5) * 3,
-        (Math.random() - 0.5) * 3
-      );
-      this.dummy.position.copy(position);
-      this.dummy.updateMatrix();
-      this.particles.setMatrixAt(i, this.dummy.matrix);
-
-      this.particleData.push({
-        velocity: new THREE.Vector3(),
-        basePosition: position.clone()
-      });
-    }
-    this.scene.add(this.particles);
-  }
-
-  addEventListeners() {
-    window.addEventListener('mousemove', (e) => {
-      this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-      this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-    });
-    window.addEventListener('scroll', () => {
-      const scrollY = window.scrollY;
-      const scrollPercent = Math.min(scrollY / (window.innerHeight * 0.5), 1);
-      this.scrollForce = scrollPercent * this.params.scrollGravity;
-    });
-    window.addEventListener('resize', () => {
-      this.camera.aspect = window.innerWidth / window.innerHeight;
-      this.camera.updateProjectionMatrix();
-      this.renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-  }
-
-  animate = () => {
-    const deltaTime = this.clock.getDelta();
-    const elapsedTime = this.clock.getElapsedTime();
-
-    if (!this.particles) return;
-
-    const mouseWorldPos = new THREE.Vector3(this.mouse.x * this.camera.aspect, this.mouse.y, 0).unproject(this.camera);
-
-    for (let i = 0; i < this.params.particleCount; i++) {
-      this.particles.getMatrixAt(i, this.dummy.matrix);
-      const currentPos = new THREE.Vector3().setFromMatrixPosition(this.dummy.matrix);
-      const data = this.particleData[i];
-
-      // Hover: Acceleration & Multiplication
-      const distanceToMouse = currentPos.distanceTo(mouseWorldPos);
-      if (distanceToMouse < this.params.hoverRadius) {
-        const repulsionForce = new THREE.Vector3().subVectors(currentPos, mouseWorldPos).normalize();
-        data.velocity.add(repulsionForce.multiplyScalar(this.params.repulsionStrength * deltaTime));
-        
-        if (Math.random() < this.params.spawnChance) {
-          // "Multiplication": re-use a distant particle to simulate spawning
-          const randomIndex = Math.floor(Math.random() * this.params.particleCount);
-          this.dummy.position.copy(currentPos);
-          this.dummy.updateMatrix();
-          this.particles.setMatrixAt(randomIndex, this.dummy.matrix);
-          this.particleData[randomIndex].velocity.copy(data.velocity).multiplyScalar(0.5);
-        }
-      }
-      
-      // Scroll: Downward acceleration with smooth ease-in
-      if (this.scrollForce > 0) {
-        data.velocity.y -= this.scrollForce * deltaTime;
-      } else {
-         // Return to base position when not scrolling
-         const returnForce = new THREE.Vector3().subVectors(data.basePosition, currentPos).multiplyScalar(0.001);
-         data.velocity.add(returnForce);
-      }
-
-      // Oscillation during scroll
-      if (this.scrollForce > 0.001) {
-          const oscillation = Math.sin(currentPos.y * this.params.oscillationFreq + elapsedTime) * this.mouse.x * this.params.oscillationAmp;
-          currentPos.x += oscillation;
-      }
-
-      // Update Physics
-      currentPos.add(data.velocity);
-      data.velocity.multiplyScalar(0.96); // Damping
-
-      this.dummy.position.copy(currentPos);
-      this.dummy.updateMatrix();
-      this.particles.setMatrixAt(i, this.dummy.matrix);
-    }
-
-    this.particles.instanceMatrix.needsUpdate = true;
-    this.renderer.render(this.scene, this.camera);
-    requestAnimationFrame(this.animate);
-  }
-
-  destroy() {
-    if (this.renderer && this.container && this.renderer.domElement) {
-      // Check if the element is actually a child before removing
-      if (this.container.contains(this.renderer.domElement)) {
-        this.container.removeChild(this.renderer.domElement);
-      }
-      // Dispose of Three.js resources
-      this.renderer.dispose();
-    }
-  }
-}
-
-const GenerativeParticles = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const animationRef = useRef<GenerativeHeroAnimation | null>(null);
+const BiosphereParticles = () => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const animationRef = useRef<number>();
+  const particlesRef = useRef<Array<{
+    x: number;
+    y: number;
+    vx: number;
+    vy: number;
+    originalVx: number;
+    originalVy: number;
+    size: number;
+    opacity: number;
+    baseOpacity: number;
+    targetX?: number;
+    targetY?: number;
+    isAligning: boolean;
+  }>>([]);
 
   useEffect(() => {
-    const initAnimation = () => {
-      if (containerRef.current && !animationRef.current) {
-        animationRef.current = new GenerativeHeroAnimation('hero-animation-container');
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Canvas setup
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    // Mouse tracking
+    let mouseX = 0;
+    let mouseY = 0;
+    let scrollY = 0;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      mouseX = e.clientX - rect.left;
+      mouseY = e.clientY - rect.top;
+    };
+
+    const handleScroll = () => {
+      scrollY = window.scrollY;
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('scroll', handleScroll);
+
+    // Initialize particles
+    const initParticles = () => {
+      particlesRef.current = [];
+      const particleCount = Math.min(100, Math.floor((canvas.width * canvas.height) / 8000));
+      
+      for (let i = 0; i < particleCount; i++) {
+        const vx = (Math.random() - 0.5) * 1.2;
+        const vy = (Math.random() - 0.5) * 1.2;
+        
+        particlesRef.current.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx,
+          vy,
+          originalVx: vx,
+          originalVy: vy,
+          size: Math.random() * 2 + 1.5,
+          opacity: Math.random() * 0.3 + 0.2,
+          baseOpacity: Math.random() * 0.3 + 0.2,
+          isAligning: false
+        });
       }
     };
 
-    const timeoutId = setTimeout(initAnimation, 100);
+    initParticles();
+
+    // Animation loop
+    const animate = () => {
+      // Clear canvas with slight trail effect
+      ctx.fillStyle = 'rgba(253, 251, 248, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const scrollProgress = Math.min(scrollY / 200, 1);
+      const isScrolling = scrollProgress > 0.1;
+
+      particlesRef.current.forEach((particle, index) => {
+        // Handle scroll alignment
+        if (isScrolling && !particle.isAligning) {
+          particle.isAligning = true;
+          // Create target position for flowing lines
+          const lineIndex = index % 8;
+          const lineSpacing = canvas.width / 9;
+          particle.targetX = lineSpacing * (lineIndex + 1);
+          particle.targetY = canvas.height + 100;
+        } else if (!isScrolling) {
+          particle.isAligning = false;
+          particle.targetX = undefined;
+          particle.targetY = undefined;
+        }
+
+        // Update position based on state
+        if (particle.isAligning && particle.targetX && particle.targetY) {
+          // Smooth transition to target position
+          const dx = particle.targetX - particle.x;
+          const dy = particle.targetY - particle.y;
+          particle.vx = dx * 0.02;
+          particle.vy = dy * 0.02 + 1;
+        } else {
+          // Organic drifting movement
+          particle.vx = particle.originalVx + Math.sin(Date.now() * 0.001 + index) * 0.2;
+          particle.vy = particle.originalVy + Math.cos(Date.now() * 0.001 + index) * 0.2;
+
+          // Mouse repulsion effect
+          const dx = mouseX - particle.x;
+          const dy = mouseY - particle.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          const repulseRadius = 120;
+
+          if (distance < repulseRadius && distance > 0) {
+            const force = (repulseRadius - distance) / repulseRadius;
+            const angle = Math.atan2(dy, dx);
+            particle.vx -= Math.cos(angle) * force * 0.8;
+            particle.vy -= Math.sin(angle) * force * 0.8;
+          }
+        }
+
+        // Apply movement
+        particle.x += particle.vx;
+        particle.y += particle.vy;
+
+        // Boundary wrapping
+        if (particle.x < -10) particle.x = canvas.width + 10;
+        if (particle.x > canvas.width + 10) particle.x = -10;
+        if (particle.y < -10) particle.y = canvas.height + 10;
+        if (particle.y > canvas.height + 10) particle.y = -10;
+
+        // Velocity damping
+        if (!particle.isAligning) {
+          particle.vx *= 0.98;
+          particle.vy *= 0.98;
+        }
+
+        // Opacity animation
+        particle.opacity = particle.baseOpacity + Math.sin(Date.now() * 0.002 + index) * 0.1;
+
+        // Mouse repulsion detection for color enhancement
+        const dx = mouseX - particle.x;
+        const dy = mouseY - particle.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        const isNearMouse = distance < 120;
+
+        // Draw particle with dynamic color
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+        
+        if (isNearMouse) {
+          // Gold accent when near mouse
+          const intensity = 1 - (distance / 120);
+          ctx.fillStyle = `rgba(212, 175, 55, ${particle.opacity * (0.5 + intensity * 0.5)})`;
+        } else {
+          // Default dark gray
+          ctx.fillStyle = `rgba(85, 85, 85, ${particle.opacity})`;
+        }
+        ctx.fill();
+
+        // Draw connections with enhanced interactions
+        if (scrollProgress > 0.2) {
+          // Enhanced connections during scroll - turquoise accent
+          particlesRef.current.slice(index + 1).forEach(otherParticle => {
+            const dx = particle.x - otherParticle.x;
+            const dy = particle.y - otherParticle.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            const maxDistance = 160;
+
+            if (distance < maxDistance) {
+              const lineOpacity = (1 - distance / maxDistance) * 0.4 * scrollProgress;
+              ctx.beginPath();
+              ctx.moveTo(particle.x, particle.y);
+              ctx.lineTo(otherParticle.x, otherParticle.y);
+              // Turquoise accent for organized flow
+              ctx.strokeStyle = `rgba(0, 160, 160, ${lineOpacity})`;
+              ctx.lineWidth = 0.8;
+              ctx.stroke();
+            }
+          });
+        } else {
+          // Subtle connections in default state
+          particlesRef.current.slice(index + 1).forEach(otherParticle => {
+            const dx = particle.x - otherParticle.x;
+            const dy = particle.y - otherParticle.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            const maxDistance = 120;
+
+            if (distance < maxDistance) {
+              const lineOpacity = (1 - distance / maxDistance) * 0.2;
+              ctx.beginPath();
+              ctx.moveTo(particle.x, particle.y);
+              ctx.lineTo(otherParticle.x, otherParticle.y);
+              ctx.strokeStyle = `rgba(136, 136, 136, ${lineOpacity})`;
+              ctx.lineWidth = 0.5;
+              ctx.stroke();
+            }
+          });
+        }
+      });
+
+      animationRef.current = requestAnimationFrame(animate);
+    };
+
+    animate();
 
     return () => {
-      clearTimeout(timeoutId);
+      window.removeEventListener('resize', resizeCanvas);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('scroll', handleScroll);
       if (animationRef.current) {
-        animationRef.current.destroy();
+        cancelAnimationFrame(animationRef.current);
       }
     };
   }, []);
 
   return (
-    <div 
-      ref={containerRef}
-      id="hero-animation-container"
+    <canvas
+      ref={canvasRef}
       className="absolute inset-0 w-full h-full"
-      style={{ 
-        pointerEvents: 'none',
-        zIndex: 1,
-        overflow: 'hidden'
-      }}
+      style={{ pointerEvents: 'none' }}
     />
   );
 };
@@ -223,11 +236,8 @@ const GenerativeParticles = () => {
 export const Hero = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
-      {/* Background Music */}
-      <BackgroundMusic />
-      
-      {/* Advanced Three.js Generative Animation */}
-      <GenerativeParticles />
+      {/* Biosphere Particle Animation */}
+      <BiosphereParticles />
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-12 py-20 text-center">
