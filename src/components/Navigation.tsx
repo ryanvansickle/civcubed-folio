@@ -11,9 +11,22 @@ export const Navigation = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <div className="flex items-center">
-            <h1 className="text-lg font-medium text-foreground tracking-wide">
-              RyanV.xyz
-            </h1>
+            <a href="/" className="flex items-center space-x-3 group">
+              <svg 
+                width="24" 
+                height="24" 
+                viewBox="0 0 100 100" 
+                fill="none" 
+                xmlns="http://www.w3.org/2000/svg" 
+                aria-label="Ryan Van Sickle Logo"
+                className="text-foreground group-hover:text-accent-turquoise transition-colors duration-300"
+              >
+                <path d="M0 0 L50 100 L100 0 L78 0 L50 56 L22 0 L0 0Z" fill="currentColor"/>
+              </svg>
+              <h1 className="text-lg font-medium text-foreground tracking-wide group-hover:text-accent-turquoise transition-colors duration-300">
+                RyanV.xyz
+              </h1>
+            </a>
           </div>
 
           {/* Desktop Navigation */}

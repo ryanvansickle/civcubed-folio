@@ -9,11 +9,21 @@ export const Footer = () => {
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             {/* Brand */}
             <div className="md:col-span-2">
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-gradient-hero rounded-lg flex items-center justify-center">
-                  <span className="text-primary-foreground font-bold text-lg">R</span>
-                </div>
-                <span className="font-semibold text-lg text-foreground">Ryan Van Sickle</span>
+              <div className="flex items-center space-x-3 mb-4">
+                <a href="/" className="flex items-center space-x-3 group">
+                  <svg 
+                    width="24" 
+                    height="24" 
+                    viewBox="0 0 100 100" 
+                    fill="none" 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    aria-label="Ryan Van Sickle Logo"
+                    className="text-foreground group-hover:text-accent-turquoise transition-colors duration-300"
+                  >
+                    <path d="M0 0 L50 100 L100 0 L78 0 L50 56 L22 0 L0 0Z" fill="currentColor"/>
+                  </svg>
+                  <span className="text-lg font-medium text-foreground tracking-wide group-hover:text-accent-turquoise transition-colors duration-300">Ryan Van Sickle</span>
+                </a>
               </div>
               <p className="text-muted-foreground leading-relaxed max-w-md">
                 Futurist, author, and strategic thinker exploring the next evolution 
