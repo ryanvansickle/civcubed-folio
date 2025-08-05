@@ -10,6 +10,16 @@ export const TimelineExploration = () => {
 
   const pastVentures = [
     {
+      title: "Synchro",
+      role: "Co-Founder, CMO",
+      link: "https://www.besynchro.com"
+    },
+    {
+      title: "Noma",
+      role: "Co-Founder, CMO",
+      link: "https://www.nomalife.com"
+    },
+    {
       title: "Telos",
       role: "Co-Founder",
       tagline: "The Nexus for Builders of the Decentralized Future."
@@ -93,25 +103,37 @@ export const TimelineExploration = () => {
           </h3>
           
           <div className="grid md:grid-cols-2 gap-6">
-            {pastVentures.map((venture, index) => (
-              <Card key={index} className="interactive-card bg-card border-border/20 shadow-soft p-6">
-                <CardHeader className="pb-4">
-                  <CardTitle className="text-xl font-normal text-foreground">
-                    {venture.title}
-                    {venture.role && (
-                      <span className="text-base text-foreground/60 font-light ml-2">
-                        ({venture.role})
-                      </span>
-                    )}
-                  </CardTitle>
-                  {venture.tagline && (
-                    <CardDescription className="text-foreground/70 italic">
-                      {venture.tagline}
-                    </CardDescription>
-                  )}
-                </CardHeader>
-              </Card>
-            ))}
+            {pastVentures.map((venture, index) => {
+              const CardWrapper = venture.link ? 'a' : 'div';
+              const cardProps = venture.link ? { 
+                href: venture.link, 
+                target: "_blank", 
+                rel: "noopener noreferrer",
+                className: "block"
+              } : {};
+              
+              return (
+                <CardWrapper key={index} {...cardProps}>
+                  <Card className="interactive-card bg-card border-border/20 shadow-soft p-6 h-full hover:shadow-lg transition-shadow">
+                    <CardHeader className="pb-4">
+                      <CardTitle className="text-xl font-normal text-foreground">
+                        {venture.title}
+                        {venture.role && (
+                          <span className="text-base text-foreground/60 font-light ml-2">
+                            ({venture.role})
+                          </span>
+                        )}
+                      </CardTitle>
+                      {venture.tagline && (
+                        <CardDescription className="text-foreground/70 italic">
+                          {venture.tagline}
+                        </CardDescription>
+                      )}
+                    </CardHeader>
+                  </Card>
+                </CardWrapper>
+              );
+            })}
           </div>
         </div>
       </div>
