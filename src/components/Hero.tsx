@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useEffect, useRef } from "react";
+import { BackgroundMusic } from "@/components/BackgroundMusic";
 import * as THREE from "three";
 
 class GenerativeHeroAnimation {
@@ -210,6 +211,9 @@ const GenerativeParticles = () => {
 export const Hero = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
+      {/* Background Music */}
+      <BackgroundMusic />
+      
       {/* Advanced Three.js Generative Animation */}
       <GenerativeParticles />
 
