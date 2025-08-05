@@ -19,7 +19,7 @@ export const NewSubstrate = () => {
           </p>
           
           <p className="text-xl leading-relaxed text-foreground/80">
-            This is the focus of my life's work and forthcoming book, Civilization³. After a career spent founding companies, advising sovereign funds, and building innovation platforms, I am currently on sabbatical, synthesizing these experiences into a framework for navigating our world in the aftermath of AGI.
+            This is the focus of my life's work and forthcoming book, Civilization³. After a career spent founding companies, advising startups, and building innovation platforms, I am currently on sabbatical, synthesizing these experiences into a framework for navigating our world in the aftermath of AGI.
           </p>
           
           <p className="text-xl leading-relaxed text-foreground/80">
