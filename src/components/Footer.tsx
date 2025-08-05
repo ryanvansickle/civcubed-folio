@@ -89,20 +89,9 @@ export const Footer = () => {
           <Separator className="my-8" />
 
           {/* Bottom Footer */}
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="text-sm text-muted-foreground">
-              © 2024 Ryan Van Sickle. All rights reserved.
-            </div>
-            <div className="flex gap-6 text-sm text-muted-foreground">
-              <a href="#" className="hover:text-foreground transition-colors">
-                Privacy Policy
-              </a>
-              <a href="#" className="hover:text-foreground transition-colors">
-                Terms of Service
-              </a>
-              <a href="#" className="hover:text-foreground transition-colors">
-                Media Inquiries
-              </a>
+          <div className="flex justify-center">
+            <div className="text-sm text-muted-foreground text-center">
+              © 2025 Ryan Van Sickle. All rights reserved.
             </div>
           </div>
         </div>
