@@ -335,41 +335,40 @@
     border-color: transparent;
   }
 
-  /* --- WORKING: Simple Hero Name Animation --- */
+  /* --- RELIABLE: Hero Name Animation with Fallback --- */
 
-  @keyframes hero-shimmer {
-    0% {
-      background-position: -200% center;
+  @keyframes hero-glow {
+    0%, 100% {
+      text-shadow: 0 0 20px rgba(64, 224, 208, 0.3);
+      opacity: 0.8;
     }
-    100% {
-      background-position: 200% center;
+    50% {
+      text-shadow: 0 0 30px rgba(64, 224, 208, 0.6), 0 0 40px rgba(64, 224, 208, 0.4);
+      opacity: 1;
     }
   }
 
   @keyframes hero-pulse {
     0%, 100% { 
-      opacity: 1; 
+      transform: scale(1);
     }
     50% { 
-      opacity: 0.75; 
+      transform: scale(1.01);
     }
   }
 
   .hero-name-shimmer {
-    background: linear-gradient(
-      90deg,
-      hsl(var(--muted-foreground)) 25%,
-      hsl(var(--accent-turquoise)) 50%,
-      hsl(var(--muted-foreground)) 75%
-    );
-    background-size: 200% 100%;
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
+    color: #888888;
+    position: relative;
     animation: 
-      hero-shimmer 3s ease-in-out infinite,
-      hero-pulse 6s ease-in-out infinite;
+      hero-glow 3s ease-in-out infinite,
+      hero-pulse 4s ease-in-out infinite;
+    transition: all 0.3s ease;
+  }
+
+  .hero-name-shimmer:hover {
+    color: #40E0D0;
+    text-shadow: 0 0 40px rgba(64, 224, 208, 0.8);
   }
 
   /*
