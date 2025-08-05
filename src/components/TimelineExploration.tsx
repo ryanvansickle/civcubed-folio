@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 export const TimelineExploration = () => {
   const currentWork = {
     title: "Current Work: Civilization³",
-    tagline: "A Framework for the Next Human Operating System.",
+    tagline: "A Framework for Next Era of Human Civilization",
     description: "I am currently authoring a book on the next epoch of human civilization, catalyzed by the convergence of Artificial General Intelligence, synthetic biology, and decentralized systems."
   };
 
