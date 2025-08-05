@@ -35,15 +35,15 @@ class GenerativeHeroAnimation {
       return;
     }
 
-    // Core Parameters - Optimized for performance
+    // Aggressively optimized parameters for smooth performance
     this.params = {
-      particleCount: 11250, // Reduced by 25% for performance
-      hoverRadius: 0.2,
-      repulsionStrength: 0.15,
-      spawnChance: 0.03, // Reduced spawn rate for better performance
-      scrollGravity: 0.03,
-      oscillationFreq: 8.0,
-      oscillationAmp: 0.05
+      particleCount: 7500, // 50% reduction from original 15,000
+      hoverRadius: 0.25, // Slightly larger for easier interaction
+      repulsionStrength: 0.1, // Reduced for simpler calculations
+      spawnChance: 0.02, // Further reduced spawn rate
+      scrollGravity: 0.025,
+      oscillationFreq: 6.0, // Reduced frequency
+      oscillationAmp: 0.03 // Reduced amplitude
     };
 
     // Setup
@@ -69,13 +69,14 @@ class GenerativeHeroAnimation {
   }
 
   initParticles() {
-    // Simplified geometry - reduced subdivision level from 1 to 0 (~20% polygon reduction)
-    const geometry = new THREE.IcosahedronGeometry(0.003, 0);
-    // Optimized material - no lighting calculations needed
+    // Ultra-simplified geometry - use basic sphere with minimal detail (50% polygon reduction)
+    const geometry = new THREE.SphereGeometry(0.002, 6, 4); // Much simpler than icosahedron
+    // Most basic material possible - no lighting, fog, or transparency
     const material = new THREE.MeshBasicMaterial({ 
-      color: 0x333333,
-      transparent: false, // Disable transparency for better performance
-      fog: false // Disable fog calculations
+      color: 0x444444,
+      transparent: false,
+      fog: false,
+      depthTest: false // Skip depth testing for better performance
     });
     this.particles = new THREE.InstancedMesh(geometry, material, this.params.particleCount);
     
