@@ -10,11 +10,6 @@ export const TimelineExploration = () => {
 
   const pastVentures = [
     {
-      title: "Synchro",
-      role: "Co-Founder, CMO",
-      link: "https://www.besynchro.com"
-    },
-    {
       title: "Noma",
       role: "Co-Founder, CMO",
       link: "https://www.nomalife.com"
@@ -22,6 +17,11 @@ export const TimelineExploration = () => {
     {
       title: "Aethos",
       role: "Advisor"
+    },
+    {
+      title: "Synchro",
+      role: "Co-Founder, CMO",
+      link: "https://www.besynchro.com"
     },
     {
       title: "Wilder World",
