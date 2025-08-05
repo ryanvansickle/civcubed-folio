@@ -360,24 +360,24 @@
     transform: scale(1.05);
   }
 
-  /* Genesis Card Dynamic Expansion Effect */
+  /* "KETAMINE MODE" GENESIS CARD ANIMATION */
   .genesis-card {
     background-color: #f9f9f9;
     border: 1px solid #eee;
     padding: 2rem;
     border-radius: 8px;
-    /* Start with a subtle shadow for smoother transitions */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
-    /* Slower, gentler timing with ease-in-out */
-    transition: transform 0.5s ease-in-out, 
-                box-shadow 0.5s ease-in-out;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+
+    /* DURATION & EASING: The card's own drift is slow and smooth. */
+    transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1), 
+                box-shadow 1.5s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .genesis-card:hover {
-    /* More subtle lift effect */
-    transform: translateY(-4px);
-    /* Softer hover shadow */
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+    /* THE SLOW DRIFT: A very subtle lift and scale-up over a long duration. */
+    transform: translateY(-6px) scale(1.02);
+    /* THE GLOW: The shadow expands into more of an aura. */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   }
 
   .card-content {
@@ -385,29 +385,41 @@
   }
 
   .card-state {
-    transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-                max-height 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    /* DURATION: The state change itself is extremely slow for a dreamlike feel. */
+    transition: opacity 2.5s cubic-bezier(0.87, 0, 0.13, 1),
+                filter 2.5s cubic-bezier(0.87, 0, 0.13, 1),
+                max-height 2s cubic-bezier(0.87, 0, 0.13, 1); /* Height expands slightly faster */
     overflow: hidden;
   }
 
+  /* Default state is sharp and visible. */
   .card-default-state {
     opacity: 1;
+    filter: blur(0px);
     max-height: 200px;
   }
 
+  /* Hover state starts completely invisible and blurred. */
   .card-hover-state {
     opacity: 0;
+    filter: blur(10px); /* Start blurred out */
     max-height: 0;
   }
 
+  /* ON HOVER: The default state slowly dissolves into a blur. */
   .genesis-card:hover .card-default-state {
     opacity: 0;
+    filter: blur(10px);
     max-height: 0;
   }
 
+  /* ON HOVER: The hover state slowly emerges from the blur. */
   .genesis-card:hover .card-hover-state {
     opacity: 1;
+    filter: blur(0px); /* Becomes sharp */
     max-height: 500px;
+    /* Add a slight delay so the card starts moving first, then the text transforms. */
+    transition-delay: 0.2s; 
   }
 
   .card-title {
