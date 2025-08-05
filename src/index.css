@@ -335,67 +335,64 @@
     border-color: transparent;
   }
 
-  /* --- FINAL EVOLVED: Multi-Layered Ethereal Animation --- */
+  /* --- FINAL REFINED: Single Ethereal Aurora Animation --- */
 
-  /* 1. Define all three animations */
+  /* 1. Define the animations */
 
-  /* For the fast, sharp turquoise glint */
-  @keyframes shimmer-glint {
-    0% { background-position: -100% 0, 100% 0, 0 0; }
-    100% { background-position: 100% 0, -100% 0, 0 0; }
+  /* For the single, slow-moving aurora shimmer */
+  @keyframes aurora-shimmer {
+    0% {
+      /* Start with the shimmer's position off-screen to the left */
+      background-position: -150% center, 0% center;
+    }
+    100% {
+      /* End with the shimmer's position off-screen to the right */
+      background-position: 150% center, 0% center;
+    }
   }
 
-  /* For the slow, soft aurora pulse */
-  @keyframes aurora-pulse {
-    0% { background-position: 100% 0, -100% 0, 0 0; }
-    100% { background-position: -100% 0, 100% 0, 0 0; }
-  }
-
-  /* For the slow "breathing" of the whole element */
+  /* For the slow, permeating "breathing" effect */
   @keyframes breathing-pulse {
     0% { opacity: 1; }
-    50% { opacity: 0.75; }
+    50% { opacity: 0.7; }
     100% { opacity: 1; }
   }
 
 
-  /* 2. Apply all styles and animations to the hero name element */
-  .hero-name-shimmer {
-    /* --- The Multi-Background Stack --- */
+  /* 2. Apply all styles to the hero name element */
+  #hero-name-shimmer {
+    /* --- The Two-Layer Background --- */
     background-image:
-      /* Layer 1: Sharp Turquoise Glint (top layer) */
-      linear-gradient(90deg, transparent 0%, #40E0D0 50%, transparent 100%),
-      
-      /* Layer 2: Soft Aurora Pulse (middle layer) */
-      linear-gradient(90deg, transparent 0%, #00A0A0 50%, transparent 100%),
-
-      /* Layer 3: Static Base Text Color (bottom layer) */
+      /* Layer 1: A more beautiful, wider, softer turquoise aurora */
+      linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(0, 245, 255, 0.4) 40%,  /* Cyan "halo" */
+        #40E0D0 50%,                 /* Rich Turquoise Core */
+        rgba(0, 245, 255, 0.4) 60%,  /* Cyan "halo" */
+        transparent 100%
+      ),
+      /* Layer 2: The static base text color */
       linear-gradient(90deg, #b0b0b0, #d8d8d8);
 
-    /* --- Size and Position for each background respectively --- */
-    background-size:
-      25% 100%,  /* Glint is a tight, 25% wide beam */
-      50% 100%,  /* Aurora is a broader, 50% wide pulse */
-      100% 100%; /* Base color covers the whole area */
+    /* Define the size for each background */
+    background-size: 60% 100%, 100% 100%; /* Wider shimmer, full base */
 
-    background-position:
-      -100% 0,   /* Glint starts off-screen left */
-      100% 0,    /* Aurora starts off-screen right */
-      0 0;       /* Base color is static */
-
+    /* Set the starting positions for the backgrounds */
+    background-position: -150% center, 0% center;
+    
     background-repeat: no-repeat;
     
-    /* --- Clip all backgrounds to the text shape --- */
+    /* --- The Text Clipping Effect --- */
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
     -webkit-text-fill-color: transparent;
     
-    /* --- Apply all three animations with different timings --- */
+    /* --- Apply the Animations with !important to ensure they run --- */
     animation: 
-      shimmer-glint  6s  ease-in-out infinite,
-      aurora-pulse   11s ease-in-out infinite,
-      breathing-pulse 9s  ease-in-out infinite;
+      aurora-shimmer 8s ease-in-out infinite,
+      breathing-pulse 10s ease-in-out infinite !important;
   }
 
   /*
