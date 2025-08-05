@@ -335,23 +335,30 @@
     border-color: transparent;
   }
 
-  /* --- FINAL REFINED: Single Ethereal Aurora Animation --- */
+  /* --- FINAL VOLUMETRIC: Gold Pulsing Shimmer --- */
 
   /* 1. Define the animations */
 
-  /* For the single, slow-moving aurora shimmer */
-  @keyframes aurora-shimmer {
+  /* New keyframes for a diagonal, pulsing shimmer */
+  @keyframes volumetric-gold-shimmer {
     0% {
-      /* Start with the shimmer's position off-screen to the left */
-      background-position: -150% center, 0% center;
+      /* Starts top-left, small */
+      background-position: -100% -100%, 0% 0%;
+      background-size: 50% 100%, 100% 100%;
+    }
+    50% {
+      /* Blooms to be large and bright in the center */
+      background-position: 50% 50%, 0% 0%;
+      background-size: 150% 250%, 100% 100%;
     }
     100% {
-      /* End with the shimmer's position off-screen to the right */
-      background-position: 150% center, 0% center;
+      /* Ends bottom-right, small again */
+      background-position: 200% 200%, 0% 0%;
+      background-size: 50% 100%, 100% 100%;
     }
   }
 
-  /* For the slow, permeating "breathing" effect */
+  /* The slow "breathing" effect remains the same */
   @keyframes breathing-pulse {
     0% { opacity: 1; }
     50% { opacity: 0.7; }
@@ -359,27 +366,25 @@
   }
 
 
-  /* 2. Apply all styles to the hero name element */
+  /* 2. Apply the new styles to the hero name element */
   #hero-name-shimmer {
-    /* --- The Two-Layer Background --- */
+    /* --- The New Gold Background Stack --- */
     background-image:
-      /* Layer 1: A more beautiful, wider, softer turquoise aurora */
-      linear-gradient(
-        90deg,
-        transparent 0%,
-        rgba(0, 245, 255, 0.4) 40%,  /* Cyan "halo" */
-        #40E0D0 50%,                 /* Rich Turquoise Core */
-        rgba(0, 245, 255, 0.4) 60%,  /* Cyan "halo" */
-        transparent 100%
+      /* Layer 1: A soft, circular, volumetric gold light */
+      radial-gradient(
+        circle at center,
+        rgba(255, 238, 160, 0.8) 0%,  /* Bright, light gold core (FFFEEA0) */
+        #DAA520 50%,                  /* Richer gold (GoldenRod) */
+        transparent 80%
       ),
-      /* Layer 2: The static base text color */
-      linear-gradient(90deg, #b0b0b0, #d8d8d8);
+      /* Layer 2: The static base text color (a darker grey for contrast) */
+      linear-gradient(90deg, #909090, #b0b0b0);
 
-    /* Define the size for each background */
-    background-size: 60% 100%, 100% 100%; /* Wider shimmer, full base */
+    /* Define the starting size for each background */
+    background-size: 50% 100%, 100% 100%;
 
-    /* Set the starting positions for the backgrounds */
-    background-position: -150% center, 0% center;
+    /* Define the starting position for each background */
+    background-position: -100% -100%, 0% 0%;
     
     background-repeat: no-repeat;
     
@@ -389,9 +394,9 @@
     color: transparent;
     -webkit-text-fill-color: transparent;
     
-    /* --- Apply the Animations with !important to ensure they run --- */
+    /* --- Apply the New Animations --- */
     animation: 
-      aurora-shimmer 8s ease-in-out infinite,
+      volumetric-gold-shimmer 8s ease-in-out infinite,
       breathing-pulse 10s ease-in-out infinite !important;
   }
 
