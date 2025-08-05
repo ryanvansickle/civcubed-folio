@@ -22,7 +22,7 @@ export const Footer = () => {
                   >
                     <path d="M0 0 L50 100 L100 0 L78 0 L50 56 L22 0 L0 0Z" fill="currentColor"/>
                   </svg>
-                  <span className="text-lg font-medium text-foreground tracking-wide group-hover:text-accent-turquoise transition-colors duration-300">Ryan Van Sickle</span>
+                  <h1 className="text-lg font-medium text-foreground tracking-wide group-hover:text-accent-turquoise transition-colors duration-300">Ryan Van Sickle</h1>
                 </a>
               </div>
               <p className="text-muted-foreground leading-relaxed max-w-md">
