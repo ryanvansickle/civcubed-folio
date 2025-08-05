@@ -272,28 +272,46 @@
   }
 
   /*
-    Hypnotic glowing border animation for section tags.
+    Hypnotic tracing border animation for section tags.
     This targets the "About", "Experience", and "Foundations" tags.
   */
   .section-tag {
     position: relative;
-    overflow: hidden; /* Keeps the glow contained within the rounded corners */
     z-index: 1;
+    /* The default border shown when not hovered */
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 9999px; /* Pill shape */
+    background-color: transparent; /* The span itself is see-through */
+    overflow: hidden; /* This is crucial for the effect */
   }
 
-  /* This pseudo-element creates the animated gradient border */
+  /* The spinning gradient layer that forms the glowing border */
   .section-tag::before {
     content: '';
     position: absolute;
-    z-index: -1;
+    z-index: -2; /* Sits behind the mask */
     top: 50%;
     left: 50%;
-    width: 200%; /* Make it larger to ensure coverage when spinning */
+    width: 200%;
     height: 200%;
     background: conic-gradient(from 180deg at 50% 50%, rgba(64, 224, 208, 0) 0deg, #40E0D0 35%, rgba(64, 224, 208, 0) 70%);
     opacity: 0;
     transform: translate(-50%, -50%);
-    transition: opacity 0.5s ease-in-out;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  /* This ::after pseudo-element is a mask that covers the center of the
+     gradient, leaving only the edges visible, creating the "trace" effect. */
+  .section-tag::after {
+    content: '';
+    position: absolute;
+    z-index: -1; /* Sits on top of the gradient, behind the text */
+    top: 1px;    /* Inset by the desired border thickness */
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
+    background-color: #f9fafb; /* MUST match the page background color */
+    border-radius: 9999px; /* Match the parent's border-radius */
   }
 
   /* The keyframe animation that spins the gradient */
@@ -306,9 +324,14 @@
     }
   }
 
-  /* On hover, make the border visible and start the animation */
+  /* On hover, fade in the gradient and start the animation */
   .section-tag:hover::before {
     opacity: 1;
     animation: spin-border 4s linear infinite;
+  }
+
+  /* On hover, make the default border transparent so only the gradient shows */
+  .section-tag:hover {
+    border-color: transparent;
   }
 }
