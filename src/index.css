@@ -335,70 +335,72 @@
     border-color: transparent;
   }
 
-  /* --- FINAL: Permeating Shimmer & Pulse Animation --- */
+  /* --- DEBUGGED & HARDENED: Permeating Shimmer Animation --- */
 
-  /* 1. Define the animations */
-
-  /* Animation for the fast turquoise glint */
+  /* 1. Define the animations (no changes here) */
   @keyframes shimmer-glint {
-    0% {
-      transform: translateX(-100%);
-    }
-    100% {
-      transform: translateX(100%);
-    }
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
   }
 
-  /* Animation for the slow, permeating breathing effect */
   @keyframes breathing-pulse {
-    0% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.6;
-    }
-    100% {
-      opacity: 1;
-    }
+    0% { opacity: 1; }
+    50% { opacity: 0.65; } /* Made the pulse slightly more subtle */
+    100% { opacity: 1; }
   }
 
 
   /* 2. Style the main text element */
   .hero-name-shimmer {
-    /* Set a visible base color for the text */
-    color: #c0c0c0; /* A neutral, light grey */
-    position: relative; /* Essential for positioning the ::before pseudo-element */
+    /* --- FIX: Ensure parent has a positioning context --- */
+    position: relative; 
     
-    /* Apply the slow breathing animation to the entire element */
+    /* Set the visible base color */
+    color: #c0c0c0;
+    
+    /* Apply the slow breathing animation */
     animation: breathing-pulse 8s ease-in-out infinite;
   }
 
-  /* 3. Create the shimmer layer with a pseudo-element */
+  /* 3. Style the shimmer pseudo-element */
   .hero-name-shimmer::before {
-    content: 'Ryan Van Sickle'; /* Must be the exact same text */
+    /* --- FIX: Ensure content text is identical --- */
+    content: 'Ryan Van Sickle';
+    
+    /* --- FIX: Absolute positioning relative to the parent --- */
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
+    z-index: 2; /* Ensure it's on top */
+    
+    /* --- FIX: Force ALL font properties to match the parent --- */
+    /* This is the most critical fix to prevent "double vision" */
+    font-family: inherit;
+    font-weight: inherit;
+    font-size: inherit;
+    letter-spacing: inherit;
+    font-style: inherit;
+    text-transform: inherit;
     
     /* The turquoise gradient for the glint */
     background-image: linear-gradient(
       90deg,
       rgba(0, 245, 255, 0) 0%,
-      rgba(0, 245, 255, 0.8) 50%,
+      rgba(64, 224, 208, 0.8) 50%, /* Turquoise */
       rgba(0, 245, 255, 0) 100%
     );
-    background-size: 50% 100%; /* A tighter, more focused shimmer */
+    background-size: 50% 100%;
     background-repeat: no-repeat;
     
-    /* The magic blend mode */
-    mix-blend-mode: screen; /* 'screen' or 'overlay' creates a beautiful light effect */
+    /* The blend mode to create the light effect */
+    mix-blend-mode: screen; 
     
     /* Apply the fast glint animation */
     animation: shimmer-glint 4s ease-in-out infinite;
     
-    /* Ensure the pseudo-element itself is not selectable */
+    /* Prevent user interaction with this layer */
     pointer-events: none;
   }
 
