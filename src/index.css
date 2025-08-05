@@ -335,69 +335,47 @@
     border-color: transparent;
   }
 
-  /* --- FINAL VOLUMETRIC: Gold Pulsing Shimmer --- */
+  /* --- FINAL RECOMMENDED: Internal Glow Animation --- */
 
   /* 1. Define the animations */
 
-  /* New keyframes for a diagonal, pulsing shimmer */
-  @keyframes volumetric-gold-shimmer {
+  /* For the soft, pulsing glow emanating from the text */
+  @keyframes internal-glow {
     0% {
-      /* Starts top-left, small */
-      background-position: -100% -100%, 0% 0%;
-      background-size: 50% 100%, 100% 100%;
+      /* Starts with a subtle, tight glow */
+      text-shadow: 0 0 8px rgba(218, 165, 32, 0.4); /* GoldenRod at 40% opacity */
     }
     50% {
-      /* Blooms to be large and bright in the center */
-      background-position: 50% 50%, 0% 0%;
-      background-size: 150% 250%, 100% 100%;
+      /* Blooms to a brighter, wider aura in the middle of the cycle */
+      text-shadow: 0 0 24px rgba(255, 238, 160, 0.8); /* Lighter Gold at 80% opacity */
     }
     100% {
-      /* Ends bottom-right, small again */
-      background-position: 200% 200%, 0% 0%;
-      background-size: 50% 100%, 100% 100%;
+      /* Returns to the subtle glow */
+      text-shadow: 0 0 8px rgba(218, 165, 32, 0.4);
     }
   }
 
-  /* The slow "breathing" effect remains the same */
+  /* For the slow, permeating "breathing" of the text's opacity */
   @keyframes breathing-pulse {
     0% { opacity: 1; }
-    50% { opacity: 0.7; }
+    50% { opacity: 0.8; }
     100% { opacity: 1; }
   }
 
 
   /* 2. Apply the new styles to the hero name element */
   #hero-name-shimmer {
-    /* --- The New Gold Background Stack --- */
-    background-image:
-      /* Layer 1: A soft, circular, volumetric gold light */
-      radial-gradient(
-        circle at center,
-        rgba(255, 238, 160, 0.8) 0%,  /* Bright, light gold core (FFFEEA0) */
-        #DAA520 50%,                  /* Richer gold (GoldenRod) */
-        transparent 80%
-      ),
-      /* Layer 2: The static base text color (a darker grey for contrast) */
-      linear-gradient(90deg, #909090, #b0b0b0);
-
-    /* Define the starting size for each background */
-    background-size: 50% 100%, 100% 100%;
-
-    /* Define the starting position for each background */
-    background-position: -100% -100%, 0% 0%;
+    /* Set a solid, elegant base color for the text itself */
+    color: #DAA520; /* A rich GoldenRod color */
     
-    background-repeat: no-repeat;
+    /* Remove all the complex background properties from previous attempts */
+    background: none;
     
-    /* --- The Text Clipping Effect --- */
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    -webkit-text-fill-color: transparent;
-    
-    /* --- Apply the New Animations --- */
-    animation: 
-      volumetric-gold-shimmer 8s ease-in-out infinite,
-      breathing-pulse 10s ease-in-out infinite !important;
+    /* Apply the two asynchronous animations */
+    /* The !important tag is retained as a safeguard against theme overrides */
+    animation:
+      internal-glow  7s ease-in-out infinite,
+      breathing-pulse 11s ease-in-out infinite !important;
   }
 
   /*
