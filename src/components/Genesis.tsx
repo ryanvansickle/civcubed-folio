@@ -207,10 +207,8 @@ export const Genesis = () => {
                            loop
                            muted
                            playsInline
-                           onMouseEnter={(e) => e.currentTarget.play()}
-                           onCanPlay={(e) => e.currentTarget.play()}
                          >
-                           <source src="/civ3-video.mp4" type="video/mp4" />
+                           <source src="/ursa-minor-video.mp4" type="video/mp4" />
                          </video>
                        </div>
                        <p className="card-narrative text-center">{item.narrative}</p>
