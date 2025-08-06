@@ -4,12 +4,14 @@ export const IntellectualFoundations = () => {
   const foundations = [
     {
       title: "Naropa University",
-      tagline: "Where contemplative wisdom meets the technological frontier",
+      location: "Boulder, CO",
+      tagline: "The world's first Buddhist-inspired university, where ancient wisdom collides with cutting-edge consciousness research",
       description: "It was here I began the formal work of bridging frontier technology with deep consciousness studies, culminating in my thesis on the \"Integral Singularity.\""
     },
     {
       title: "The Westminster Schools",
-      tagline: "Forging minds that question everything and build the future",
+      location: "Atlanta, GA",
+      tagline: "An elite preparatory academy engineering tomorrow's visionaries through rigorous intellectual combat",
       description: "This rigorous academic environment provided the foundation for my lifelong passion for frontier science and the world-changing ideas that would define my future path."
     }
   ];
@@ -33,6 +35,9 @@ export const IntellectualFoundations = () => {
                 <div className="card-state card-default-state">
                   <h3 className="card-title">{foundation.title}</h3>
                   <p className="card-role">{foundation.tagline}</p>
+                  {foundation.location && (
+                    <span className="card-location">{foundation.location}</span>
+                  )}
                 </div>
                 
                 <div className="card-state card-hover-state">
