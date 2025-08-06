@@ -207,6 +207,9 @@ export const Genesis = () => {
                            loop
                            muted
                            playsInline
+                           onError={(e) => console.log('Video error for Ursa Minor:', e)}
+                           onLoadStart={() => console.log('Ursa Minor video loading...')}
+                           onCanPlay={() => console.log('Ursa Minor video can play')}
                          >
                            <source src="/ursa-minor-video.mp4" type="video/mp4" />
                          </video>
@@ -214,14 +217,14 @@ export const Genesis = () => {
                        <p className="card-narrative text-center">{item.narrative}</p>
                      </div>
                    ) : (
-                    <p className="card-narrative">{item.narrative}</p>
-                  )}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
+                     <p className="card-narrative">{item.narrative}</p>
+                   )}
+                 </div>
+               </div>
+             </div>
+           ))}
+         </div>
+       </div>
+     </section>
+   );
+ };
