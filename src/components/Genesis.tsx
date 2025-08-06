@@ -103,14 +103,16 @@ export const Genesis = () => {
                     </div>
                   ) : item.title === "Telos" ? (
                     <div className="flex flex-col items-center space-y-4">
-                      <div className="video-logo-container">
+                      <div className="video-logo-container" style={{backgroundColor: "#000", border: "1px solid #ccc"}}>
                         <video
                           autoPlay
                           loop
                           muted
                           playsInline
+                          style={{width: "100%", height: "100%", objectFit: "cover"}}
                         >
                           <source src="/telos-video.mp4" type="video/mp4" />
+                          Your browser does not support the video tag.
                         </video>
                       </div>
                       <p className="card-narrative text-center">{item.narrative}</p>
