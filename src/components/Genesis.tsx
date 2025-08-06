@@ -207,7 +207,8 @@ export const Genesis = () => {
                            loop
                            muted
                            playsInline
-                           poster="/civ3-poster.jpg"
+                           onMouseEnter={(e) => e.currentTarget.play()}
+                           onCanPlay={(e) => e.currentTarget.play()}
                          >
                            <source src="/civ3-video.mp4" type="video/mp4" />
                          </video>
