@@ -214,7 +214,7 @@ export const Genesis = () => {
                             onLoadStart={() => console.log('Ursa Minor video loading...')}
                             onCanPlay={() => console.log('Ursa Minor video can play')}
                           >
-                            <source src="/ursa-minor-video-fixed.mp4" type="video/mp4" />
+                            <source src="/ursa-minor-video-new.mp4" type="video/mp4" />
                           </video>
                         </div>
                         <p className="card-narrative text-center">{item.narrative}</p>
