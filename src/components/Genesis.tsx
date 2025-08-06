@@ -83,6 +83,7 @@ export const Genesis = () => {
                   {item.location && (
                     <span className="card-location">{item.location}</span>
                   )}
+                  {item.title === "Ursa Minor" && <span style={{color: 'red'}}>●</span>}
                 </div>
                 
                 <div className="card-state card-hover-state">
