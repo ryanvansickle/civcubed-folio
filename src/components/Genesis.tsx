@@ -197,7 +197,7 @@ export const Genesis = () => {
                             onLoadStart={() => console.log('Noma video loading...')}
                             onCanPlay={() => console.log('Noma video can play')}
                           >
-                            <source src="/noma-video-new.mp4" type="video/mp4" />
+                            <source src="/noma-video-final.mp4" type="video/mp4" />
                           </video>
                         </div>
                         <p className="card-narrative text-center">{item.narrative}</p>
