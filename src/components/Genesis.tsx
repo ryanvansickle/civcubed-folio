@@ -73,7 +73,7 @@ export const Genesis = () => {
           </h2>
         </div>
 
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {genesisData.map((item, index) => (
             <div key={index} className="genesis-card">
               <div className="card-content">
