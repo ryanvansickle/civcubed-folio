@@ -23,12 +23,12 @@ export const Genesis = () => {
     },
     {
       title: "Aethos",
-      role: "Founding Advisor / Catalyst",
+      role: "Advisor",
       narrative: "A multidisciplinary creative guild and Web3 incubator. The focus was on building the cultures, campaigns, and communities for a decentralized future. A lesson in how the 'software' of human culture must be rewritten alongside our technology."
     },
     {
       title: "Wilder World",
-      role: "Founding Advisor / Catalyst",
+      role: "Advisor",
       narrative: "Guiding strategy for a photorealistic, player-owned metaverse. This was a laboratory for studying the emergence of digital-native economies, sovereign identity, and decentralized governance—the very social and economic structures that may define Civilization³."
     },
     {
@@ -39,17 +39,17 @@ export const Genesis = () => {
     },
     {
       title: "Synchro",
-      role: "Founding Advisor / Catalyst",
+      role: "Co-Founder, CMO",
       narrative: "An exploration into architecting the foundational primitives of human wellbeing. This work informs the Civ³ thesis on how to engineer robust, health-centric lifestyles capable of navigating the complexities of a post-AGI world."
     },
     {
       title: "Noma",
-      role: "Founding Advisor / Catalyst", 
+      role: "Co-Founder, CMO", 
       narrative: "Innovating on complex botanical synergies to enhance cognition. This venture explores the intersection of ancient plants and modern wisdom, a direct inquiry into upgrading the biological substrate—our own consciousness—for Civilization³."
     },
     {
       title: "F2 Media",
-      role: "Co-Founder & CEO",
+      role: "Co-Founder, CEO",
       location: "Boulder, CO",
       narrative: "Co-founded one of the first venture-backed podcasting studios. It was an early foray into decentralized media, building niche global communities at scale and pioneering new organizational structures (Holacracy), prefiguring the cultural and economic landscape of Civilization³."
     },
