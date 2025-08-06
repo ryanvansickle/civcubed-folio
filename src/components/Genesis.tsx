@@ -207,9 +207,8 @@ export const Genesis = () => {
                            loop
                            muted
                            playsInline
-                           poster="/civ3-poster.jpg"
                          >
-                           <source src="/civ3-video.mp4" type="video/mp4" />
+                           <source src="/ursa-minor-video.mp4" type="video/mp4" />
                          </video>
                        </div>
                        <p className="card-narrative text-center">{item.narrative}</p>
