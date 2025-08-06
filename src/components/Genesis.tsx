@@ -110,6 +110,10 @@ export const Genesis = () => {
                           muted
                           playsInline
                           style={{width: "100%", height: "100%", objectFit: "cover"}}
+                          onLoadStart={() => console.log("Telos video load started")}
+                          onCanPlay={() => console.log("Telos video can play")}
+                          onError={(e) => console.error("Telos video error:", e)}
+                          onLoad={() => console.log("Telos video loaded")}
                         >
                           <source src="/telos-video.mp4" type="video/mp4" />
                           Your browser does not support the video tag.
