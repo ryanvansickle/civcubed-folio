@@ -201,19 +201,17 @@ export const Genesis = () => {
                      </div>
                    ) : item.title === "Ursa Minor" ? (
                      <div className="flex flex-col items-center space-y-4">
-                       <div className="video-logo-container" style={{border: '2px solid red', backgroundColor: 'blue'}}>
+                       <div className="video-logo-container">
                          <video
                            autoPlay
                            loop
                            muted
                            playsInline
-                           style={{backgroundColor: 'green'}}
                          >
-                           <source src="/wilder-world-video.mp4" type="video/mp4" />
+                           <source src="/ursa-minor-video.mp4" type="video/mp4" />
                          </video>
                        </div>
                        <p className="card-narrative text-center">{item.narrative}</p>
-                       <p style={{color: 'red'}}>DEBUG: Ursa Minor video should be here</p>
                      </div>
                    ) : (
                      <p className="card-narrative">{item.narrative}</p>
