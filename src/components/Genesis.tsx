@@ -129,6 +129,20 @@ export const Genesis = () => {
                        </div>
                        <p className="card-narrative text-center">{item.narrative}</p>
                      </div>
+                  ) : item.title === "F2 Media" ? (
+                     <div className="flex flex-col items-center space-y-4">
+                       <div className="video-logo-container">
+                         <video
+                           autoPlay
+                           loop
+                           muted
+                           playsInline
+                         >
+                           <source src="/f2media-video.mp4" type="video/mp4" />
+                         </video>
+                       </div>
+                       <p className="card-narrative text-center">{item.narrative}</p>
+                     </div>
                   ) : (
                     <p className="card-narrative">{item.narrative}</p>
                   )}
