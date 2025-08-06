@@ -32,7 +32,7 @@ export const Footer = () => {
             </div>
 
             {/* Quick Links */}
-            <div>
+            <div className="md:text-right">
               <h4 className="font-semibold text-foreground mb-4">Explore</h4>
               <ul className="space-y-2">
                 <li>
