@@ -208,7 +208,7 @@ export const Genesis = () => {
                            muted
                            playsInline
                          >
-                           <source src="/ursa-minor-video.mp4" type="video/mp4" />
+                           <source src="/wilder-world-video.mp4" type="video/mp4" />
                          </video>
                        </div>
                        <p className="card-narrative text-center">{item.narrative}</p>
