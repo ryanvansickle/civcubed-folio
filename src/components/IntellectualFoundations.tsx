@@ -1,14 +1,15 @@
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const IntellectualFoundations = () => {
   const foundations = [
     {
       title: "Naropa University",
+      tagline: "Where contemplative wisdom meets the technological frontier",
       description: "It was here I began the formal work of bridging frontier technology with deep consciousness studies, culminating in my thesis on the \"Integral Singularity.\""
     },
     {
       title: "The Westminster Schools",
+      tagline: "Forging minds that question everything and build the future",
       description: "This rigorous academic environment provided the foundation for my lifelong passion for frontier science and the world-changing ideas that would define my future path."
     }
   ];
@@ -27,18 +28,18 @@ export const IntellectualFoundations = () => {
 
         <div className="grid md:grid-cols-2 gap-8">
           {foundations.map((foundation, index) => (
-            <Card key={index} className="interactive-card bg-card border-border/20 shadow-soft p-8">
-              <CardHeader className="pb-6">
-                <CardTitle className="text-2xl font-normal text-foreground">
-                  {foundation.title}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-lg leading-relaxed text-foreground/80">
-                  {foundation.description}
-                </p>
-              </CardContent>
-            </Card>
+            <div key={index} className="genesis-card">
+              <div className="card-content">
+                <div className="card-state card-default-state">
+                  <h3 className="card-title">{foundation.title}</h3>
+                  <p className="card-role">{foundation.tagline}</p>
+                </div>
+                
+                <div className="card-state card-hover-state">
+                  <p className="card-narrative">{foundation.description}</p>
+                </div>
+              </div>
+            </div>
           ))}
         </div>
       </div>
