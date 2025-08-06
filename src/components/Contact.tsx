@@ -16,7 +16,7 @@ export const Contact = () => {
             className="w-12 h-12 rounded-full border border-border/30 hover:bg-muted/30 transition-colors"
             asChild
           >
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.linkedin.com/in/ryan-van-sickle-/" target="_blank" rel="noopener noreferrer">
               <Linkedin className="h-5 w-5" />
             </a>
           </Button>
@@ -26,7 +26,7 @@ export const Contact = () => {
             className="w-12 h-12 rounded-full border border-border/30 hover:bg-muted/30 transition-colors"
             asChild
           >
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+            <a href="https://x.com/Ryan_Van_Sickle" target="_blank" rel="noopener noreferrer">
               <Twitter className="h-5 w-5" />
             </a>
           </Button>
