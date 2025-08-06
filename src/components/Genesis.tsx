@@ -83,7 +83,6 @@ export const Genesis = () => {
                   {item.location && (
                     <span className="card-location">{item.location}</span>
                   )}
-                  {item.title === "Ursa Minor" && <span style={{color: 'red'}}>●</span>}
                 </div>
                 
                 <div className="card-state card-hover-state">
@@ -202,17 +201,19 @@ export const Genesis = () => {
                      </div>
                    ) : item.title === "Ursa Minor" ? (
                      <div className="flex flex-col items-center space-y-4">
-                       <div className="video-logo-container">
+                       <div className="video-logo-container" style={{backgroundColor: 'yellow', border: '3px solid red'}}>
                          <video
                            autoPlay
                            loop
                            muted
                            playsInline
+                           style={{width: '100%', height: '100%', backgroundColor: 'blue'}}
                          >
                            <source src="/wilder-world-video.mp4" type="video/mp4" />
                          </video>
                        </div>
                        <p className="card-narrative text-center">{item.narrative}</p>
+                       <div style={{color: 'red', fontWeight: 'bold'}}>URSA MINOR HOVER STATE ACTIVE</div>
                      </div>
                    ) : (
                      <p className="card-narrative">{item.narrative}</p>
