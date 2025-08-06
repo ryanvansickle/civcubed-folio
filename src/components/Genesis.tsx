@@ -193,6 +193,9 @@ export const Genesis = () => {
                             loop
                             muted
                             playsInline
+                            onError={(e) => console.log('Noma video error:', e)}
+                            onLoadStart={() => console.log('Noma video loading...')}
+                            onCanPlay={() => console.log('Noma video can play')}
                           >
                             <source src="/noma-video.mp4" type="video/mp4" />
                           </video>
@@ -207,6 +210,9 @@ export const Genesis = () => {
                             loop
                             muted
                             playsInline
+                            onError={(e) => console.log('Ursa Minor video error:', e)}
+                            onLoadStart={() => console.log('Ursa Minor video loading...')}
+                            onCanPlay={() => console.log('Ursa Minor video can play')}
                           >
                             <source src="/ursa-minor-video.mp4" type="video/mp4" />
                           </video>
