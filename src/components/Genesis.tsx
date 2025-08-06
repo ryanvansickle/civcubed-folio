@@ -207,9 +207,6 @@ export const Genesis = () => {
                            loop
                            muted
                            playsInline
-                           onError={(e) => console.log('Video error for Ursa Minor:', e)}
-                           onLoadStart={() => console.log('Ursa Minor video loading...')}
-                           onCanPlay={() => console.log('Ursa Minor video can play')}
                          >
                            <source src="/ursa-minor-video.mp4" type="video/mp4" />
                          </video>
