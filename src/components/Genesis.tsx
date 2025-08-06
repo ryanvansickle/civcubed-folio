@@ -10,7 +10,7 @@ export const Genesis = () => {
       narrative: "Authoring a forthcoming book on the next epoch of human civilization, catalyzed by the convergence of AGI, synthetic biology, and decentralized systems. Civilization³ maps the tectonic shift away from the Industrial Age and provides a framework for building our collective future."
     },
     {
-      title: "Telos",
+      title: "T3MPLO",
       role: "Co-Founder",
       location: "Puerto Rico",
       narrative: "Co-founded a live/work incubator for leading blockchain innovators. It was a real-world experiment in creating high-trust environments to accelerate deep work, revealing the critical need for new social architectures to support the builders of Civilization³."
@@ -101,7 +101,7 @@ export const Genesis = () => {
                       </div>
                       <p className="card-narrative text-center">{item.narrative}</p>
                     </div>
-                  ) : item.title === "Telos" ? (
+                  ) : item.title === "T3MPLO" ? (
                      <div className="flex flex-col items-center space-y-4">
                        <div className="video-logo-container">
                          <video
