@@ -5,7 +5,7 @@ export const IntellectualFoundations = () => {
     {
       title: "Naropa University",
       location: "Boulder, CO",
-      tagline: "The world's first Buddhist-inspired university, where ancient wisdom collides with cutting-edge consciousness research",
+      tagline: "Founded by the venerable Chogyam Trungpa and beat poet Allen Ginsberg, offering a contemplative oasis for right brain thinking",
       description: "It was here I began the formal work of bridging frontier technology with deep consciousness studies, culminating in my thesis on the \"Integral Singularity.\""
     },
     {
