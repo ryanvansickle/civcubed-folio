@@ -262,7 +262,8 @@ export const Hero = () => {
 
           {/* Subtitle */}
           <p className="text-2xl md:text-3xl lg:text-4xl text-foreground/80 mb-8 tracking-wide animate-fade-in font-light" style={{ animationDelay: '0.002s' }}>
-            Futurist | Strategist | Advisor | Author of the forthcoming book, Civilization³
+            Futurist | Strategist | Advisor<br />
+            Author of the forthcoming book, Civilization³
           </p>
 
           {/* Tagline */}
