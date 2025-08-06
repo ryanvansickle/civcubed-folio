@@ -102,25 +102,15 @@ export const Genesis = () => {
                       <p className="card-narrative text-center">{item.narrative}</p>
                     </div>
                   ) : item.title === "Telos" ? (
-                    <div className="flex flex-col items-center space-y-4">
-                      <div className="video-logo-container" style={{backgroundColor: "#000", border: "1px solid #ccc"}}>
-                        <video
-                          autoPlay
-                          loop
-                          muted
-                          playsInline
-                          style={{width: "100%", height: "100%", objectFit: "cover"}}
-                          onLoadStart={() => console.log("Telos video load started")}
-                          onCanPlay={() => console.log("Telos video can play")}
-                          onError={(e) => console.error("Telos video error:", e)}
-                          onLoad={() => console.log("Telos video loaded")}
-                        >
-                          <source src="/telos-video.mp4" type="video/mp4" />
-                          Your browser does not support the video tag.
-                        </video>
-                      </div>
-                      <p className="card-narrative text-center">{item.narrative}</p>
-                    </div>
+                     <div className="flex flex-col items-center space-y-4">
+                       <div className="video-logo-container bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center">
+                         <div className="text-white text-center">
+                           <div className="text-2xl font-bold">TELOS</div>
+                           <div className="text-sm opacity-80">Video Coming Soon</div>
+                         </div>
+                       </div>
+                       <p className="card-narrative text-center">{item.narrative}</p>
+                     </div>
                   ) : (
                     <p className="card-narrative">{item.narrative}</p>
                   )}
