@@ -125,6 +125,7 @@
   html {
     -ms-overflow-style: none;
     scrollbar-width: none;
+    scroll-behavior: smooth;
   }
   
   /* Advanced Volumetric Interactive Effects */

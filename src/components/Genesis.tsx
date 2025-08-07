@@ -62,7 +62,7 @@ export const Genesis = () => {
   ];
 
   return (
-    <section id="genesis" className="py-24 px-6 bg-background">
+    <section id="genesis" className="py-24 px-6 bg-background scroll-mt-24">
       <div className="container mx-auto max-w-6xl">
         <div className="text-center mb-16">
           <Badge variant="outline" className="section-tag mb-6 px-4 py-2 text-sm font-medium border-foreground/20">

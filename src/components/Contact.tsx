@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 
 export const Contact = () => {
   return (
-    <section id="contact" className="py-24 px-6 bg-background">
+    <section id="contact" className="py-24 px-6 bg-background scroll-mt-24">
       <div className="container mx-auto max-w-4xl text-center">
         <p className="text-2xl font-normal text-foreground mb-8" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
           Continue the conversation.
