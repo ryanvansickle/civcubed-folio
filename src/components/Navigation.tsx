@@ -31,10 +31,10 @@ export const Navigation = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-12">
-            <a href="#about" className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-medium tracking-wide">
+            <a href="#new-substrate" className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-medium tracking-wide">
               About
             </a>
-            <a href="#work" className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-medium tracking-wide">
+            <a href="#genesis" className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-medium tracking-wide">
               Experience
             </a>
             <a href="#foundations" className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-medium tracking-wide">
@@ -63,14 +63,14 @@ export const Navigation = () => {
           <div className="md:hidden py-8 border-t border-border/20">
             <div className="flex flex-col space-y-6">
               <a 
-                href="#about" 
+                href="#new-substrate" 
                 className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-medium tracking-wide"
                 onClick={() => setIsOpen(false)}
               >
                 About
               </a>
               <a 
-                href="#work" 
+                href="#genesis" 
                 className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 font-medium tracking-wide"
                 onClick={() => setIsOpen(false)}
               >
