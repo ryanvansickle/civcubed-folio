@@ -243,21 +243,8 @@ export const Hero = () => {
       <div className="relative z-10 container mx-auto px-12 py-20 text-center">
         <div className="max-w-6xl mx-auto">
           {/* Main Heading */}
-          <h1 id="hero-name-shimmer" className="text-6xl md:text-8xl lg:text-9xl mb-8 tracking-tight leading-[1.1] animate-fade-in" style={{ fontFamily: "'Times New Roman', Times, serif" }}>
-            <span className="block md:inline">
-              {"Ryan".split("").map((char, index) => (
-                <span key={index} className="wave-letter">
-                  {char}
-                </span>
-              ))}
-            </span>
-            <span className="block md:inline">
-              {" Van Sickle".split("").map((char, index) => (
-                <span key={index + 4} className="wave-letter">
-                  {char === " " ? "\u00A0" : char}
-                </span>
-              ))}
-            </span>
+          <h1 className="text-6xl md:text-8xl lg:text-9xl mb-8 tracking-tight leading-[1.1] animate-fade-in" style={{ fontFamily: "'Times New Roman', Times, serif" }}>
+            Ryan Van Sickle
           </h1>
 
           {/* Subtitle */}
