@@ -1,4 +1,4 @@
-import { Linkedin, Twitter } from "lucide-react";
+import { Mail, Twitter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export const Contact = () => {
@@ -16,8 +16,8 @@ export const Contact = () => {
             className="w-12 h-12 rounded-full border border-border/30 hover:bg-muted/30 transition-colors"
             asChild
           >
-            <a href="https://www.linkedin.com/in/ryan-van-sickle-/" target="_blank" rel="noopener noreferrer">
-              <Linkedin className="h-5 w-5" />
+            <a href="mailto:ryan@coherence.la">
+              <Mail className="h-5 w-5" />
             </a>
           </Button>
           <Button 
