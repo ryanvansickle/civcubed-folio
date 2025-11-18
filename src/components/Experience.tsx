@@ -6,83 +6,35 @@ export const Experience = () => {
   const experiences = [
     {
       icon: Brain,
-      title: "Author",
-      company: "Civilization³",
-      period: "",
-      description: "Writing Civilization³, a book mapping the transition beyond the Industrial Age into the Intelligence Age. This work informs my consulting frameworks: how products, brands, and growth systems must evolve when the underlying substrate changes.",
-      highlights: []
-    },
-    {
-      icon: Building,
-      title: "Co-Founder",
-      company: "T3MPLO",
-      period: "",
-      description: "Co-founded a live/work innovation hub for blockchain builders. This real-world experiment revealed how environment design and trust architectures shape deep work and platform success—key insights for modern product and growth strategy.",
-      highlights: []
-    },
-    {
-      icon: Users,
-      title: "Founding Member & Strategist",
-      company: "F4CTORY",
-      period: "",
-      description: "Built an innovation platform connecting entrepreneurs with Fortune 500s. This experience highlighted the friction between legacy systems and emerging paradigms, informing how I approach product-market fit in new technological contexts.",
-      highlights: []
-    },
-    {
-      icon: Lightbulb,
-      title: "Advisor",
-      company: "Aethos",
-      period: "",
-      description: "Advised a multidisciplinary creative guild and Web3 incubator focused on culture, community, and identity. Reinforced how brand, culture, and growth systems must evolve together—not independently—in the Intelligence Age.",
-      highlights: []
-    },
-    {
-      icon: Globe,
-      title: "Advisor",
-      company: "Wilder World",
-      period: "",
-      description: "Supported strategy for a photorealistic, player-owned metaverse. A living lab for digital economies, sovereign identity, and next-gen platform design—all of which shape my approach to product and ecosystem growth.",
-      highlights: []
+      title: "Senior Strategic Futurist",
+      company: "Global Innovation Institute",
+      period: "2021 - Present",
+      description: "Lead research initiatives exploring the intersection of technology, society, and consciousness. Developed frameworks for understanding systemic transformation and civilizational evolution.",
+      highlights: ["Led 15+ strategic foresight projects", "Published 30+ research papers", "Advised Fortune 500 companies"]
     },
     {
       icon: TrendingUp,
-      title: "Executive Producer",
-      company: "Ursa Minor",
-      period: "",
-      description: "Led a digital agency through a market crisis by redesigning its business model around resilience and adaptability. Formed the foundation of my thinking on anti-fragile product design and growth under uncertainty.",
-      highlights: []
+      title: "Director of Future Systems",
+      company: "Convergence Labs",
+      period: "2019 - 2021",
+      description: "Directed interdisciplinary teams in analyzing emerging technologies and their societal implications. Specialized in AI governance, social innovation, and systems thinking.",
+      highlights: ["Built cross-functional research team", "Launched emerging tech assessment program", "Spoke at 25+ conferences"]
     },
     {
-      icon: Brain,
-      title: "Co-Founder, CMO",
-      company: "Synchro",
-      period: "",
-      description: "Helped architect foundational well-being systems, blending lifestyle design with technology. Demonstrated how products and brands can drive long-term retention and emotional resonance.",
-      highlights: []
+      icon: Globe,
+      title: "Principal Consultant",
+      company: "Future Horizons Consulting",
+      period: "2017 - 2019",
+      description: "Provided strategic guidance to organizations navigating technological disruption. Focused on helping leaders understand and prepare for systemic change.",
+      highlights: ["Consulted for 50+ organizations", "Developed proprietary forecasting models", "Created executive education programs"]
     },
     {
       icon: Lightbulb,
-      title: "Co-Founder, CMO / Creative Director",
-      company: "Noma",
-      period: "",
-      description: "Co-founded a venture at the intersection of cognition, culture, and botanical science. An exploration in upgrading the human substrate—insights that now inform my product and brand work.",
-      highlights: []
-    },
-    {
-      icon: Users,
-      title: "Founder, CEO",
-      company: "F2 Media",
-      period: "",
-      description: "Co-founded one of the earliest venture-backed podcast studios. Pioneered creator ecosystems, niche community building, and decentralized media structures—precursors to today's growth models.",
-      highlights: []
-    },
-    {
-      icon: Brain,
-      title: "Researcher",
-      company: "Qiterra Press",
-      period: "",
-      description: "Conducted early research into decentralized monetary systems before Bitcoin. A foundational exploration into how economic substrates shift, informing how modern platforms and products must evolve.",
-      highlights: []
+      title: "Innovation Strategist",
+      company: "Tech Evolution Partners",
+      period: "2015 - 2017",
+      description: "Analyzed technology trends and their potential impact on business and society. Specialized in identifying early signals of transformative change.",
+      highlights: ["Identified 10+ breakthrough technologies", "Built innovation assessment framework", "Mentored startup founders"]
     }
   ];
 

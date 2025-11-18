@@ -249,21 +249,13 @@ export const Hero = () => {
 
           {/* Subtitle */}
           <p className="text-2xl md:text-3xl lg:text-4xl text-foreground/80 mb-8 tracking-wide animate-fade-in font-light leading-relaxed" style={{ animationDelay: '0.002s', lineHeight: '1.8' }}>
-            Product • Marketing • Growth<br />
-            Author of Civilization³ | Creator @ Civ3
+            Futurist | Strategist | Advisor<br />
+            Author of the forthcoming book, Civilization³
           </p>
 
-          {/* Body Copy */}
-          <p className="text-xl md:text-2xl text-foreground/70 mb-12 max-w-4xl mx-auto leading-relaxed animate-fade-in" style={{ animationDelay: '0.004s', fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
-            The Industrial Age is over. The Intelligence Age has begun. Software writes itself, biology compiles like code, and the substrate beneath our institutions is shifting.
-          </p>
-          
-          <p className="text-lg md:text-xl text-foreground/70 mb-12 max-w-4xl mx-auto leading-relaxed animate-fade-in" style={{ animationDelay: '0.005s' }}>
-            I help teams design products, brands, and growth systems for what comes next. With a background spanning product strategy, design, marketing, and startup leadership, I partner with organizations building for the new era—while writing the forthcoming book <em>Civilization³</em> and creating the Civ3 platform.
-          </p>
-          
-          <p className="text-lg md:text-xl text-foreground/70 mb-20 max-w-4xl mx-auto leading-relaxed animate-fade-in" style={{ animationDelay: '0.006s' }}>
-            If you're designing a product, brand, or growth model for the Intelligence Age, let's explore how to build it.
+          {/* Tagline */}
+          <p className="text-xl md:text-2xl text-foreground/70 mb-20 max-w-4xl mx-auto leading-relaxed italic animate-fade-in" style={{ animationDelay: '0.004s', fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
+            The Industrial Age is over. What comes next?
           </p>
 
           {/* CTA Button */}
