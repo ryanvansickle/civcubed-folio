@@ -249,8 +249,8 @@ export const Hero = () => {
 
           {/* Subtitle */}
           <p className="text-2xl md:text-3xl lg:text-4xl text-foreground/80 mb-8 tracking-wide animate-fade-in font-light leading-relaxed" style={{ animationDelay: '0.002s', lineHeight: '1.8' }}>
-            Futurist | Strategist | Advisor<br />
-            Author of the forthcoming book, Civilization³
+            Product | Design | Growth<br />
+            Author of Civilization³ | Creator @ <a href="https://www.youtube.com/@RyanV_xyz" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Civ3</a>
           </p>
 
           {/* Tagline */}
